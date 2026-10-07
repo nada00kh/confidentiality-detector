@@ -179,3 +179,32 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# ==========================================
+# Haseen AI - Specific Additions
+# ==========================================
+
+# ML Models & Weights (أوزان النماذج والملفات الضخمة)
+*.safetensors
+*.pt
+*.bin
+*.onnx
+models/
+artifacts/
+
+# Data & Datasets (البيانات الخام)
+data/raw/
+data/processed/
+*.parquet
+
+# Vector DB / ChromaDB (قاعدة البيانات المتجهة المحلية)
+chroma_db/
+.chroma/
+
+# Streamlit Secrets (المفاتيح الخاصة بالواجهة)
+.streamlit/secrets.toml
+
+# OS Files (ملفات النظام المقلقة)
+.DS_Store
+Thumbs.db
+
