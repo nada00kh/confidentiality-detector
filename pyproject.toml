@@ -11,6 +11,7 @@ dependencies = [
     "chromadb>=1.5.9",
     "datasets>=5.1.0",
     "faker>=40.41.0",
+    "ipykernel>=7.4.0",
     "matplotlib>=3.11.2",
     "pandas>=3.0.6",
     "presidio-analyzer>=2.2.364",
