@@ -208,3 +208,7 @@ chroma_db/
 .DS_Store
 Thumbs.db
 
+data/raw/
+data/processed/
+models/
+checkpoints/
