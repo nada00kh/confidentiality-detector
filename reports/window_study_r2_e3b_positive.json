@@ -1,0 +1,299 @@
+{
+  "model_dir": "r2_e3b_positive",
+  "verification": {
+    "model_dir": "r2_e3b_positive",
+    "pred_dir": "r2_e3b_positive",
+    "files": [
+      "config.json",
+      "history.json",
+      "model.safetensors",
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "training_summary.json"
+    ],
+    "weights": {
+      "model.safetensors": {
+        "bytes": 709157780,
+        "sha256": "dc0fdca52f9e144b4017cb8eb37d8cef0d366b5b9619c519a782102ef32850c6"
+      }
+    },
+    "windows": {
+      "max_length": 512,
+      "overlap": 64,
+      "stitching": "first"
+    },
+    "metadata": {},
+    "sets": {
+      "dev_v1": {
+        "n_docs": 135,
+        "documents_with_different_spans": 0,
+        "differing_ids": [],
+        "max_abs_diff_p_not_O": 9.43e-06
+      },
+      "test_long": {
+        "n_docs": 73,
+        "documents_with_different_spans": 0,
+        "differing_ids": [],
+        "max_abs_diff_p_not_O": 1.494e-05
+      }
+    },
+    "problems": []
+  },
+  "candidates": {
+    "512/64/first": {
+      "validation_long": {
+        "FA": 0,
+        "FB": 2,
+        "n_block": 49,
+        "n_allow": 30,
+        "entity_p": 0.9156626506024096,
+        "entity_r": 1.0,
+        "entity_f1": 0.9559748427672956,
+        "caught_any_type": 1.0,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 1.0
+      },
+      "dev_v1": {
+        "FA": 0,
+        "FB": 27,
+        "n_block": 56,
+        "n_allow": 75,
+        "entity_p": 0.5588235294117647,
+        "entity_r": 0.8837209302325582,
+        "entity_f1": 0.6846846846846847,
+        "caught_any_type": 0.9767441860465116,
+        "boundary_fp": 4,
+        "boundary_fn": 4,
+        "type_confusion_fp": 6,
+        "fully_caught": 0.9642857142857143
+      },
+      "validation": {
+        "FA": 4,
+        "FB": 9,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "entity_p": 0.984483120150975,
+        "entity_r": 0.9880050505050505,
+        "entity_f1": 0.9862409410776178,
+        "caught_any_type": 0.9983164983164983,
+        "boundary_fp": 26,
+        "boundary_fn": 27,
+        "type_confusion_fp": 23,
+        "fully_caught": 0.9973483592973152
+      },
+      "test_long": {
+        "FA": 2,
+        "FB": 5,
+        "n_block": 45,
+        "n_allow": 28,
+        "entity_p": 0.7804878048780488,
+        "entity_r": 0.9696969696969697,
+        "entity_f1": 0.8648648648648648,
+        "caught_any_type": 0.9696969696969697,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 0.9555555555555556
+      }
+    },
+    "512/64/centered": {
+      "validation_long": {
+        "FA": 0,
+        "FB": 2,
+        "n_block": 49,
+        "n_allow": 30,
+        "entity_p": 0.926829268292683,
+        "entity_r": 1.0,
+        "entity_f1": 0.9620253164556963,
+        "caught_any_type": 1.0,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 1.0
+      },
+      "dev_v1": {
+        "FA": 0,
+        "FB": 27,
+        "n_block": 56,
+        "n_allow": 75,
+        "entity_p": 0.5588235294117647,
+        "entity_r": 0.8837209302325582,
+        "entity_f1": 0.6846846846846847,
+        "caught_any_type": 0.9767441860465116,
+        "boundary_fp": 4,
+        "boundary_fn": 4,
+        "type_confusion_fp": 6,
+        "fully_caught": 0.9642857142857143
+      },
+      "validation": {
+        "FA": 4,
+        "FB": 9,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "entity_p": 0.984483120150975,
+        "entity_r": 0.9880050505050505,
+        "entity_f1": 0.9862409410776178,
+        "caught_any_type": 0.9983164983164983,
+        "boundary_fp": 26,
+        "boundary_fn": 27,
+        "type_confusion_fp": 23,
+        "fully_caught": 0.9973483592973152
+      },
+      "test_long": {
+        "FA": 2,
+        "FB": 4,
+        "n_block": 45,
+        "n_allow": 28,
+        "entity_p": 0.8648648648648649,
+        "entity_r": 0.9696969696969697,
+        "entity_f1": 0.9142857142857143,
+        "caught_any_type": 0.9696969696969697,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 0.9555555555555556
+      }
+    },
+    "256/64/centered": {
+      "validation_long": {
+        "FA": 0,
+        "FB": 3,
+        "n_block": 49,
+        "n_allow": 30,
+        "entity_p": 0.8941176470588236,
+        "entity_r": 1.0,
+        "entity_f1": 0.9440993788819877,
+        "caught_any_type": 1.0,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 1.0
+      },
+      "dev_v1": {
+        "FA": 0,
+        "FB": 27,
+        "n_block": 56,
+        "n_allow": 75,
+        "entity_p": 0.5547445255474452,
+        "entity_r": 0.8837209302325582,
+        "entity_f1": 0.6816143497757847,
+        "caught_any_type": 0.9767441860465116,
+        "boundary_fp": 4,
+        "boundary_fn": 4,
+        "type_confusion_fp": 6,
+        "fully_caught": 0.9642857142857143
+      },
+      "validation": {
+        "FA": 4,
+        "FB": 9,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "entity_p": 0.984483120150975,
+        "entity_r": 0.9880050505050505,
+        "entity_f1": 0.9862409410776178,
+        "caught_any_type": 0.9983164983164983,
+        "boundary_fp": 26,
+        "boundary_fn": 27,
+        "type_confusion_fp": 23,
+        "fully_caught": 0.9973483592973152
+      },
+      "test_long": {
+        "FA": 1,
+        "FB": 3,
+        "n_block": 45,
+        "n_allow": 28,
+        "entity_p": 0.8421052631578947,
+        "entity_r": 0.9696969696969697,
+        "entity_f1": 0.9014084507042254,
+        "caught_any_type": 0.9848484848484849,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 1,
+        "fully_caught": 0.9777777777777777
+      }
+    },
+    "128/32/centered": {
+      "validation_long": {
+        "FA": 0,
+        "FB": 2,
+        "n_block": 49,
+        "n_allow": 30,
+        "entity_p": 0.9156626506024096,
+        "entity_r": 1.0,
+        "entity_f1": 0.9559748427672956,
+        "caught_any_type": 1.0,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 1.0
+      },
+      "dev_v1": {
+        "FA": 0,
+        "FB": 27,
+        "n_block": 56,
+        "n_allow": 75,
+        "entity_p": 0.5588235294117647,
+        "entity_r": 0.8837209302325582,
+        "entity_f1": 0.6846846846846847,
+        "caught_any_type": 0.9767441860465116,
+        "boundary_fp": 4,
+        "boundary_fn": 4,
+        "type_confusion_fp": 6,
+        "fully_caught": 0.9642857142857143
+      },
+      "validation": {
+        "FA": 4,
+        "FB": 9,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "entity_p": 0.9842734325854476,
+        "entity_r": 0.9877946127946128,
+        "entity_f1": 0.9860308791093373,
+        "caught_any_type": 0.9983164983164983,
+        "boundary_fp": 27,
+        "boundary_fn": 28,
+        "type_confusion_fp": 23,
+        "fully_caught": 0.9973483592973152
+      },
+      "test_long": {
+        "FA": 1,
+        "FB": 3,
+        "n_block": 45,
+        "n_allow": 28,
+        "entity_p": 0.8552631578947368,
+        "entity_r": 0.9848484848484849,
+        "entity_f1": 0.9154929577464789,
+        "caught_any_type": 0.9848484848484849,
+        "boundary_fp": 0,
+        "boundary_fn": 0,
+        "type_confusion_fp": 0,
+        "fully_caught": 0.9777777777777777
+      }
+    }
+  },
+  "decisions": {
+    "512/64/centered": {
+      "adopt": false,
+      "reasons": [
+        "validation_long: no improvement without a leakage or false-block regression"
+      ]
+    },
+    "256/64/centered": {
+      "adopt": false,
+      "reasons": [
+        "validation_long: no improvement without a leakage or false-block regression"
+      ]
+    },
+    "128/32/centered": {
+      "adopt": false,
+      "reasons": [
+        "validation_long: no improvement without a leakage or false-block regression"
+      ]
+    }
+  },
+  "chosen": "512/64/first",
+  "limit_validation": null,
+  "note": "strict mode (argmax) + rules; rule from docs/METHODOLOGY.md section 7; test_long is report-only; adopting a candidate requires editing configs/inference/policy.json"
+}

@@ -2,6 +2,8 @@
 
 **Date:** 2026-10-24. **Scope:** read-only inventory plus minimal, non-destructive packaging fixes. Nothing was deleted, moved or committed. Every "proposed action" below needs the product owner's approval before Phase 2.
 
+**Update, same day.** The product owner approved the safety commit and answered the open questions (§8, §9). Commit `20ec277` is the recovery point. The Phase 2 proposal is in §10; nothing in it has been carried out.
+
 Classes used throughout:
 * **Active:** part of the authoritative pipeline, or needed to run or test it.
 * **Historical:** original research and development work, preserved as evidence.
@@ -112,7 +114,9 @@ No script is unused. Duplication, checked by listing every function and class de
 
 ## 4. Your original notebooks (proposed archive notes)
 
-All four English notebooks are kept **unchanged**. The proposed `archive/early_experiments/README.md` would state the following, and each notebook would get a one-line notice that is shown but does not alter its cells or outputs: "Historical experiment, not part of the current training or inference pipeline; see README in this folder."
+All four English notebooks are kept **unchanged**, byte for byte; nothing is added to them. The archive README (§10) states the following.
+
+**Correction.** An earlier draft proposed `archive/early_experiments/` "at the same depth" so that the notebooks' `../data/...` paths keep working. That is wrong: that folder is one level deeper than `notebooks/`. §10 proposes `archive/` itself, which is at the same depth.
 
 | Notebook | What it did | Data | Later corrected | Still valid | Superseded by |
 |---|---|---|---|---|---|
@@ -146,7 +150,7 @@ Each removal is verified in Phase 2 by:
 
 ## 6. Data generations and backups
 
-* **Raw source:** `english_pii_43k.jsonl` came from a Hugging Face Hub repository (download metadata: revision `7c22e681…`). Please confirm the repository id; the data README will cite it with the sha256.
+* **Raw source:** `english_pii_43k.jsonl` is the English subset of `ai4privacy/pii-masking-200k`. This is established by `notebooks/02_2scoped_data_EDA.ipynb`, which loads that dataset and filters `language == "en"` to 43,501 records, the exact row count of the file. The file itself was then downloaded from a Hugging Face Hub repository (download metadata: revision `7c22e681…`), presumably the product owner's upload of that subset. That repository's name is not recorded locally. The dataset licence must be checked on the ai4privacy dataset card. Derived sets are therefore not versioned (`docs/DATA_PIPELINE.md` §6).
 * **Generations:**
   1. Your processed splits and tokenised windows (`data/processed`, policy v1).
   2. `data/eval` (policy v2, Round 1).
@@ -173,7 +177,15 @@ The test suite went from 125 to 142 tests, all passing. No model output, BLOCK/A
 
 One design note for Phase 2: `configs/inference/policy.json` now holds both the security policy and the detector settings (windows, post-processing). One file is simpler to fingerprint and freeze, but the name undersells it. A rename to `system.json`, or a split into `policy.json` + `detector.json`, can be decided during consolidation.
 
-## 8. Proposed version-control checkpoint (needs your approval)
+## 8. Version-control checkpoint (done: commit `20ec277`, local only, not pushed)
+
+**What was done.**
+* **Commit:** approved and created on 2026-10-24. It has 121 files and 4.0 MB.
+* **Line endings:** `.gitattributes` now marks `data/**` and `configs/**` as `-text`. With `* text=auto` and `core.autocrlf=true`, a Windows checkout would have rewritten the hashed files with CRLF line endings, changing every recorded sha256 (`dev_v1`, `challenge_v1`, the manifests, `policy.json`).
+* **`data/eval_v3/`:** only the manifests and the four small files built from the hand-written sets are versioned. The sets derived from the third-party raw file, and the generated `data/synth/round2/*.jsonl`, are git-ignored. Rebuilding them reproduced all 19 files byte for byte before the commit.
+* **Scan:** no secret-like strings were found. The two key-shaped strings are public documentation examples (Stripe's `sk_test_4eC39…` in a test, AWS's `…EXAMPLEKEY` in the challenge overlay). Reports contain masked value shapes only.
+
+The original proposal is kept below for the record.
 
 **One commit before Phase 2.**
 * **It would include** (about 14.5 MB):
@@ -201,3 +213,155 @@ One design note for Phase 2: `configs/inference/policy.json` now holds both the 
    * `scope.md`;
    * the dependency changes (§5);
    * the config naming (§7).
+
+**Answers (2026-10-24).**
+1. Keep the Arabic notebook in the archive, explicitly labelled as the earliest exploration.
+2. The raw data's origin is established (§6). Only the name of the intermediate Hub repository is open, and it is optional.
+3. The safety commit is approved and done (§8). `data/eval_v3/` is committed as manifests, plus the hand-written-derived files.
+4. Phase 2 is to be presented file by file (§10) and approved before anything moves.
+
+## 10. Phase 2 proposal (for approval; nothing below has been done)
+
+**Principle.** There is one obvious place for each responsibility, and a small set of entry points. History stays readable, but out of the way. Reproducibility mechanisms are not traded for fewer files. Every move uses `git mv`, so history follows the file.
+
+### 10.1 Final layout
+
+```
+confidentiality-detector/
+├── README.md                    rewritten at Step 9 (problem, scope, install, CLI/API, results, limits)
+├── scope.md                     short pointer: English, 13 labels, local, fail-closed → docs/POLICY.md
+├── pyproject.toml  uv.lock  requirements.txt  requirements-colab.txt
+├── configs/
+│   ├── inference/policy.json    THE system configuration (policy, modes, windows, post-processing; frozen)
+│   └── experiments/*.json       training configs: E1, E2, R1–R4, smoke
+├── src/confidentiality_detector/   the package (layout unchanged; module map in docs/ARCHITECTURE.md)
+├── scripts/                     entry points, in pipeline order (scripts/README.md)
+│   ├── build_eval_sets.py  build_synth_round2.py  audit_dataset.py  contamination.py      data
+│   ├── train.py  make_colab_bundle.py  colab_runner.py  colab_round2.py                   training
+│   ├── predict.py  evaluate.py  evaluate_system.py                                        evaluation
+│   ├── verify_checkpoint.py  challenge_v2.py                                              freeze, benchmark
+│   ├── colab_round1.py  reproduce_original_metric.py                                      Round 1 reproduction (frozen)
+│   └── analysis/                one-off studies that produced reports/evidence (§10.2)
+├── data/                        data/README.md: source, generations, what is versioned, how to rebuild
+│   ├── dev/  challenge/          hand-written, frozen
+│   ├── splits/original/          the authoritative split
+│   ├── eval_v3/                  current evaluation suite (rebuilt; manifests versioned)
+│   ├── synth/round2/             Round 2 generated training data (rebuilt; manifest versioned)
+│   ├── eval/                     Round 1 suite (historical; manifest versioned)
+│   └── raw/  processed/          local only (git-ignored)
+├── docs/                        POLICY (scope authority), ARCHITECTURE, DATA_PIPELINE, METHODOLOGY,
+│                                ANNOTATION_GUIDELINES, CASE_FORMAT, CHALLENGE_V2_SPEC, RISKS (+ MODEL_CARD at Step 9)
+├── reports/
+│   ├── README.md                which document answers which question
+│   ├── ARTIFACTS.md             results archives and checkpoints: location, size, sha256
+│   ├── (FINAL_REPORT.md)        Step 9: the one consolidated engineering report
+│   ├── history/                 the round-by-round reports, kept as written
+│   └── evidence/                the JSON behind every reported number
+├── notebooks/colab/             the two GPU runners (Round 1, Round 2)
+├── archive/                     the original notebooks, unchanged, + README.md
+└── tests/
+```
+
+**What stays where it is, and why.**
+* **`train.py`, `predict.py`, `evaluate.py` and `reproduce_original_metric.py`:** the frozen Round 1 runner and the Round 2 runner invoke them by path.
+* **The Colab files:** the notebooks and `make_colab_bundle.py` reference them by path.
+* **`data/` folder names:** they are recorded in manifests, `run_info.json` and the bundles.
+* **`results/`, `predictions/`, `predictions_v3/`, `dist/`, `checkpoints/`:** they are git-ignored and invisible in the repository, and `run_info.json` records some of their paths (`retargeted_from`). `ARTIFACTS.md` documents them instead.
+* **`configs/inference/policy.json`:** the CLI flag `--policy` and the freeze fingerprint field use this name. `docs/ARCHITECTURE.md` will say plainly that the file holds the detector settings too.
+* **The package:** it stays flat (17 modules). Subpackages would change every import in scripts, tests and bundles for little gain.
+
+### 10.2 Moves (`git mv`, content byte-identical; checked by blob hash after the move)
+
+| From | To | Why |
+|---|---|---|
+| `notebooks/02_2scoped_data_EDA.ipynb`, `02_mbert_dataset_splitting.ipynb`, `03_mbert_tokenization_and_alignment.ipynb`, `04_mbert_finetuning.ipynb` | `archive/` (same names) | original English work, historical. At this depth, `../data/...` still resolves |
+| `notebooks/02_scoped_data_EDA.ipynb` | `archive/` (same name) | earliest exploration (Arabic SITR, old scope); labelled as such in the README |
+| `scope.md` (original Arabic regex scope) | `archive/scope_original.md` | history; a new short `scope.md` replaces it |
+| `reports/INVESTIGATION.md`, `COLAB_ROUND1_FIX.md`, `ROUND1_REPORT.md`, `ROUND2_PLAN.md`, `ROUND2_REPORT.md`, `REPOSITORY_AUDIT.md` | `reports/history/` | round-by-round record; the final report will cite them |
+| all `reports/*.json` (including the checkpoint verification and the two studies), `reports/runs_v3/` | `reports/evidence/` | the evidence, separated from the narrative. Writers' default output paths are updated |
+| `scripts/analyze_round1.py`, `analyze_round2.py`, `verify_round2.py`, `analyze_long_docs.py`, `operating_points.py`, `calibration.py`, `retarget_predictions.py`, `window_study.py`, `ipv4_gate_study.py` | `scripts/analysis/` | one-off studies, not pipeline steps. Their only edits are `ROOT = parents[2]` and output paths |
+
+All references in docs, README, tests and docstrings are updated in the same change. After the change, a search must show no stale path.
+
+### 10.3 Deletions (exact list)
+
+**Tracked files.** Removed from the working tree; they stay recoverable from `20ec277`.
+
+| Path | Content | Evidence it is unused |
+|---|---|---|
+| `mbert_ner` | 0 bytes | no references |
+| `evaluation/metrics.py` (and the folder) | 0 bytes | no imports |
+| `src/detectors/__init__.py` | 70-byte "Hello" stub from the template | not imported; the package is `src/confidentiality_detector` |
+| `src/detectors/mbert_detector.py` | 0 bytes | no imports |
+| `src/training/bio_alignment.py` | 0 bytes | no imports |
+| `.vs/` (5 files) | Visual Studio state | **untracked only** (`git rm --cached`); stays on disk; already in `.gitignore` |
+| `HybridDetector` class in `detectors/hybrid.py` (about 15 lines) | wrapper class | never used. Only `merge` is used, by the pipeline, the scripts and the tests |
+
+**Local, git-ignored files.** Deleting these is final, but each one is a verified duplicate, an empty folder, or a cache.
+
+| Path | Size | Evidence |
+|---|---|---|
+| `state/` | empty folder | — |
+| `dist/colab_bundle.zip` | 17.6 MB | sha256 `1499e7d4…`, identical to `dist/colab_bundle_round1-r2.zip` (kept) |
+| `data/processed/mbert_splits/*/cache-*.arrow` (6 files) | 57 MB | `datasets` map caches; `load_from_disk` does not need them and recreates them on demand |
+| *Optional, your call:* `data/processed/mbert_splits.zip`, `mbert_tokenized.zip` | 25 MB | copies of the folders that were uploaded for notebook 04. The data is identical; only the `state.json` fingerprints differ in the tokenised zip |
+
+### 10.4 Code consolidation (behaviour-neutral)
+
+**Done in Phase 2:**
+1. **`sha256()`:** defined again in `challenge_v2.py`, `make_colab_bundle.py` and `verify_checkpoint.py`. These use `documents.file_sha256` instead, which is the same streaming implementation.
+2. **McNemar test:** three versions, in `analyze_round1.py`, `analyze_round2.py` and `evaluate_system.py`. They become one `metrics.mcnemar_exact(only_a, only_b)`, which each caller uses.
+3. **`HybridDetector`:** removed (§10.3).
+
+**Deliberately not consolidated:**
+* **`colab_round1.py`, the Colab runners' own `_sha256`:** these are the code that produced Round 1 and Round 2.
+* **`perturb.py` vs `synth.py`:** they share names only, and merging would change sha-pinned data.
+* **`evaluate.py` vs `evaluate_system.py`:** they score different levels (model or hybrid vs the full BLOCK/ALLOW system).
+* **The analysis scripts:** each produced a report; merging them would change evidence-producing code.
+
+### 10.5 Dependencies (`pyproject.toml`, then `uv lock` and `uv export` → `requirements.txt`)
+
+| Change | Packages | Evidence |
+|---|---|---|
+| remove | `chromadb`, `faker`, `python-dotenv`, `streamlit`, `matplotlib`, `seaborn`, `en-core-web-sm` (and its `[tool.uv.sources]` entry) | never imported, in code or in the notebooks |
+| move to dependency group `baselines` | `presidio-analyzer`, `presidio-anonymizer`, `spacy`, `en-core-web-lg` | Round 1 Presidio baseline only. `predict.py --detector presidio` prints how to install them |
+| move to dependency group `notebooks` | `pandas`, `ipykernel` | the archived notebooks only |
+| add | `numpy` | imported directly by scripts; only transitive today |
+| keep | `torch`, `transformers`, `phonenumbers`, `datasets`, `scikit-learn`, `seqeval`; dev: `pytest` | imported |
+
+### 10.6 New small files
+
+* `archive/README.md`: for each notebook, its purpose, data and historical status; what was later corrected and what is still valid (§4).
+* `data/README.md`: the source and licence note, the generations, what is versioned, and the rebuild commands.
+* `scripts/README.md`: one line per script, in pipeline order.
+* `reports/README.md`: which document answers which question.
+* `reports/ARTIFACTS.md`: Round 1/2 result archives, Colab bundles and checkpoints, with location, size and sha256.
+* `scope.md`: about ten lines, pointing to `docs/POLICY.md`.
+
+### 10.7 How reproducibility is preserved
+
+* **Kept:** the hashed inputs (hand-written sets, split ids, manifests); `-text` on `data/` and `configs/`; the frozen Round 1 runner; the bundles; the result archives; every evidence JSON.
+* **Regenerated, not versioned:** derived data. It was verified to rebuild byte for byte.
+* **Recovery:** commit `20ec277` is the rollback point for the whole of Phase 2.
+
+### 10.8 Verification plan (refactoring must not change behaviour)
+
+**Before** the change, record the following:
+* the checksum of every tracked file;
+* `pytest` (142);
+* CLI JSON for a fixed set of fictional prompts;
+* `verify_checkpoint` (spans identical to the Round 2 archive);
+* the full system replay (`evaluate_system.py`) for R3 on all sets.
+
+**After** the change, every one of the following must pass, or the change is reverted and reported:
+1. A fresh `uv sync` with the new lock, then `pytest`. The test count is unchanged, apart from tests of deleted code.
+2. CLI from outside the repository, and the Python API: byte-identical JSON on the fixed prompts.
+3. `verify_checkpoint.py`: identical spans.
+4. `evaluate_system.py`: identical BLOCK/ALLOW decisions and metrics on every set.
+5. The analysis scripts that can run locally are re-run; their JSON must equal the committed evidence. This is also the test of the consolidated McNemar.
+6. `build_eval_sets.py` and `build_synth_round2.py`: byte-identical outputs.
+7. `make_colab_bundle.py` builds, and its self-check passes.
+8. Every moved file has the same blob hash, and there are no stale paths.
+9. `policy.json` and the model sha256 are unchanged.
+
+Changed predictions are never accepted silently.

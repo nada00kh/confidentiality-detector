@@ -13,7 +13,7 @@ Protected categories: `PASSWORD USERNAME EMAIL PHONENUMBER FIRSTNAME LASTNAME SS
 
 | | |
 |---|---|
-| Selected candidate (round 2) | **R3 (`r2_e3b_positive`) + rules v3, `strict` mode**, chosen by the selection rule fixed before Round 2 ran. Hand-written `dev_v1`, full pipeline: False ALLOW 0/56 (95% CI 0–6.4%), False BLOCK 27/75; all false blocks are on deliberately constructed look-alike prompts (0/10 clean prompts blocked). Not yet frozen: a CPU-only inference study (window joining, IPv4 validation) comes first (`reports/ROUND2_REPORT.md`). |
+| Selected candidate (round 2) | **R3 (`r2_e3b_positive`) + rules v3, `strict` mode**, chosen by the selection rule fixed before Round 2 ran. Hand-written `dev_v1`, full pipeline: False ALLOW 0/56 (95% CI 0–6.4%), False BLOCK 27/75; all false blocks are on deliberately constructed look-alike prompts (0/10 clean prompts blocked). The local checkpoint is verified against its Round 2 predictions. The CPU inference studies kept the Round 2 window setting and left the IPv4 validation gate off (`docs/METHODOLOGY.md` §7–8). Not yet frozen: repository consolidation comes first. |
 | Why the original 0.9925 F1 was misleading | out-of-scope entities were invisible to the metric; the corrected F1 of the same model is 0.643 (`reports/ROUND1_REPORT.md`) |
 | Independent evaluation | `challenge_v2`, written by a separate author, is evaluated once after the system is frozen (`docs/CHALLENGE_V2_SPEC.md`) |
 | Real-world validation | **none yet**; all results are on synthetic or hand-written data (`docs/RISKS.md`) |

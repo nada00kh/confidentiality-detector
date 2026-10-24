@@ -153,6 +153,23 @@ Two measured effects on `test_long` (`reports/ROUND2_REPORT.md` §3), for errors
 * **Configuration.** The chosen setting is written to the `inference` section of `configs/inference/policy.json`, which `ConfidentialityDetector.load` uses and `challenge_v2.py freeze` fingerprints.
 * `test_long` is reported only. The decision is made, and the system frozen, before `challenge_v2` is evaluated.
 
+**Outcome (2026-10-24; `reports/window_study_r2_e3b_positive.json`).**
+
+**Verification.** The local R3 checkpoint reproduced its archived predictions on `dev_v1` and `test_long`. Spans were identical, and token probabilities differed by at most 1.5e-5.
+
+**Decision: all three candidates were rejected under criterion 1, and the baseline 512 / 64 / first is retained.** On `validation_long` the baseline is already at the ceiling for leakage: False ALLOW 0/49, every entity caught. Only 2 False BLOCKs out of 30 remained to improve, and no candidate changed a single BLOCK/ALLOW decision there.
+
+| Set | Measure | 512/64/first | 512/64/centered | 256/64/centered | 128/32/centered |
+|---|---|---|---|---|---|
+| `validation_long` | FA / FB | 0 / 2 | 0 / 2 | 0 / 3 | 0 / 2 |
+| `validation_long` | entity F1 | 0.956 | 0.962 | 0.944 | 0.956 |
+| `dev_v1` | FA / FB | 0 / 27 | 0 / 27 | 0 / 27 | 0 / 27 |
+| `validation` | entity F1 | 0.986 | 0.986 | 0.986 | 0.986 |
+| `test_long` (report only) | FA / FB | 2 / 5 | 2 / 4 | 1 / 3 | 1 / 3 |
+| `test_long` (report only) | entity F1 | 0.865 | 0.914 | 0.901 | 0.915 |
+
+**What the result does not show.** The report-only `test_long` favours centered and shorter windows. It was not used for the decision, because that would make it a tuning set. Centered stitching improves entity precision on long inputs, but that did not translate into different decisions on the selection set. The selection set is small (79 documents) and has little headroom, so the study had little power to show a decision-level difference. This is recorded as a limitation and as future work (a larger long-document validation set), not as grounds to revise the rule after the fact.
+
 ## 8. IPv4 validation gate (fixed 2026-10-24, before the gate's formal evaluation)
 
 **Status of prior evidence.** An exploratory check during the engineering review (2026-10-24) applied a stricter full-match variant of this gate to stored R3 predictions and saw `dev_v1` False BLOCK fall by 2 with no new leaks. That was exploratory and used `dev_v1`; it is **not** independent confirmation. `challenge_v2` remains the independent check.
@@ -175,3 +192,30 @@ Two measured effects on `test_long` (`reports/ROUND2_REPORT.md` §3), for errors
 If any of 1–3 fails, or 4 shows no benefit, the gate stays off. A regression is recorded in the study report and not fixed by redesigning the gate against the same sets.
 
 **Known residual risk.** A model span that mislabels another target as IPV4 (for example a dotted phone number) would be dropped. Criterion 1 measures this on every set, and the rules independently detect phone numbers.
+
+**Outcome (2026-10-24; `reports/ipv4_gate_study.json`). The gate is NOT switched on; `ipv4_requires_valid_address` stays `false`.**
+
+The study used the final windows (512 / 64 / first, §7). `validation_long` was predicted locally on the verified checkpoint; every other set came from the stored Round 2 predictions.
+
+**Criteria.** All of them are met.
+1. There is no new False ALLOW on any of the 11 sets, in either mode.
+2. No gold IPV4 is lost.
+3. The integration tests pass.
+4. Strict False BLOCK falls on `synth_A_heldout`, from 664 to 606.
+
+**Supplementary entity-level analysis.** Every removed finding overlapped no gold entity. Recall and entities caught are unchanged on every set; precision rises (`dev_v1` 0.559 to 0.576). Only software version strings were affected. No BLOCK/ALLOW decision changed on any set other than `synth_A_heldout`.
+
+**Why it stays off.** The criteria are necessary, not sufficient ("switched on only if"). No evaluation set contains an IPv4 address written in a non-canonical form, so criteria 1 and 2 could not test that case. A probe with fictional RFC 5737 addresses (15 cases, recorded in the study report) shows the full pipeline turning BLOCK into ALLOW in both modes for:
+* an address written with spaces (`192 . 0 . 2 . 17`);
+* a mistyped address (an octet above 255);
+* a three-octet prefix.
+
+In each case the model had flagged the text as IPV4, the rules did not, and the gate discarded it. A formatting check would then let a possibly sensitive value through. That is the risk for which the IBAN, card and SSN gates were rejected, and False ALLOW is the primary concern. The benefit seen is confined to synthetic version strings.
+
+The gate implementation, its tests and the study remain for the record. Per this section, the gate is not redesigned against the same evidence.
+
+**Limitation found by the probe (independent of the gate).**
+* Defanged addresses (`[.]`, `(dot)`) and comma-separated octets are missed by both the model and the rules.
+* Leading-zero and hostname-encoded addresses are blocked, but under the wrong label: PHONENUMBER and SSN.
+
+These are recorded in `docs/RISKS.md` and the final limitations.

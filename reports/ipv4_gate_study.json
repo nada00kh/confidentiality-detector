@@ -1,0 +1,902 @@
+{
+  "inference": {
+    "max_length": 512,
+    "overlap": 64,
+    "stitching": "first"
+  },
+  "sets": {
+    "dev_v1": {
+      "n_docs": 135,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 27,
+        "FB_on": 27,
+        "n_block": 56,
+        "n_allow": 75,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {
+          "VERSION": 3,
+          "none": 1
+        },
+        "removed_findings_by_overlapping_gold_label": {
+          "none": 4
+        },
+        "entity_off": {
+          "precision": 0.5588235294117647,
+          "recall": 0.8837209302325582,
+          "f1": 0.6846846846846847,
+          "caught_any_type": 0.9767441860465116
+        },
+        "entity_on": {
+          "precision": 0.5757575757575758,
+          "recall": 0.8837209302325582,
+          "f1": 0.6972477064220183,
+          "caught_any_type": 0.9767441860465116
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 32,
+        "FB_on": 32,
+        "n_block": 56,
+        "n_allow": 75,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {
+          "VERSION": 3,
+          "none": 2
+        },
+        "removed_findings_by_overlapping_gold_label": {
+          "none": 5
+        },
+        "entity_off": {
+          "precision": 0.527027027027027,
+          "recall": 0.9069767441860465,
+          "f1": 0.6666666666666665,
+          "caught_any_type": 0.9883720930232558
+        },
+        "entity_on": {
+          "precision": 0.5416666666666666,
+          "recall": 0.9069767441860465,
+          "f1": 0.6782608695652174,
+          "caught_any_type": 0.9883720930232558
+        }
+      }
+    },
+    "validation_long": {
+      "n_docs": 79,
+      "source": "predicted locally",
+      "strict": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 2,
+        "FB_on": 2,
+        "n_block": 49,
+        "n_allow": 30,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9156626506024096,
+          "recall": 1.0,
+          "f1": 0.9559748427672956,
+          "caught_any_type": 1.0
+        },
+        "entity_on": {
+          "precision": 0.9156626506024096,
+          "recall": 1.0,
+          "f1": 0.9559748427672956,
+          "caught_any_type": 1.0
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 4,
+        "FB_on": 4,
+        "n_block": 49,
+        "n_allow": 30,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8426966292134831,
+          "recall": 0.9868421052631579,
+          "f1": 0.9090909090909091,
+          "caught_any_type": 1.0
+        },
+        "entity_on": {
+          "precision": 0.8426966292134831,
+          "recall": 0.9868421052631579,
+          "f1": 0.9090909090909091,
+          "caught_any_type": 1.0
+        }
+      }
+    },
+    "validation": {
+      "n_docs": 4350,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 4,
+        "FA_on": 4,
+        "FB_off": 9,
+        "FB_on": 9,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.984483120150975,
+          "recall": 0.9880050505050505,
+          "f1": 0.9862409410776178,
+          "caught_any_type": 0.9983164983164983
+        },
+        "entity_on": {
+          "precision": 0.984483120150975,
+          "recall": 0.9880050505050505,
+          "f1": 0.9862409410776178,
+          "caught_any_type": 0.9983164983164983
+        }
+      },
+      "maximum": {
+        "FA_off": 1,
+        "FA_on": 1,
+        "FB_off": 13,
+        "FB_on": 13,
+        "n_block": 3017,
+        "n_allow": 1154,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9795790789747865,
+          "recall": 0.9892676767676768,
+          "f1": 0.9843995393152549,
+          "caught_any_type": 0.9995791245791246
+        },
+        "entity_on": {
+          "precision": 0.9795790789747865,
+          "recall": 0.9892676767676768,
+          "f1": 0.9843995393152549,
+          "caught_any_type": 0.9995791245791246
+        }
+      }
+    },
+    "test": {
+      "n_docs": 4349,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 3,
+        "FA_on": 3,
+        "FB_off": 11,
+        "FB_on": 11,
+        "n_block": 3055,
+        "n_allow": 1068,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9815638906547998,
+          "recall": 0.9865814696485623,
+          "f1": 0.9840662842574889,
+          "caught_any_type": 0.9963791267305644
+        },
+        "entity_on": {
+          "precision": 0.9815638906547998,
+          "recall": 0.9865814696485623,
+          "f1": 0.9840662842574889,
+          "caught_any_type": 0.9963791267305644
+        }
+      },
+      "maximum": {
+        "FA_off": 2,
+        "FA_on": 2,
+        "FB_off": 17,
+        "FB_on": 17,
+        "n_block": 3055,
+        "n_allow": 1068,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9774641954507161,
+          "recall": 0.9884984025559106,
+          "f1": 0.9829503335804299,
+          "caught_any_type": 0.9985090521831735
+        },
+        "entity_on": {
+          "precision": 0.9774641954507161,
+          "recall": 0.9884984025559106,
+          "f1": 0.9829503335804299,
+          "caught_any_type": 0.9985090521831735
+        }
+      }
+    },
+    "test_format_shift": {
+      "n_docs": 3055,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 45,
+        "FA_on": 45,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 3055,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8053418803418804,
+          "recall": 0.8027689030883919,
+          "f1": 0.8040533333333333,
+          "caught_any_type": 0.974653887113951
+        },
+        "entity_on": {
+          "precision": 0.8053418803418804,
+          "recall": 0.8027689030883919,
+          "f1": 0.8040533333333333,
+          "caught_any_type": 0.974653887113951
+        }
+      },
+      "maximum": {
+        "FA_off": 20,
+        "FA_on": 20,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 3055,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8108960875052588,
+          "recall": 0.8210862619808307,
+          "f1": 0.8159593607789184,
+          "caught_any_type": 0.9876464323748669
+        },
+        "entity_on": {
+          "precision": 0.8108960875052588,
+          "recall": 0.8210862619808307,
+          "f1": 0.8159593607789184,
+          "caught_any_type": 0.9876464323748669
+        }
+      }
+    },
+    "test_long": {
+      "n_docs": 73,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 2,
+        "FA_on": 2,
+        "FB_off": 5,
+        "FB_on": 5,
+        "n_block": 45,
+        "n_allow": 28,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.7804878048780488,
+          "recall": 0.9696969696969697,
+          "f1": 0.8648648648648648,
+          "caught_any_type": 0.9696969696969697
+        },
+        "entity_on": {
+          "precision": 0.7804878048780488,
+          "recall": 0.9696969696969697,
+          "f1": 0.8648648648648648,
+          "caught_any_type": 0.9696969696969697
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 6,
+        "FB_on": 6,
+        "n_block": 45,
+        "n_allow": 28,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.7951807228915663,
+          "recall": 1.0,
+          "f1": 0.8859060402684563,
+          "caught_any_type": 1.0
+        },
+        "entity_on": {
+          "precision": 0.7951807228915663,
+          "recall": 1.0,
+          "f1": 0.8859060402684563,
+          "caught_any_type": 1.0
+        }
+      }
+    },
+    "test_unseen_value": {
+      "n_docs": 1931,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 1931,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9915290131300296,
+          "recall": 0.9970187393526405,
+          "f1": 0.9942662985771926,
+          "caught_any_type": 0.9991482112436116
+        },
+        "entity_on": {
+          "precision": 0.9915290131300296,
+          "recall": 0.9970187393526405,
+          "f1": 0.9942662985771926,
+          "caught_any_type": 0.9991482112436116
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 1931,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9890202702702703,
+          "recall": 0.9974446337308348,
+          "f1": 0.9932145886344359,
+          "caught_any_type": 0.9995741056218058
+        },
+        "entity_on": {
+          "precision": 0.9890202702702703,
+          "recall": 0.9974446337308348,
+          "f1": 0.9932145886344359,
+          "caught_any_type": 0.9995741056218058
+        }
+      }
+    },
+    "test_novel_template": {
+      "n_docs": 869,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 1,
+        "FA_on": 1,
+        "FB_off": 2,
+        "FB_on": 2,
+        "n_block": 542,
+        "n_allow": 277,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9753390875462392,
+          "recall": 0.9801734820322181,
+          "f1": 0.9777503090234857,
+          "caught_any_type": 0.9950433705080545
+        },
+        "entity_on": {
+          "precision": 0.9753390875462392,
+          "recall": 0.9801734820322181,
+          "f1": 0.9777503090234857,
+          "caught_any_type": 0.9950433705080545
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 2,
+        "FB_on": 2,
+        "n_block": 542,
+        "n_allow": 277,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.9742014742014742,
+          "recall": 0.9826517967781908,
+          "f1": 0.9784083898827883,
+          "caught_any_type": 0.9975216852540273
+        },
+        "entity_on": {
+          "precision": 0.9742014742014742,
+          "recall": 0.9826517967781908,
+          "f1": 0.9784083898827883,
+          "caught_any_type": 0.9975216852540273
+        }
+      }
+    },
+    "synth_A_heldout": {
+      "n_docs": 960,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 664,
+        "FB_on": 606,
+        "n_block": 0,
+        "n_allow": 960,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {
+          "VERSION": 137
+        },
+        "removed_findings_by_overlapping_gold_label": {
+          "none": 137
+        },
+        "entity_off": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "caught_any_type": null
+        },
+        "entity_on": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "caught_any_type": null
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 733,
+        "FB_on": 675,
+        "n_block": 0,
+        "n_allow": 960,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {
+          "VERSION": 144
+        },
+        "removed_findings_by_overlapping_gold_label": {
+          "none": 144
+        },
+        "entity_off": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "caught_any_type": null
+        },
+        "entity_on": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "caught_any_type": null
+        }
+      }
+    },
+    "synth_B_heldout": {
+      "n_docs": 776,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 776,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8392741412832145,
+          "recall": 0.8761840324763194,
+          "f1": 0.8573320092684542,
+          "caught_any_type": 0.9566982408660352
+        },
+        "entity_on": {
+          "precision": 0.8392741412832145,
+          "recall": 0.8761840324763194,
+          "f1": 0.8573320092684542,
+          "caught_any_type": 0.9566982408660352
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 0,
+        "FB_on": 0,
+        "n_block": 776,
+        "n_allow": 0,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8216520650813517,
+          "recall": 0.8883626522327469,
+          "f1": 0.85370611183355,
+          "caught_any_type": 0.9722598105548038
+        },
+        "entity_on": {
+          "precision": 0.8216520650813517,
+          "recall": 0.8883626522327469,
+          "f1": 0.85370611183355,
+          "caught_any_type": 0.9722598105548038
+        }
+      }
+    },
+    "challenge_v1_final": {
+      "n_docs": 154,
+      "source": "stored (r2_e3b_positive)",
+      "strict": {
+        "FA_off": 2,
+        "FA_on": 2,
+        "FB_off": 7,
+        "FB_on": 7,
+        "n_block": 95,
+        "n_allow": 57,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.8028169014084507,
+          "recall": 0.8592964824120602,
+          "f1": 0.8300970873786407,
+          "caught_any_type": 0.949748743718593
+        },
+        "entity_on": {
+          "precision": 0.8028169014084507,
+          "recall": 0.8592964824120602,
+          "f1": 0.8300970873786407,
+          "caught_any_type": 0.949748743718593
+        }
+      },
+      "maximum": {
+        "FA_off": 0,
+        "FA_on": 0,
+        "FB_off": 11,
+        "FB_on": 11,
+        "n_block": 95,
+        "n_allow": 57,
+        "new_false_allow_ids": [],
+        "gold_ipv4_no_longer_caught": 0,
+        "removed_findings_by_lookalike_type": {},
+        "removed_findings_by_overlapping_gold_label": {},
+        "entity_off": {
+          "precision": 0.7543103448275862,
+          "recall": 0.8793969849246231,
+          "f1": 0.8120649651972158,
+          "caught_any_type": 0.9798994974874372
+        },
+        "entity_on": {
+          "precision": 0.7543103448275862,
+          "recall": 0.8793969849246231,
+          "f1": 0.8120649651972158,
+          "caught_any_type": 0.9798994974874372
+        }
+      }
+    }
+  },
+  "format_probe": {
+    "strict": [
+      {
+        "case": "canonical",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules",
+          "USERNAME/model"
+        ],
+        "findings_on": [
+          "IPV4/model+rules",
+          "USERNAME/model"
+        ]
+      },
+      {
+        "case": "with port",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "CIDR",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/rules"
+        ],
+        "findings_on": [
+          "IPV4/rules"
+        ]
+      },
+      {
+        "case": "trailing period",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "prefixed word",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "defanged [.]",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "defanged (dot)",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "leading zeros",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "PHONENUMBER/model"
+        ],
+        "findings_on": [
+          "PHONENUMBER/model"
+        ]
+      },
+      {
+        "case": "spaced",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "commas",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "mistyped octet > 255",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "three octets",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "hostname-encoded",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "SSN/model"
+        ],
+        "findings_on": [
+          "SSN/model"
+        ]
+      },
+      {
+        "case": "version string",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "bare version quad",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      }
+    ],
+    "maximum": [
+      {
+        "case": "canonical",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules",
+          "USERNAME/model"
+        ],
+        "findings_on": [
+          "IPV4/model+rules",
+          "USERNAME/model"
+        ]
+      },
+      {
+        "case": "with port",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "CIDR",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/rules"
+        ],
+        "findings_on": [
+          "IPV4/rules"
+        ]
+      },
+      {
+        "case": "trailing period",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "prefixed word",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      },
+      {
+        "case": "defanged [.]",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "defanged (dot)",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "leading zeros",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "PHONENUMBER/model"
+        ],
+        "findings_on": [
+          "PHONENUMBER/model"
+        ]
+      },
+      {
+        "case": "spaced",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "commas",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "mistyped octet > 255",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "three octets",
+        "off": "BLOCK",
+        "on": "ALLOW",
+        "findings_off": [
+          "IPV4/model"
+        ],
+        "findings_on": []
+      },
+      {
+        "case": "hostname-encoded",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "SSN/model"
+        ],
+        "findings_on": [
+          "SSN/model"
+        ]
+      },
+      {
+        "case": "version string",
+        "off": "ALLOW",
+        "on": "ALLOW",
+        "findings_off": [],
+        "findings_on": []
+      },
+      {
+        "case": "bare version quad",
+        "off": "BLOCK",
+        "on": "BLOCK",
+        "findings_off": [
+          "IPV4/model+rules"
+        ],
+        "findings_on": [
+          "IPV4/model+rules"
+        ]
+      }
+    ]
+  },
+  "criteria": {
+    "1_no_new_false_allow": true,
+    "2_ipv4_detections_preserved": true,
+    "4_false_block_benefit": true,
+    "all_sets_evaluated": true
+  },
+  "decision": "ELIGIBLE (criteria met)"
+}
