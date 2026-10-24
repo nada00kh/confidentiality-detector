@@ -75,7 +75,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 
 ## 6. Before considering real deployment
 
-1. ~~Run round 2 and apply the pre-registered selection rule.~~ Done: R3 + rules v3, `strict` recommended (`reports/history/ROUND2_REPORT.md`). The R3 checkpoint is verified locally against every archived prediction, and the CPU inference studies are done (windows unchanged, IPv4 gate rejected). Remaining before the hidden benchmark: freeze the system (`scripts/challenge_v2.py freeze --verify-pred-dir …`).
+1. ~~Run round 2 and apply the pre-registered selection rule.~~ Done: R3 + rules v3, `strict` recommended (`reports/history/ROUND2_REPORT.md`). The R3 checkpoint is verified locally against every archived prediction, and the CPU inference studies are done (windows unchanged, IPv4 gate rejected). The system was frozen on 2026-10-24 (`configs/inference/frozen_system.json`).
 2. Evaluate once on the independent `challenge_v2`, and report it as is.
 3. **Evaluate on a governed sample of real prompts**, collected with consent and a privacy review, annotated by two people under `docs/ANNOTATION_GUIDELINES.md`, with inter-annotator agreement measured.
 4. Shadow deployment: log decisions only (no text) without blocking, and measure the block rate and user-reported false blocks.

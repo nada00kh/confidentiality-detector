@@ -1,0 +1,88 @@
+{
+  "model_dir": "r2_e3b_positive",
+  "model_sha256": {
+    "model.safetensors": "dc0fdca52f9e144b4017cb8eb37d8cef0d366b5b9619c519a782102ef32850c6"
+  },
+  "checkpoint_files_sha256": {
+    "config.json": "f5132da68b978b176383f7ee25d86215727701a9a05aeb534ea9746d6d29a13e",
+    "history.json": "c0d0760b591b7a32a883406c9c815c36dc6d009b3301aa9a5ff79baab7428f91",
+    "tokenizer.json": "bf1b59b7b11c95f194f51708d918eea378e09d05f84c0e1656dc5180e8117088",
+    "tokenizer_config.json": "9cd988573a9588a6085cd353eeefa09b803dba75b03f58d0c1d302aad3078193",
+    "training_summary.json": "072fd554519ad1041309027e29ba74781dcf7a94b188aad26f1d3e8e0036c704"
+  },
+  "policy_sha256": "332b5c65167370b91d987642922f58e2af7bbc204691f04671743e43d62b94c2",
+  "rules_version": "v3",
+  "code_sha256": {
+    "__init__.py": "f019395a3d61e7a21a29364f3cd093dd11b56af290f219c91ebd6d63407bfde5",
+    "__main__.py": "c4daab045b0506636d91088a9d7e26a3402e6f4a8efe32ec0bb51dc7f98fccd9",
+    "alignment.py": "67d8a75608d4bb6180902b9eb8362d52bc9d3cae79547c849936676fa36e5c26",
+    "decoding.py": "fc1eb85c8820e31eaf772f7b5b571aa6420fad3068366ef5828d064609464342",
+    "documents.py": "437d3c85fddfe16fc277bd0e55bd4a47c85140f8764612df69df0bdefd05cdfd",
+    "labels.py": "35efb4ebe0d67c614d729cb19551d54e95d592bbcbacd2168be2651c82f64f08",
+    "pipeline.py": "5d18a3cd47d6b81e79d2bc3e4941a688d9f4d57007082b8263d73cc411e50908",
+    "policy.py": "65675a3a34ad581f79c4188fa40926bccab5443ae2ae37d0ad3f6ec99716609b",
+    "detectors/__init__.py": "5b1bef12baa4488101a668276b46efd4a8281b4aec1a498c65bd0cf476d09a4f",
+    "detectors/hybrid.py": "68e6fbb8f59ab8262011c9670ed945aca79b98904e4684dd726c925eff5293f1",
+    "detectors/rules.py": "b96d35c4f148dc3d9407f931cf89f7d70d07d2f144d121254cda1abcb44c49b0",
+    "detectors/transformer.py": "0f8ab0ed54df44e161243c6cbaab67c50c1266bd869a970180870df62af331e0"
+  },
+  "max_length": 512,
+  "overlap": 64,
+  "stitching": "first",
+  "runtime": {
+    "python": "3.13.0",
+    "torch": "2.14.1",
+    "transformers": "5.19.0",
+    "tokenizers": "0.23.2",
+    "safetensors": "0.8.0",
+    "numpy": "2.4.6",
+    "phonenumbers": "9.0.40"
+  },
+  "git": {
+    "commit": "490710769d91b51e0699ec554ac6cfcca9bf885e",
+    "uncommitted_changes": false
+  },
+  "verified_against": {
+    "pred_dir": "r2_e3b_positive",
+    "sets": {
+      "dev_v1": {
+        "n_docs": 135,
+        "documents_differing": 0,
+        "max_abs_diff_p_not_O": 9.43e-06
+      },
+      "test_long": {
+        "n_docs": 73,
+        "documents_differing": 0,
+        "max_abs_diff_p_not_O": 1.494e-05
+      }
+    }
+  },
+  "behaviour": {
+    "matches": "final_system_metrics_r3.json (run R3, sha256 d70231de7eb0bc60)",
+    "dev_v1/strict": {
+      "n_docs": 135,
+      "FA": 0,
+      "FB": 27,
+      "decisions_sha256": "a5d367fa2f40af198bcd384156e811b10d2d7d9d9d7dc473a89bdcbfa8fbf697"
+    },
+    "dev_v1/maximum": {
+      "n_docs": 135,
+      "FA": 0,
+      "FB": 32,
+      "decisions_sha256": "1cccb9bb2660f2680b43c11fc8342221dc92b99f3a2d1711c7d54f39ef450675"
+    },
+    "test_long/strict": {
+      "n_docs": 73,
+      "FA": 2,
+      "FB": 5,
+      "decisions_sha256": "3d5ddd4c71885a99fa3a71c17f800e819f087f4d3e030752c2663f765e1a91d5"
+    },
+    "test_long/maximum": {
+      "n_docs": 73,
+      "FA": 0,
+      "FB": 6,
+      "decisions_sha256": "c06c3d359c4acb36d18139a1909318b9225acb33f4a41c8f3ae6e3bab2f64dff"
+    }
+  },
+  "frozen_at": "2026-10-24 20:43:20"
+}

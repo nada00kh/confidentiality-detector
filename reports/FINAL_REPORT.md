@@ -12,6 +12,7 @@
 | Inference windows | 512 tokens, 64 overlap, `first` stitching (kept by the window study, `docs/METHODOLOGY.md` §7) |
 | Post-processing | none. The IPv4 validation gate was rejected and its code removed (§8). |
 | Policy | `configs/inference/policy.json`: 13 labels, fail closed on errors and inputs over 100,000 characters, explanations without values |
+| Frozen | 2026-10-24, `configs/inference/frozen_system.json`: sha256 of every checkpoint file, the policy and the 12 inference-code files (rules included), the windows, the runtime versions, code commit `4907107`. Freezing re-verified the checkpoint and the live decisions in both modes against this report's evidence. |
 
 **Checkpoint identity.** Re-run locally on CPU, the checkpoint reproduces **all 18,425 archived Round 2 predictions** on 13 evaluation sets: identical spans, token probabilities within 2.2e-5 (`reports/evidence/checkpoint_verification_r2_e3b_positive.json`).
 
@@ -142,7 +143,7 @@ See `docs/DATA_PIPELINE.md` §0. In short:
 
 ## 6. To be completed after the freeze (Step 9)
 
-* the frozen-system fingerprint and the single `challenge_v2` evaluation;
+* the single `challenge_v2` evaluation of the frozen system;
 * the development history: original notebooks, the misleading 0.9925, corrected labelling and evaluation, Rounds 1 and 2, selection, the long-document and inference studies;
 * limitations and future work (currently in `docs/RISKS.md`);
 * the model card and the demonstration.
