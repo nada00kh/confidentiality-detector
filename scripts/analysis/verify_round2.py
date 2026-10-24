@@ -1,6 +1,6 @@
 """Integrity checks for an extracted round-2 results archive, before any analysis.
 
-  python scripts/verify_round2.py --results results/round2   ->  reports/round2_integrity.json
+  python scripts/analysis/verify_round2.py --results results/round2   ->  reports/evidence/round2_integrity.json
 
 Checks, per run and evaluation set:
   * archive manifest: every file present with the recorded sha256;
@@ -25,7 +25,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.decoding import decode  # noqa: E402
@@ -189,7 +189,7 @@ def main() -> None:
         if r1.exists():
             out["r0_equals_round1_e2"][s] = same_predictions(args.results / "predictions" / RUNS["R0"] / f"{s}.jsonl", r1)
 
-    write_json(ROOT / "reports/round2_integrity.json", out)
+    write_json(ROOT / "reports/evidence/round2_integrity.json", out)
     a = out["archive"]
     print(f"archive: {a['n_files']} files, bad {len(a['bad_files'])}, complete={a['complete']}, smoke={a['smoke']}, "
           f"stages={a['stages']}; bundle {a['bundle_version']} ({a['bundle_files']} files), "

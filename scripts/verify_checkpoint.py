@@ -3,7 +3,7 @@
   python scripts/verify_checkpoint.py --model-dir checkpoints/r2_e3b_positive \
       --pred-dir results/round2/predictions/r2_e3b_positive \
       [--meta-dir results/round2/checkpoint_meta/r2_e3b_positive] [--sets dev_v1 test_long]
-      ->  reports/checkpoint_verification_<model>.json
+      ->  reports/evidence/checkpoint_verification_<model>.json
 
 Read-only and CPU-friendly. It never freezes anything (that is `challenge_v2.py freeze`). Checks:
   * the folder holds weights, config and tokenizer, and loads through the production loader
@@ -18,7 +18,6 @@ hashes only.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from pathlib import Path
@@ -27,19 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.decoding import decode  # noqa: E402
-from confidentiality_detector.documents import load_documents, read_jsonl  # noqa: E402
+from confidentiality_detector.documents import file_sha256, load_documents, read_jsonl  # noqa: E402
 from confidentiality_detector.runio import check_provenance, write_json  # noqa: E402
 
 EVALUATED_WINDOWS = {"max_length": 512, "overlap": 64, "stitching": "first"}
 PROB_TOLERANCE = 1e-3  # CPU vs GPU float32 differences are ~1e-6; anything near this would be a different model
-
-
-def sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as fh:
-        for block in iter(lambda: fh.read(1 << 20), b""):
-            h.update(block)
-    return h.hexdigest()
 
 
 def verify(model_dir: Path, pred_dir: Path, sets: list[str], eval_dir: Path, meta_dir: Path | None = None,
@@ -50,7 +41,7 @@ def verify(model_dir: Path, pred_dir: Path, sets: list[str], eval_dir: Path, met
     weights = sorted(model_dir.glob("*.safetensors"))
     report: dict = {"model_dir": model_dir.name, "pred_dir": pred_dir.name,
                     "files": sorted(p.name for p in model_dir.iterdir() if p.is_file()),
-                    "weights": {p.name: {"bytes": p.stat().st_size, "sha256": sha256(p)} for p in weights},
+                    "weights": {p.name: {"bytes": p.stat().st_size, "sha256": file_sha256(p)} for p in weights},
                     "windows": EVALUATED_WINDOWS, "metadata": {}, "sets": {}, "problems": []}
     if not weights:
         report["problems"].append("no .safetensors weights")
@@ -104,7 +95,7 @@ def main() -> None:
         raise SystemExit(f"checkpoint folder not found: {args.model_dir}")
     report = verify(args.model_dir, args.pred_dir, args.sets, args.eval_dir, args.meta_dir, args.device)
     report["verified"] = not report["problems"]
-    write_json(ROOT / f"reports/checkpoint_verification_{args.model_dir.name}.json", report)
+    write_json(ROOT / f"reports/evidence/checkpoint_verification_{args.model_dir.name}.json", report)
     for name, w in report["weights"].items():
         print(f"{name}: {w['bytes']:,} bytes, sha256 {w['sha256'][:16]}...")
     for name, status in report["metadata"].items():

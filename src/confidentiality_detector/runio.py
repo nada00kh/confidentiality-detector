@@ -33,7 +33,7 @@ def check_provenance(pred_dir: Path, set_name: str, eval_path: Path) -> None:
 
     predict.py records the sha256 of every evaluation file in <pred_dir>/run_info.json. Reusing
     predictions on another version of a set is only allowed through
-    scripts/retarget_predictions.py, which verifies that every document text is identical."""
+    scripts/analysis/retarget_predictions.py, which verifies that every document text is identical."""
     info_path = Path(pred_dir) / "run_info.json"
     if not info_path.exists():
         raise ProvenanceError(f"{pred_dir}: no run_info.json, cannot verify which evaluation file was predicted")
@@ -43,7 +43,7 @@ def check_provenance(pred_dir: Path, set_name: str, eval_path: Path) -> None:
         raise ProvenanceError(
             f"{pred_dir.name}/{set_name}: predictions were made on eval sha256 "
             f"{(record or {}).get('eval_sha256', 'unknown')[:12]}, but {eval_path} is {actual[:12]}. "
-            "Re-run prediction, or use scripts/retarget_predictions.py if the texts are identical.")
+            "Re-run prediction, or use scripts/analysis/retarget_predictions.py if the texts are identical.")
 
 
 def save_predictions(path: Path, doc_ids, spans_per_doc, tokens_per_doc=None) -> None:

@@ -1,7 +1,7 @@
 """Round-1 analysis: significance of document-level differences, a validation-chosen operating
 point, and challenge-set failure listing. Reads stored predictions only (no model needed).
 
-  python scripts/analyze_round1.py  ->  reports/round1_analysis.json
+  python scripts/analysis/analyze_round1.py  ->  reports/evidence/round1_analysis.json
 
 Operating-point rule (fixed before looking at any test result): on VALIDATION only, choose the
 smallest token threshold t in GRID whose false-block rate is at most 1 percentage point above
@@ -12,17 +12,16 @@ flags more tokens (fewer false ALLOWs), and the budget caps the extra false BLOC
 from __future__ import annotations
 
 import json
-import math
 import random
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.detectors.hybrid import merge  # noqa: E402
 from confidentiality_detector.documents import load_documents  # noqa: E402
-from confidentiality_detector.metrics import evaluate, mask_value  # noqa: E402
+from confidentiality_detector.metrics import evaluate, mask_value, mcnemar_exact as mcnemar_p  # noqa: E402
 from confidentiality_detector.runio import load_predictions  # noqa: E402
 
 RESULTS = ROOT / "results/round1/predictions"
@@ -52,9 +51,7 @@ def mcnemar_exact(a: dict, b: dict, ids) -> dict:
     """Exact two-sided McNemar test on paired correctness."""
     only_a = sum(a[i] and not b[i] for i in ids)
     only_b = sum(b[i] and not a[i] for i in ids)
-    n = only_a + only_b
-    p = min(1.0, 2 * sum(math.comb(n, k) for k in range(0, min(only_a, only_b) + 1)) / 2 ** n) if n else 1.0
-    return {"only_first_correct": only_a, "only_second_correct": only_b, "p_value": p}
+    return {"only_first_correct": only_a, "only_second_correct": only_b, "p_value": mcnemar_p(only_a, only_b)}
 
 
 def bootstrap_rates(docs, p, n_boot=2000, seed=0) -> dict:
@@ -78,6 +75,7 @@ def summary(docs, p) -> dict:
 
 
 def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")  # the summary prints non-ASCII symbols; Windows consoles default to cp1252
     docs = {s: load_documents(ROOT / f"data/eval/{s}.jsonl") for s in SETS}
     out: dict = {}
 
@@ -131,7 +129,7 @@ def main() -> None:
         fails[system] = rows
     out["challenge_failures"] = fails
 
-    path = ROOT / "reports/round1_analysis.json"
+    path = ROOT / "reports/evidence/round1_analysis.json"
     path.write_text(json.dumps(out, indent=2, default=str), encoding="utf-8")
     print("wrote", path)
 

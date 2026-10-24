@@ -1,6 +1,6 @@
 """Reuse stored predictions on another version of an evaluation set, only where texts are identical.
 
-  python scripts/retarget_predictions.py --pred e2_mbert_v2_fmtA --pred-root results/round1/predictions \
+  python scripts/analysis/retarget_predictions.py --pred e2_mbert_v2_fmtA --pred-root results/round1/predictions \
       --from-eval-dir data/eval --to-eval-dir data/eval_v3 --name e2_round1_on_v3 --out-root predictions_v3 \
       --sets test challenge_v1 challenge_v1:challenge_v1_policy
 
@@ -16,7 +16,7 @@ import shutil
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.documents import file_sha256, load_documents  # noqa: E402

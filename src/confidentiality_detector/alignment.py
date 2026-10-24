@@ -1,7 +1,7 @@
 """Character-span -> subword BIO alignment and sliding windows.
 
 This is the single implementation shared by training-feature construction and inference.
-The alignment rules reproduce notebooks/03_mbert_tokenization_and_alignment.ipynb
+The alignment rules reproduce archive/03_mbert_tokenization_and_alignment.ipynb
 (build_bio2_labels / make_windows); tests/test_alignment.py checks that equivalence
 against the original saved dataset.
 

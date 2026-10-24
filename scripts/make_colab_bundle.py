@@ -11,7 +11,6 @@ the independent challenge set must never travel with development artefacts.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import subprocess
@@ -22,9 +21,11 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from colab_runner import PROJECT_IMPORTS  # noqa: E402
+from confidentiality_detector.documents import file_sha256  # noqa: E402
 
 COMMON_INCLUDE = ["src/confidentiality_detector", "scripts", "configs", "tests", "data/splits", "data/challenge",
                   "data/raw/english_pii_43k.jsonl", "requirements-colab.txt", "pyproject.toml"]
@@ -49,10 +50,6 @@ def round_spec(name: str) -> dict:
     raise SystemExit(f"unknown round {name!r}")
 
 
-def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def collect(include: list[str]) -> list[Path]:
     files = []
     for item in include:
@@ -71,7 +68,7 @@ def collect(include: list[str]) -> list[Path]:
 def build(out: Path, spec: dict) -> dict:
     files = collect(spec["include"])
     info = {"bundle_version": spec["version"], "created": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "files": {f.relative_to(ROOT).as_posix(): sha256(f) for f in files}}
+            "files": {f.relative_to(ROOT).as_posix(): file_sha256(f) for f in files}}
     out.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         for f in files:
@@ -94,16 +91,16 @@ def verify(out: Path, info: dict, spec: dict, run_tests: bool) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             zf.extractall(tmp)
             tmp = Path(tmp)
-            bad = [rel for rel, digest in info["files"].items() if sha256(tmp / rel) != digest]
+            bad = [rel for rel, digest in info["files"].items() if file_sha256(tmp / rel) != digest]
             if bad:
                 raise SystemExit(f"extracted files differ from sources: {bad[:5]}")
             for name, meta in manifest["sets"].items():
-                if sha256(tmp / spec["eval_dir"] / f"{name}.jsonl") != meta["sha256"]:
+                if file_sha256(tmp / spec["eval_dir"] / f"{name}.jsonl") != meta["sha256"]:
                     raise SystemExit(f"{spec['eval_dir']}/{name}.jsonl does not match its manifest")
             synth_manifest = tmp / "data/synth/round2/manifest.json"
             if synth_manifest.exists():
                 for bucket, meta in json.loads(synth_manifest.read_text())["files"].items():
-                    if sha256(tmp / f"data/synth/round2/{bucket}.jsonl") != meta["sha256"]:
+                    if file_sha256(tmp / f"data/synth/round2/{bucket}.jsonl") != meta["sha256"]:
                         raise SystemExit(f"data/synth/round2/{bucket}.jsonl does not match its manifest")
             env = {**os.environ, "PYTHONPATH": str(tmp / "src"), "PYTHONUTF8": "1"}
             probe = "import importlib\n" + "".join(f"importlib.import_module({m!r})\n" for m in PROJECT_IMPORTS)
@@ -125,7 +122,7 @@ def main() -> None:
     info = build(out, spec)
     verify(out, info, spec, run_tests=not args.no_tests)
     print(f"wrote {out} ({len(info['files'])} files, {out.stat().st_size / 1e6:.1f} MB), "
-          f"bundle_version={spec['version']}, sha256={sha256(out)}")
+          f"bundle_version={spec['version']}, sha256={file_sha256(out)}")
 
 
 if __name__ == "__main__":

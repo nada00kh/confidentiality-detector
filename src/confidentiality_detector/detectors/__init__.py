@@ -8,7 +8,6 @@ importing `detectors.transformer` or `detectors.hybrid` must not require `phonen
 from importlib import import_module
 
 _EXPORTS = {
-    "HybridDetector": ".hybrid",
     "merge": ".hybrid",
     "RuleDetector": ".rules",
 }

@@ -60,7 +60,7 @@ Classes used throughout:
 | `reports/*.md` | investigation, round reports, plan, this audit | readers | — | yes | none | Active / Historical | keep; add the final consolidated report later |
 | `reports/*.json` | evidence behind the reports (integrity, selection, system eval, long docs, calibration, operating points) | reports | yes, from results + scripts | no | none | Reproducible (small) | keep and commit as evidence (≈1.4 MB) |
 | `reports/runs/` (ignored), `reports/runs_v3/` | per-run metrics from `evaluate.py` | analysis | yes | no | — | Reproducible | keep `runs_v3`; leave `runs` ignored |
-| `data/raw/english_pii_43k.jsonl` | the source data (with your `mbert_*` preprocessing columns) | everything | only by re-download (HF Hub) | **yes, root of all results** | HF Hub repository (please confirm its name) | Active | keep, git-ignored; record its sha256 and origin in a data README |
+| `data/raw/english_pii_43k.jsonl` | the source data (the `mbert_*` columns come with the source dataset; an earlier draft wrongly called them preprocessing columns) | everything | only by re-download (HF Hub) | **yes, root of all results** | HF Hub repository (please confirm its name) | Active | keep, git-ignored; record its sha256 and origin in a data README |
 | `data/raw/.cache/` | HF download metadata | — | yes | no | — | Reproducible | keep (tiny; documents provenance) |
 | `data/splits/original/*.ids` | frozen split | build_eval_sets, train.py | from `data/processed/mbert_splits` | effectively yes | none | Active | **commit** (0.35 MB) |
 | `data/processed/mbert_splits/` | your saved splits (arrow) + 6 `cache-*.arrow` files | split export fallback; `test_alignment` | by re-running notebook 02_mbert_dataset_splitting | historical artefact | `mbert_splits.zip` (identical core files) | Historical | keep (git-ignored); cache files can go |
@@ -365,3 +365,36 @@ All references in docs, README, tests and docstrings are updated in the same cha
 9. `policy.json` and the model sha256 are unchanged.
 
 Changed predictions are never accepted silently.
+
+## 11. Phase 2 execution record (2026-10-24)
+
+The product owner approved §10, adding the removal of the rejected IPv4 gate's code. Executed on top of commit `60897b3`:
+
+* **Moved, contents unchanged** (`git mv`, blob hashes checked):
+  * the five original notebooks → `archive/`;
+  * the original `scope.md` → `archive/scope_original.md`;
+  * six round reports → `reports/history/`;
+  * all evidence JSON and `runs_v3/` → `reports/evidence/`;
+  * eight analysis scripts → `scripts/analysis/`, edited only for `ROOT` and output paths.
+* **Deleted:**
+  * tracked: the template placeholders (`mbert_ner`, `evaluation/metrics.py`, `src/detectors/*`, `src/training/bio_alignment.py`), the `HybridDetector` class, and the IPv4 gate (`postprocess.py`, the `postprocessing` setting and its fingerprint field, `tests/test_postprocess.py`, `scripts/ipv4_gate_study.py`);
+  * untracked from Git but kept on disk: `.vs/`;
+  * local: `state/`; the duplicate `dist/colab_bundle.zip`; six `datasets` cache files; the two `data/processed/*.zip` copies, after a member-by-member check (`reports/ARTIFACTS.md` records what differed).
+* **Consolidated:**
+  * three file-hash helpers → `documents.file_sha256`;
+  * three McNemar implementations → `metrics.mcnemar_exact`, with each caller's output keys unchanged.
+* **Dependencies:**
+  * seven unused packages removed;
+  * Presidio/spaCy moved to the group `baselines`, pandas/ipykernel to `notebooks`;
+  * `numpy` declared;
+  * the lock went from 197 to 139 packages, with no version changes.
+* **Hardening:** `PolicyConfig.from_json` rejects unknown settings.
+* **Added:**
+  * `relaxed_entity_scores`, and `evaluate_system.py --detail` with multi-root inputs, for the final metrics table;
+  * READMEs for `archive/`, `data/`, `scripts/` and `reports/`;
+  * `reports/ARTIFACTS.md`;
+  * the new `scope.md`;
+  * `docs/DATA_PIPELINE.md` §0, provenance and lineage.
+
+Verification results are reported in `reports/FINAL_REPORT.md` and in the hand-over to the product owner.
+

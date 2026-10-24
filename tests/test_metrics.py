@@ -3,7 +3,8 @@ import pytest
 from confidentiality_detector.decoding import decode, spans_from_tags
 from confidentiality_detector.documents import Document, Span
 from confidentiality_detector.labels import ID2LABEL, IGNORE_INDEX, LABEL2ID
-from confidentiality_detector.metrics import evaluate_documents, evaluate_entities, seqeval_token_metrics
+from confidentiality_detector.metrics import (evaluate_documents, evaluate_entities, mcnemar_exact,
+                                              relaxed_entity_scores, seqeval_token_metrics)
 
 
 def doc(text="x" * 100, spans=(), ignore=(), negative=(), doc_id="d"):
@@ -33,6 +34,26 @@ def test_strict_match_boundary_type_and_hard_negative():
     assert res["per_class"]["EMAIL"]["overlap_recall"] == 1.0
     assert "x" not in str(res["examples"])  # reports carry shapes, not values
 
+
+
+def test_relaxed_matching_credits_boundary_errors_but_not_type_confusion():
+    d = doc(spans=[Span(0, 5, "FIRSTNAME"), Span(10, 20, "EMAIL"), Span(30, 34, "CREDITCARDCVV")],
+            ignore=[Span(70, 75, "MIDDLENAME")])
+    preds = {"d": [Span(0, 5, "FIRSTNAME"), Span(10, 18, "EMAIL"), Span(30, 34, "PASSWORD"),
+                   Span(70, 75, "FIRSTNAME"), Span(90, 95, "USERNAME")]}
+    exact = evaluate_entities([d], preds)["micro"]
+    relaxed = relaxed_entity_scores([d], preds)
+    # gold: FIRSTNAME exact, EMAIL boundary (found when relaxed), CVV type confusion (not found)
+    assert (relaxed["gold_found"], relaxed["gold_total"]) == (2, 3)
+    # predictions: the ignore-region one is not counted, as in evaluate_entities
+    assert (relaxed["pred_correct"], relaxed["pred_total"]) == (2, 4)
+    assert relaxed["precision"] >= exact["precision"] and relaxed["recall"] >= exact["recall"]
+
+
+def test_mcnemar_exact_two_sided():
+    assert mcnemar_exact(0, 0) == 1.0
+    assert mcnemar_exact(5, 0) == pytest.approx(2 / 32)
+    assert mcnemar_exact(3, 3) == 1.0
 
 def test_document_metrics_and_ambiguous_exclusion():
     docs = [

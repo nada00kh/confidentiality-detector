@@ -12,7 +12,7 @@
 | **`r2_e3b_positive` (R3)** | r2_e2_v3 + `data/synth/round2/B_train.jsonl` | round 2, executed; **selected by the §6 rule** (with rules v3, `strict`) |
 | `r2_e4_combined` (R4) | r2_e2_v3 + A + B | round 2, executed; passes 1–3 but not eligible under §6.4 |
 
-Round 2 results and their verification: `reports/ROUND2_REPORT.md`.
+Round 2 results and their verification: `reports/history/ROUND2_REPORT.md`.
 
 **Fixed across all runs:**
 * backbone: `google-bert/bert-base-multilingual-cased`;
@@ -20,7 +20,7 @@ Round 2 results and their verification: `reports/ROUND2_REPORT.md`.
 * windows of 512 tokens with 32-token overlap;
 * the original split.
 
-Each round-2 run differs from its parent by exactly one factor. This is checked programmatically (`tests/test_colab_runner.py`, plus a config diff in `reports/ROUND2_PLAN.md`).
+Each round-2 run differs from its parent by exactly one factor. This is checked programmatically (`tests/test_colab_runner.py`, plus a config diff in `reports/history/ROUND2_PLAN.md`).
 
 A **backbone change is not planned.** The confirmed weaknesses are data-coverage failures, and in-distribution F1 is already about 0.98. A backbone comparison is justified only if the data-centric runs leave important weaknesses unresolved.
 
@@ -41,7 +41,7 @@ A **backbone change is not planned.** The confirmed weaknesses are data-coverage
 6. **Checkpoint validation.** The selected epoch is **reloaded from disk** through the production loader, which fails on any missing or mismatched key or a wrong label mapping. It is re-scored, and the run fails unless the score matches. The Colab runner additionally checks the config label mapping, the weights and tokenizer files, and `reload_ok`.
 7. **Recorded metadata.** `training_summary.json`: config, environment, data versions (raw/split/extra/eval manifests), per-epoch history, timing.
 
-Colab orchestration (`scripts/colab_runner.py`) runs every step as a checked subprocess with full logs, validates artefacts before recording a stage as ok, resumes safely, and refuses to package incomplete rounds. The Round 1 failure analysis is in `reports/COLAB_ROUND1_FIX.md`.
+Colab orchestration (`scripts/colab_runner.py`) runs every step as a checked subprocess with full logs, validates artefacts before recording a stage as ok, resumes safely, and refuses to package incomplete rounds. The Round 1 failure analysis is in `reports/history/COLAB_ROUND1_FIX.md`.
 
 ## 3. Evaluation sets and their roles
 
@@ -49,8 +49,8 @@ Colab orchestration (`scripts/colab_runner.py`) runs every step as a checked sub
 |---|---|---|
 | `validation` (synthetic) | epoch selection; rule changes | yes |
 | `dev_v1` (hand-written, 135 cases) | model selection, operating points / security modes | **yes, this is what it is for** |
-| `test`, `test_unseen_*`, `test_*_template`, `test_format_shift`, `test_long` (synthetic) | in-distribution, memorisation and format generalisation; regression | report only |
-| `synth_A_heldout`, `synth_B_heldout` (held-out generator families) | generalisation to unseen generation patterns | report only (secondary criterion below) |
+| `test`, `test_unseen_*`, `test_*_template`, `test_format_shift`, `test_long` (synthetic) | in-distribution, memorisation and format generalisation; regression | never tuned on; reported. `test` and `test_format_shift` were also **pass/fail non-inferiority gates** in the Round 2 rule (§6.1, §6.3), so they are not untouched. `test_long` was analysed in depth, which motivated §7, but never used to choose a setting |
+| `synth_A_heldout`, `synth_B_heldout` (held-out generator families) | generalisation to unseen generation patterns | gates and benefit criteria in the Round 2 rule (§6.1–6.2) and the IPv4 gate study (§8); never tuned on |
 | `validation_long` (79 concatenations of validation documents, 598+ tokens) | inference settings for long inputs (window length, §7) | yes, for inference settings only |
 | `challenge_v1` / `challenge_v1_policy` / `challenge_v1_final` | regression and debugging; **not** independent evidence, because its failures were studied. `_policy` = final name policy (overlay v1, as Round 2 evaluated it); `_final` = + decision F (overlay v2) | report only |
 | `challenge_v2` (hidden, independent) | final benchmark of the selected system | evaluated once per selected system; every evaluation is logged |
@@ -76,7 +76,7 @@ Synthetic results and hand-written results are always reported separately and ne
   2. **every** entity is caught (`block_docs_fully_caught`);
   3. every entity has the right type and boundaries (strict entity recall).
 * **Per-tag** document results for the hand-written sets.
-* **Calibration.** Span score (mean P(not O)) against correctness, by score bin (`scripts/calibration.py`).
+* **Calibration.** Span score (mean P(not O)) against correctness, by score bin (`scripts/analysis/calibration.py`).
 
 Fixed correctness guarantees:
 * no window-level scoring, so no duplicated or dropped entities;
@@ -86,7 +86,7 @@ Fixed correctness guarantees:
 
 **Three evaluation levels**, always labelled:
 * **model:** transformer spans only. The Colab notebook's metrics are at this level (`scripts/evaluate.py` without `--hybrid-with`).
-* **hybrid:** model + stored rule predictions (`scripts/analyze_round2.py`).
+* **hybrid:** model + stored rule predictions (`scripts/analysis/analyze_round2.py`).
 * **system:** the real inference pipeline in a security mode (`scripts/evaluate_system.py` replays the stored token probabilities through `ConfidentialityDetector`: decoding, live rules, reconciliation, policy).
 
 `system/strict` equals `hybrid` on every Round 2 document. Comparisons are only ever made within one level.
@@ -117,25 +117,25 @@ Every candidate is evaluated as **model + rules_v3, argmax decoding**, against i
    * R4 (A + B) is preferred over the single experiments only if R2 and R3 *both* satisfy 1, and R4 itself satisfies 1–3.
    * Otherwise the best single experiment wins.
    * Ties go to the simpler system.
-5. **Operating point.** For the selected system, `scripts/operating_points.py` on `dev_v1` produces the False ALLOW / False BLOCK table over token thresholds and minimum span scores. The product owner picks the default (`strict`) and optional modes from that table. No false-block budget is assumed.
+5. **Operating point.** For the selected system, `scripts/analysis/operating_points.py` on `dev_v1` produces the False ALLOW / False BLOCK table over token thresholds and minimum span scores. The product owner picks the default (`strict`) and optional modes from that table. No false-block budget is assumed.
 6. **Final.** The selected system and operating point are evaluated on `challenge_v2` (`scripts/challenge_v2.py evaluate`). That number is reported as is and is not used to change the system. If changes follow, `challenge_v2` becomes a development set and a new independent set is needed.
 
-**Outcome (applied 2026-10-23, `reports/round2_selection.json`).**
+**Outcome (applied 2026-10-23, `reports/evidence/round2_selection.json`).**
 * R1 passes against R0.
 * R2 fails criterion 1: `synth_B_heldout` False ALLOW 0 → 26, and `dev_v1` 3 → 5.
 * R3 and R4 pass criteria 1–3.
 * Because R2 fails criterion 1, R4 is not eligible (§6.4), and the best passing single experiment, **R3**, is selected.
-* The rule was applied as written. Its trade-off is analysed in `reports/ROUND2_REPORT.md` §7 rather than changed.
+* The rule was applied as written. Its trade-off is analysed in `reports/history/ROUND2_REPORT.md` §7 rather than changed.
 
 ## 7. Inference windows for long inputs (fixed before any window result exists)
 
-Two measured effects on `test_long` (`reports/ROUND2_REPORT.md` §3), for errors that do not occur on the same text in isolation:
+Two measured effects on `test_long` (`reports/history/ROUND2_REPORT.md` §3), for errors that do not occur on the same text in isolation:
 * **Right-context starvation at the cut.** Round 1/2 stitching (`"first"`) lets the first window that contains a token predict it. The last tokens before a cut are therefore predicted with no right context, at window positions 478–509. The 32 tokens before the cut hold 4.3% of tokens but 7 of 11 context-only errors (R0), and 7 of 10 (R3).
 * **Untrained positions.** 99.7% of supervised training tokens sit at positions 0–127. Almost all other context-only errors sit at positions ≥ 128.
 
 `"centered"` stitching moves each cut to the middle of the overlap, so every token near a cut has at least overlap / 2 tokens of context on both sides. It uses the same model inputs; only the ownership of the overlap tokens changes. Shorter windows keep tokens in the trained position range, at the cost of less context.
 
-`scripts/window_study.py` applies this rule mechanically to a local checkpoint. It first verifies the checkpoint against its stored Round 2 predictions on `dev_v1` and `test_long` (`scripts/verify_checkpoint.py`: identical spans, token probabilities within 1e-3), and refuses to run otherwise. For every candidate and set it reports False ALLOW, False BLOCK, entity precision, recall and F1, entities caught (any type), BLOCK documents fully caught, and boundary and type-confusion errors.
+`scripts/analysis/window_study.py` applies this rule mechanically to a local checkpoint. It first verifies the checkpoint against its stored Round 2 predictions on `dev_v1` and `test_long` (`scripts/verify_checkpoint.py`: identical spans, token probabilities within 1e-3), and refuses to run otherwise. For every candidate and set it reports False ALLOW, False BLOCK, entity precision, recall and F1, entities caught (any type), BLOCK documents fully caught, and boundary and type-confusion errors.
 
 * **Candidates (max_length / overlap / stitching):**
   * 512 / 64 / first (baseline, as evaluated);
@@ -153,7 +153,7 @@ Two measured effects on `test_long` (`reports/ROUND2_REPORT.md` §3), for errors
 * **Configuration.** The chosen setting is written to the `inference` section of `configs/inference/policy.json`, which `ConfidentialityDetector.load` uses and `challenge_v2.py freeze` fingerprints.
 * `test_long` is reported only. The decision is made, and the system frozen, before `challenge_v2` is evaluated.
 
-**Outcome (2026-10-24; `reports/window_study_r2_e3b_positive.json`).**
+**Outcome (2026-10-24; `reports/evidence/window_study_r2_e3b_positive.json`).**
 
 **Verification.** The local R3 checkpoint reproduced its archived predictions on `dev_v1` and `test_long`. Spans were identical, and token probabilities differed by at most 1.5e-5.
 
@@ -172,14 +172,16 @@ Two measured effects on `test_long` (`reports/ROUND2_REPORT.md` §3), for errors
 
 ## 8. IPv4 validation gate (fixed 2026-10-24, before the gate's formal evaluation)
 
+> **Status: rejected; code removed.** The gate was evaluated under this section and not adopted (outcome below). On 2026-10-24 the product owner had its unused runtime code removed: `postprocess.py`, the `postprocessing` setting, `tests/test_postprocess.py` and `scripts/ipv4_gate_study.py`. Removing them left every decision unchanged. The code is preserved in commit `60897b3` (for example `git show 60897b3:src/confidentiality_detector/postprocess.py`). The rule, the evidence (`reports/evidence/ipv4_gate_study.json`) and the security reasoning stay here as the record.
+
 **Status of prior evidence.** An exploratory check during the engineering review (2026-10-24) applied a stricter full-match variant of this gate to stored R3 predictions and saw `dev_v1` False BLOCK fall by 2 with no new leaks. That was exploratory and used `dev_v1`; it is **not** independent confirmation. `challenge_v2` remains the independent check.
 
-**Behaviour** (`src/confidentiality_detector/postprocess.py`, setting `postprocessing.ipv4_requires_valid_address` in `configs/inference/policy.json`, default `false`):
+**Behaviour** (as implemented until its removal: `src/confidentiality_detector/postprocess.py`, setting `postprocessing.ipv4_requires_valid_address` in `configs/inference/policy.json`, default `false`):
 * A **model** span labelled IPV4 is kept only if it overlaps a complete IPv4 address in the text: four decimal octets 0–255, not part of a longer dotted or digit sequence.
 * Rule findings are never removed. No other label is affected.
 * There are no IBAN, card or SSN gates. They were not approved, because a failed checksum must not let a possibly sensitive value through.
 
-**Evaluation** (`scripts/ipv4_gate_study.py`):
+**Evaluation** (`scripts/ipv4_gate_study.py`, removed after the decision; in commit `60897b3`):
 * Run only after the window decision (§7), on predictions made with the final inference settings. The script refuses predictions made with other windows.
 * The full pipeline is run with the gate off and on, in `strict` and `maximum`, on `dev_v1`, `validation_long`, `validation`, `test`, `test_format_shift`, `test_long`, `test_unseen_value`, `test_novel_template`, `synth_A_heldout`, `synth_B_heldout` and `challenge_v1_final` (the last as regression evidence only).
 
@@ -193,7 +195,7 @@ If any of 1–3 fails, or 4 shows no benefit, the gate stays off. A regression i
 
 **Known residual risk.** A model span that mislabels another target as IPV4 (for example a dotted phone number) would be dropped. Criterion 1 measures this on every set, and the rules independently detect phone numbers.
 
-**Outcome (2026-10-24; `reports/ipv4_gate_study.json`). The gate is NOT switched on; `ipv4_requires_valid_address` stays `false`.**
+**Outcome (2026-10-24; `reports/evidence/ipv4_gate_study.json`). The gate was NOT switched on.**
 
 The study used the final windows (512 / 64 / first, §7). `validation_long` was predicted locally on the verified checkpoint; every other set came from the stored Round 2 predictions.
 
@@ -212,7 +214,7 @@ The study used the final windows (512 / 64 / first, §7). `validation_long` was 
 
 In each case the model had flagged the text as IPV4, the rules did not, and the gate discarded it. A formatting check would then let a possibly sensitive value through. That is the risk for which the IBAN, card and SSN gates were rejected, and False ALLOW is the primary concern. The benefit seen is confined to synthetic version strings.
 
-The gate implementation, its tests and the study remain for the record. Per this section, the gate is not redesigned against the same evidence.
+Per this section, the gate is not redesigned against the same evidence.
 
 **Limitation found by the probe (independent of the gate).**
 * Defanged addresses (`[.]`, `(dot)`) and comma-separated octets are missed by both the model and the rules.

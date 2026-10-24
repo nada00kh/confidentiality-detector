@@ -19,7 +19,6 @@ from .decoding import decode
 from .detectors.hybrid import DEFAULT_RULE_PRIORITY, merge
 from .documents import Span
 from .policy import Decision, Finding, PolicyConfig, evaluate_policy, special_decision
-from .postprocess import ipv4_gate
 
 log = logging.getLogger("confidentiality_detector")
 
@@ -99,8 +98,6 @@ class ConfidentialityDetector:
     def _detect(self, texts: list[str], spec) -> list[list[Finding]]:
         if self.model_detector is not None:
             model_spans = [decode(tp, spec.token_threshold) for tp in self.model_detector.token_predictions(texts)]
-            if self.policy.postprocessing["ipv4_requires_valid_address"]:
-                model_spans = [ipv4_gate(t, spans) for t, spans in zip(texts, model_spans)]
         else:
             model_spans = [[] for _ in texts]
         if self.rule_detector is not None and spec.use_rules:

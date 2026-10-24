@@ -1,110 +1,21 @@
-> **Superseded.** This file describes the project's original Arabic, regex-based scope and is kept for history only. The current scope (13 English entity categories) and policy are in `docs/POLICY.md`.
+# Scope
 
-# Project Scope — Confidentiality Detector
+**The authoritative definition is [`docs/POLICY.md`](docs/POLICY.md).** If anything here disagrees with it, `docs/POLICY.md` is right. This page is a summary.
 
-## 1. Project Overview
+Confidentiality Detector inspects an **English** prompt **locally**, before it is sent to an external LLM, and decides **BLOCK** or **ALLOW**.
 
-Confidentiality Detector is an AI-based system designed to detect sensitive company information in text before it is shared with external AI services, such as LLM APIs.
+* **Categories (exactly 13):** PASSWORD, USERNAME, EMAIL, PHONENUMBER, FIRSTNAME, LASTNAME, SSN, CREDITCARDNUMBER, CREDITCARDCVV, IBAN, ACCOUNTNUMBER, STREET, IPV4 (`labels.TARGET_LABELS`; POLICY §2).
+* **Decision:** BLOCK if any of them is found; otherwise ALLOW. False ALLOW (leakage) is the primary concern and False BLOCK (friction) the secondary one (POLICY §1, §5).
+* **Fail closed:** inputs over 100,000 characters, or inspection errors, are blocked, with an explanation that does not claim a detection.
+* **Modes:** `strict` (default) and `maximum` (more recall, more false blocks).
+* **Policy details:**
+  * names of public figures are names (POLICY §3);
+  * a 3–4 digit number is a CVV only with contextual evidence (POLICY §4);
+  * explanations give categories and positions, never values (POLICY §7).
+* **Out of scope:**
+  * API keys, access tokens and other credentials (counted as false positives if flagged);
+  * other languages, files and attachments;
+  * deliberately obfuscated data (`docs/RISKS.md`).
+* **Detector:** the fine-tuned mBERT model R3 (`r2_e3b_positive`) plus deterministic rules v3 (`docs/ARCHITECTURE.md`).
 
-The system processes text locally and returns a `BLOCK` or `ALLOW` decision, along with the detected sensitive data categories.
-
-## 2. Input & Language Support
-
-- **Input type:** Text only.
-- **Primary language:** Arabic.
-- Support Arabic text containing English-formatted identifiers, credentials, and other sensitive values.
-- Full English-language support and bilingual evaluation are outside the initial scope.
-
-## 3. Supported Sensitive Data Categories
-
-The initial version targets 11 entity categories.
-
-| Group | Entity Labels |
-|---|---|
-| Personal Information | `national_id`, `iqama`, `private_phone`, `private_email`, `employee_id` |
-| Financial Information | `account_number`, `credit_card` |
-| Technical Secrets | `password`, `api_key`, `access_token`, `db_connection` |
-
-These categories define the overall system scope. Individual detection methods are not required to support every category independently.
-
-## 4. Dataset
-
-- **Primary dataset:** `mabahboh/sitr-arabic-pii`
-- Prepare and filter the dataset according to the 11 selected entity categories.
-- Use annotated data for model training and evaluation.
-- Use the dataset's original training, validation, and test splits without re-splitting.
-
-## 5. Detection Methods
-
-### Regex Baseline
-
-Develop a rule-based detector using regular expressions to identify sensitive information with recognizable patterns.
-
-### Fine-tuned NER
-
-Fine-tune a pretrained language model for token classification to detect sensitive entities in Arabic text.
-
-The final model will be selected based on experimentation and available computing resources.
-
-### Hybrid Detection
-
-Combine Regex and NER detection results, including handling overlapping or conflicting predictions.
-
-## 6. Local Processing
-
-- Sensitive data detection must be performed locally.
-- Input text must not be sent to external APIs or cloud-based AI services for detection.
-- The detection pipeline will run within the project's local environment.
-
-## 7. Decision Logic
-
-The initial version uses a binary decision mechanism:
-
-- `BLOCK` if sensitive information from the supported categories is detected.
-- `ALLOW` if no supported sensitive information is detected.
-
-The system provides the detected entity categories and explains the reason for blocking without exposing the original sensitive values.
-
-## 8. Web Interface & API
-
-- Provide a web interface for employees to submit text for confidentiality checks.
-- Develop an API endpoint that processes submitted text.
-- Return a `BLOCK` or `ALLOW` decision along with detected entity categories.
-- Display detection results without revealing sensitive values.
-
-## 9. Model Evaluation
-
-- Evaluate Regex, Fine-tuned NER, and Hybrid detection on the same held-out dataset.
-- Measure entity-level Precision, Recall, and F1-score.
-- Measure message-level Precision, Recall, F1-score, and Accuracy for `BLOCK` / `ALLOW` decisions.
-- Report per-category performance across the 11 supported entity types.
-- Analyze false positives and false negatives.
-
-## 10. Demo
-
-- Demonstrate the system locally.
-- Use the web interface connected to the detection API.
-- Demonstrate both `BLOCK` and `ALLOW` decisions using sample Arabic texts.
-- Display detected entity categories without exposing sensitive values.
-
-## 11. Planned Additional Feature
-
-### Admin Dashboard
-
-Develop a simple monitoring dashboard for administrators to:
-
-- View total scans and `BLOCK` / `ALLOW` statistics.
-- Monitor the most frequently detected sensitive data categories.
-- Review recent detection events.
-- Track detection activity without storing original sensitive text or credentials.
-
-This feature is planned but may be deferred if time is insufficient.
-
-## 12. Optional Enhancements
-
-The following improvements may be considered after completing the core functionality:
-
-- **Presidio Integration:** Integrate Microsoft Presidio with the detection pipeline.
-- **Vector Database:** Explore semantic retrieval of relevant security policies.
-- **Risk-Based Classification:** Introduce risk levels for sensitive information.
-- **LLM Integration:** Explore secure prompt handling using sensitive data masking.
+The project's original Arabic, regex-based scope is preserved for history in `archive/scope_original.md`. It does not describe the current system.

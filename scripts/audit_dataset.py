@@ -1,6 +1,6 @@
 """Reproducible dataset audit (leakage, duplication, value/format realism, label policy impact).
 
-  python scripts/audit_dataset.py   ->  reports/dataset_audit.json
+  python scripts/audit_dataset.py   ->  reports/evidence/dataset_audit.json
 Values are never written out; only counts, rates, and character-class shapes.
 """
 
@@ -110,7 +110,7 @@ def main() -> None:
     out["validation_entity_counts"] = Counter(
         "target" if a["label"] in TARGET_LABELS else "non_target" for r in split["validation"] for a in r["privacy_mask"])
 
-    path = ROOT / "reports/dataset_audit.json"
+    path = ROOT / "reports/evidence/dataset_audit.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(json.dumps({k: out[k] for k in ("cross_split_duplicates", "near_duplicate_templates_vs_train",

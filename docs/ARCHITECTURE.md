@@ -8,9 +8,9 @@
 | **Data model** | `documents.py` (Document/Span, JSONL, ai4privacy conversion) | labels |
 | **Data engineering** | `perturb.py` (format families A/B), `synth.py` (round-2 generators and validation), `challenge.py` (case-file parser, policy overlay); `scripts/build_eval_sets.py`, `build_synth_round2.py`, `audit_dataset.py` | documents, labels |
 | **Tokenisation and alignment** (shared by training and inference) | `alignment.py` (offsets, BIO, windows), `decoding.py` (token predictions → spans, thresholds) | labels |
-| **Training** | `scripts/train.py`; Colab: `scripts/colab_runner.py`, `colab_round2.py`, notebooks in `notebooks/colab/` | alignment, metrics, detectors.transformer |
-| **Evaluation and selection** | `metrics.py`, `runio.py`; `scripts/predict.py`, `evaluate.py`, `calibration.py`, `operating_points.py`, `analyze_round1.py`, `challenge_v2.py`, `contamination.py` | documents, decoding, detectors |
-| **Detection** | `detectors/transformer.py` (windowed model inference), `detectors/rules.py` (deterministic, rules v3), `detectors/hybrid.py` (span reconciliation), `detectors/presidio_detector.py` (baseline only) | alignment, decoding, labels |
+| **Training** | `scripts/train.py`; Colab: `scripts/make_colab_bundle.py`, `colab_runner.py`, `colab_round2.py` (`colab_round1.py` frozen for Round 1), notebooks in `notebooks/colab/` | alignment, metrics, detectors.transformer |
+| **Evaluation and selection** | `metrics.py`, `runio.py`; `scripts/predict.py`, `evaluate.py` (model/hybrid level), `evaluate_system.py` (full BLOCK/ALLOW system), `verify_checkpoint.py`, `challenge_v2.py`, `contamination.py`; one-off studies behind the reports in `scripts/analysis/` | documents, decoding, detectors |
+| **Detection** | `detectors/transformer.py` (windowed model inference), `detectors/rules.py` (deterministic, rules v3), `detectors/hybrid.py` (`merge`: span reconciliation), `detectors/presidio_detector.py` (baseline only) | alignment, decoding, labels |
 | **Security policy** | `policy.py` (modes, BLOCK/ALLOW, fail-closed, safe explanations); `configs/inference/policy.json` | labels |
 | **Inference pipeline** | `pipeline.py` (`ConfidentialityDetector`), `__main__.py` (CLI) | detectors, decoding, policy |
 
@@ -61,13 +61,13 @@ Model predictions (`findings` with `source` and `score`) are kept distinct from 
 
 ```python
 from confidentiality_detector.pipeline import ConfidentialityDetector
-detector = ConfidentialityDetector.load("models/e2_mbert_v2_fmtA", "configs/inference/policy.json")
+detector = ConfidentialityDetector.load("checkpoints/r2_e3b_positive", "configs/inference/policy.json")
 decision = detector.inspect(prompt_text)              # default mode: strict
 decision.to_dict()                                    # {"decision": "BLOCK", "categories": [...], "findings": [...], ...}
 ```
 
 ```bash
-python -m confidentiality_detector --model-dir models/e2_mbert_v2_fmtA --file prompt.txt   # exit 0 = ALLOW, 10 = BLOCK, 2 = error
+confidentiality-detector --model-dir checkpoints/r2_e3b_positive --file prompt.txt   # or python -m confidentiality_detector; exit 0 = ALLOW, 10 = BLOCK, 2 = error
 ```
 
 **Resources** (round-1 measurements, laptop CPU, mBERT-base):
@@ -80,5 +80,11 @@ Inference needs no training code, GPU or network: weights are loaded with `local
 
 ## 4. Configuration
 
-* `configs/inference/policy.json`: blocking labels (must be within the 13), security modes (token threshold, rules on/off, evidence), `max_chars`, `on_error`, `on_oversize`, policy version.
+* `configs/inference/policy.json` is the deployed system's whole configuration, not only the security policy:
+  * blocking labels (must be within the 13);
+  * security modes (token threshold, rules on/off, evidence);
+  * `max_chars`, `on_error`, `on_oversize` and the policy version;
+  * the transformer's `inference` windows (512 / 64 / first, `docs/METHODOLOGY.md` §7).
+
+  Unknown settings are rejected, so a misspelt or retired key cannot be silently ignored. `scripts/challenge_v2.py freeze` fingerprints the file (sha256) together with the model weights and the rules version.
 * `configs/experiments/*.json`: training runs. Unspecified fields take `scripts/train.py` `DEFAULTS`, and the merged config is stored with every checkpoint.

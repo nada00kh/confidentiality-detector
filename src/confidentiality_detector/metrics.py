@@ -43,6 +43,12 @@ def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, centre - half), min(1.0, centre + half))
 
 
+def mcnemar_exact(only_a: int, only_b: int) -> float:
+    """Exact two-sided McNemar p-value from the discordant pair counts."""
+    n = only_a + only_b
+    return min(1.0, 2 * sum(math.comb(n, k) for k in range(min(only_a, only_b) + 1)) / 2 ** n) if n else 1.0
+
+
 def _inside_any(span: Span, regions: Sequence[Span]) -> bool:
     return any(span.overlaps(r) for r in regions)
 
@@ -188,6 +194,30 @@ def evaluate_documents(docs: Sequence[Document], preds: Mapping[str, Sequence[Sp
     return out
 
 
+def relaxed_entity_scores(docs: Sequence[Document], preds: Mapping[str, Sequence[Span]]) -> dict:
+    """Overlap matching, micro-averaged: a gold entity counts as found, and a prediction as
+    correct, when a span of the SAME label overlaps it (boundaries may differ). Predictions are
+    counted as in evaluate_entities (ignore-region predictions excluded), so the exact metrics
+    are a lower bound of these."""
+    gold_found = gold_total = pred_correct = pred_total = 0
+    for doc in docs:
+        pred = list(preds.get(doc.doc_id, []))
+        for g in doc.spans:
+            gold_total += 1
+            gold_found += any(p.label == g.label and p.overlaps(g) for p in pred)
+        for p in pred:
+            overlapping_gold = [g for g in doc.spans if g.overlaps(p)]
+            if not overlapping_gold and _inside_any(p, doc.ignore_spans):
+                continue
+            pred_total += 1
+            pred_correct += any(g.label == p.label for g in overlapping_gold)
+    precision = pred_correct / pred_total if pred_total else 0.0
+    recall = gold_found / gold_total if gold_total else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1, "gold_found": gold_found, "gold_total": gold_total,
+            "pred_correct": pred_correct, "pred_total": pred_total}
+
+
 def fully_caught_rate(docs: Sequence[Document], preds: Mapping[str, Sequence[Span]]) -> float | None:
     """Share of BLOCK documents in which EVERY gold target is overlapped by some prediction.
     Sits between document BLOCK recall (>= 1 caught) and strict entity recall (exact)."""
@@ -234,7 +264,7 @@ def seqeval_token_metrics(
     id2label: Mapping[int, str],
     ignored: str = "as_O",
 ) -> dict:
-    """ignored="as_O" reproduces notebooks/04 compute_metrics (-100 -> O in gold *and*
+    """ignored="as_O" reproduces archive/04 compute_metrics (-100 -> O in gold *and*
     prediction); ignored="drop" removes those positions instead."""
     from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
     from seqeval.scheme import IOB2

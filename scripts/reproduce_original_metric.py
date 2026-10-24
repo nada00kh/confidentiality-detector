@@ -4,7 +4,7 @@ so the change in numbers can be attributed step by step.
   python scripts/reproduce_original_metric.py --model-dir /content/ckpt/checkpoint-4352
 
 Rows (all on the original validation split):
-  A  token-level seqeval, -100 -> O in gold and prediction   (notebooks/04 compute_metrics)
+  A  token-level seqeval, -100 -> O in gold and prediction   (archive/04 compute_metrics)
   B  token-level seqeval, -100 positions dropped
   C  document-level character spans, v1 gold (non-targets ignored, no IPv4 remap)
   D  document-level character spans, v2 gold (non-targets scoreable, IP->IPV4, MIDDLENAME/MASKEDNUMBER ignored)

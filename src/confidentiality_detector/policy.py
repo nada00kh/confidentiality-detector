@@ -24,8 +24,7 @@ from .labels import TARGET_LABELS, TARGET_SET
 POLICY_VERSION = "1.0"
 # Transformer inference windows (part of the deployed system, hence of this file's fingerprint).
 DEFAULT_INFERENCE = {"max_length": 512, "overlap": 64, "stitching": "first"}
-# Optional post-processing of model spans (postprocess.py); off unless adopted by a pre-registered study.
-DEFAULT_POSTPROCESSING = {"ipv4_requires_valid_address": False}
+POLICY_FILE_KEYS = {"version", "default_mode", "blocking_labels", "max_chars", "on_error", "on_oversize", "inference", "modes"}
 
 BLOCK, ALLOW = "BLOCK", "ALLOW"
 REASONS = {
@@ -56,7 +55,6 @@ class PolicyConfig:
     on_oversize: str = BLOCK
     version: str = POLICY_VERSION
     inference: dict = field(default_factory=lambda: dict(DEFAULT_INFERENCE))
-    postprocessing: dict = field(default_factory=lambda: dict(DEFAULT_POSTPROCESSING))
 
     def __post_init__(self):
         if self.default_mode not in self.modes:
@@ -68,9 +66,6 @@ class PolicyConfig:
             raise ValueError("on_error / on_oversize must be BLOCK or ALLOW")
         if set(self.inference) != set(DEFAULT_INFERENCE):
             raise ValueError(f"inference settings must be exactly {sorted(DEFAULT_INFERENCE)}")
-        if set(self.postprocessing) != set(DEFAULT_POSTPROCESSING) or not all(
-                isinstance(v, bool) for v in self.postprocessing.values()):
-            raise ValueError(f"postprocessing settings must be exactly {sorted(DEFAULT_POSTPROCESSING)} (true/false)")
 
     def mode(self, name: str | None) -> SecurityMode:
         name = name or self.default_mode
@@ -81,7 +76,10 @@ class PolicyConfig:
     @classmethod
     def from_json(cls, path: str | Path) -> "PolicyConfig":
         raw = json.loads(Path(path).read_text(encoding="utf-8"))
-        modes = {name: SecurityMode(name=name, **spec) for name, spec in raw["modes"].items()}
+        unknown = set(raw) - POLICY_FILE_KEYS
+        if unknown:  # a misspelt or retired setting must not be silently ignored
+            raise ValueError(f"unknown policy settings: {sorted(unknown)}")
+        modes ={name: SecurityMode(name=name, **spec) for name, spec in raw["modes"].items()}
         return cls(
             modes=modes,
             default_mode=raw["default_mode"],
@@ -91,7 +89,6 @@ class PolicyConfig:
             on_oversize=raw.get("on_oversize", BLOCK),
             version=str(raw.get("version", POLICY_VERSION)),
             inference={**DEFAULT_INFERENCE, **raw.get("inference", {})},
-            postprocessing={**DEFAULT_POSTPROCESSING, **raw.get("postprocessing", {})},
         )
 
 

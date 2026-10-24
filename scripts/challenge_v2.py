@@ -33,7 +33,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from confidentiality_detector.challenge import load_challenge  # noqa: E402
-from confidentiality_detector.documents import Span  # noqa: E402
+from confidentiality_detector.documents import Span, file_sha256  # noqa: E402
 from confidentiality_detector.labels import TARGET_LABELS, cvv_has_evidence  # noqa: E402
 from confidentiality_detector.metrics import evaluate_by_tag, evaluate_documents, evaluate_entities  # noqa: E402
 
@@ -47,10 +47,6 @@ RECOMMENDED_TAGS = ("enterprise", "lookalike", "structured", "difficult-positive
 OOS_CREDENTIAL_TYPES = {"SECRET", "APIKEY", "API_KEY", "TOKEN", "ACCESSTOKEN", "ACCESS_TOKEN", "BEARER", "JWT",
                         "PRIVATEKEY", "PRIVATE_KEY", "SSHKEY", "CLIENTSECRET", "CLIENT_SECRET", "WEBHOOK"}
 LENGTH_BUCKETS = ((0, 1000, "<=1000 chars"), (1000, 3000, "1001-3000 chars"), (3000, None, ">3000 chars"))
-
-
-def sha256(path: Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def validate(path: Path) -> dict:
@@ -92,7 +88,7 @@ def validate(path: Path) -> dict:
     for t in RECOMMENDED_TAGS:
         if not tags.get(t):
             warnings.append(f"no case tagged '{t}' (spec coverage requirement)")
-    return {"ok": not errors, "errors": errors, "warnings": warnings, "n_cases": len(docs), "sha256": sha256(path),
+    return {"ok": not errors, "errors": errors, "warnings": warnings, "n_cases": len(docs), "sha256": file_sha256(path),
             "decisions": dict(decisions), "labels": dict(Counter(s.label for d in docs for s in d.spans)),
             "tags": dict(tags)}
 
@@ -113,7 +109,7 @@ def check_sealed(path: Path) -> dict:
     if not seal_file.exists():
         raise SystemExit("challenge_v2 is not sealed: the author must run `challenge_v2.py seal <file>` first")
     record = json.loads(seal_file.read_text(encoding="utf-8"))
-    if sha256(path) != record["sha256"]:
+    if file_sha256(path) != record["sha256"]:
         raise SystemExit("this file does not match the sealed challenge_v2 (sha256 differs); refusing to evaluate")
     return record
 
@@ -160,9 +156,8 @@ def system_fingerprint(model_dir: Path, policy_path: Path) -> dict:
     if not weights:
         raise SystemExit(f"{model_dir}: no .safetensors weights")
     policy = PolicyConfig.from_json(policy_path)  # what ConfidentialityDetector.load uses
-    return {"model_dir": Path(model_dir).name, "model_sha256": {p.name: sha256(p) for p in weights},
-            "policy_sha256": sha256(policy_path), "rules_version": RULES_VERSION, **policy.inference,
-            "postprocessing": policy.postprocessing}
+    return {"model_dir": Path(model_dir).name, "model_sha256": {p.name: file_sha256(p) for p in weights},
+            "policy_sha256": file_sha256(policy_path), "rules_version": RULES_VERSION, **policy.inference}
 
 
 def freeze(model_dir: Path, policy_path: Path, verify_pred_dir: Path | None, verify_set: str, eval_dir: Path) -> dict:
@@ -189,8 +184,8 @@ def check_frozen(model_dir: Path, policy_path: Path) -> dict:
         raise SystemExit("no frozen system: run `challenge_v2.py freeze --model-dir <ckpt>` before the hidden evaluation")
     frozen = json.loads(FROZEN.read_text(encoding="utf-8"))
     actual = system_fingerprint(model_dir, policy_path)
-    diffs = [k for k in ("model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching",
-                         "postprocessing") if frozen.get(k) != actual[k]]
+    diffs = [k for k in ("model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching")
+             if frozen.get(k) != actual[k]]
     if diffs:
         raise SystemExit(f"this system does not match the frozen system ({', '.join(diffs)} differ); refusing to evaluate")
     return frozen
@@ -266,8 +261,7 @@ def main() -> None:
     result = score(docs, findings, decisions)
     mode = detector.policy.mode(args.mode).name
     entry = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "challenge_sha256": record["sha256"],
-             **{k: frozen[k] for k in ("model_dir", "model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching",
-                                       "postprocessing")},
+             **{k: frozen[k] for k in ("model_dir", "model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching")},
              "frozen_at": frozen.get("frozen_at"), "mode": mode, "predictions_sha256": findings_fingerprint(findings, decisions),
              "far": result["document"]["false_allow_rate"], "fbr": result["document"]["false_block_rate"]}
     STATE.mkdir(parents=True, exist_ok=True)

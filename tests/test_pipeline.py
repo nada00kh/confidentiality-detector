@@ -50,6 +50,15 @@ def test_policy_config_is_valid_and_restricted_to_scope():
         POLICY.mode("lenient")
 
 
+def test_unknown_policy_settings_are_rejected(tmp_path):
+    raw = json.loads((ROOT / "configs/inference/policy.json").read_text(encoding="utf-8"))
+    raw["postprocessing"] = {"ipv4_requires_valid_address": True}  # retired setting (docs/METHODOLOGY.md section 8)
+    path = tmp_path / "policy.json"
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    with pytest.raises(ValueError, match="unknown policy settings"):
+        PolicyConfig.from_json(path)
+
+
 def test_block_allow_and_mode_thresholds():
     det = ConfidentialityDetector(FakeModel(), None, POLICY)
     strict = det.inspect(SECRET_TEXT)                 # argmax: name only

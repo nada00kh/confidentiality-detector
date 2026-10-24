@@ -1,12 +1,12 @@
 # What is proven, what is not, and what remains risky
 
-Status after round 1 and round 2 (both executed; round 2 verified and analysed in `reports/ROUND2_REPORT.md`).
+Status after round 1 and round 2 (both executed; round 2 verified and analysed in `reports/history/ROUND2_REPORT.md`).
 
 ## 1. Proven by executed experiments
 
 * **The original 0.9925 F1 was a measurement artefact.**
   * Reproduced exactly; corrected validation F1 0.643, precision 0.476.
-  * The original model blocks 74.5% of documents containing no target entity (`reports/ROUND1_REPORT.md` §2).
+  * The original model blocks 74.5% of documents containing no target entity (`reports/history/ROUND1_REPORT.md` §2).
 * **Fixing the labels alone raised realistic leakage.** E1 versus the original model on `challenge_v1`: FAR 19.6% vs 9.8%, p = 0.004.
 * **Format augmentation generalises.** E2 reached FAR 2.8% on held-out formats and 7.6% on `challenge_v1`, versus 10.5% and 19.6% for E1 (p < 0.001 and p = 0.003).
 * **The hybrid (E2 + rules) is the best measured system:**
@@ -14,7 +14,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
   * held-out formats FAR 2.2%;
   * it beats the original model on both error types.
 * **Most realistic false positives are high-confidence.** About two thirds of false-positive spans score ≥ 0.9, so thresholds cannot remove them (`reports/calibration_e2_mbert_v2_fmtA.json`).
-* **Round 2 (verified from the archived predictions; `reports/ROUND2_REPORT.md`):**
+* **Round 2 (verified from the archived predictions; `reports/history/ROUND2_REPORT.md`):**
   * The selected system, R3 (`r2_e3b_positive`) + rules v3 in `strict` mode, leaks less than E2 + rules: `dev_v1` False ALLOW 0/56 vs 5/56 (exact McNemar p = 0.06); held-out formats 45 vs 61 of 3,055 (p = 0.014). False BLOCK is unchanged: 27/75 vs 28/75.
   * Hard negatives alone (R2) cut false blocks sharply, but also suppressed genuine difficult positives: `synth_B_heldout` False ALLOW 0 → 26.
   * Combining A + B (R4) keeps leakage at R1's level and cuts `dev_v1` False BLOCK to 12/75.
@@ -36,7 +36,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 * **Independent generalisation of the current system.** `challenge_v1` and `dev_v1` were written by the same engineer who wrote the rules and the generators, so shared assumptions inflate both. `challenge_v1`'s failures have been studied, so it is now a regression set. Independent evidence will only exist once `challenge_v2` is evaluated.
 * **That R3's advantage holds on independent text.** It rests on `dev_v1` (56 BLOCK cases, 0 vs 5 leaks, p = 0.06) and on synthetic held-out formats. `dev_v1` has now been used for one model selection, so reusing it for further selections would overfit it.
 * **`synth_B_heldout` as evidence for B-trained models.** Its families are held out, but 20% of its target values (235/1,192: names, usernames, CVVs) also occur in `B_train`, because both come from the same generator value pools. It measures generalisation to unseen templates, partly with memorised values.
-* **Whether shorter inference windows fix long inputs.** This is prepared (`scripts/window_study.py`, rule in `docs/METHODOLOGY.md` §7) but not run: it needs the checkpoint locally.
+* **Whether shorter inference windows would fix long inputs.** The window study (`docs/METHODOLOGY.md` §7) was run. On the selection set no setting changed a decision, so 512 / 64 / first was kept. The report-only `test_long` favours shorter centered windows, but that cannot be used to select. A larger long-document validation set is needed to settle it.
 * **Stability.** One seed per configuration. In-distribution differences of 0.1–0.5 points are within noise.
 * **Latency on target hardware.** Only measured on one laptop CPU.
 
@@ -50,7 +50,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 * **Misses that leave the document blocked only by luck.** Lowercase or context-free names, lowercase usernames, and passwords inside JSON/SQL. In 10 of 92 `challenge_v1` BLOCK documents a sensitive value was missed while another one triggered the block. Experiment B and the v3 rules address this.
 * **CVV without a literal cue.** Ambiguous by policy unless context supports it. A bare 3–4 digit number is deliberately not blocked.
 * **Version numbers that are valid IPv4 addresses** ("firmware 2.4.1.7"). The rules suppress them with version context and with the small-first-octet heuristic, but context-free cases remain ambiguous. The IPv4 validation gate would remove the model's version-string false positives (`synth_A_heldout` False BLOCK 664 → 606). It stays off because it also discards model detections of spaced or mistyped addresses (`docs/METHODOLOGY.md` §8).
-* **Non-canonical IPv4 formats** (fictional probe, `reports/ipv4_gate_study.json`; no evaluation set contains them):
+* **Non-canonical IPv4 formats** (fictional probe, `reports/evidence/ipv4_gate_study.json`; no evaluation set contains them):
   * defanged addresses (`203[.]0[.]113[.]9`, `(dot)`) and comma-separated octets are **not detected** (False ALLOW);
   * leading-zero and hostname-encoded addresses are blocked, but under the wrong label (PHONENUMBER, SSN).
 
@@ -75,7 +75,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 
 ## 6. Before considering real deployment
 
-1. ~~Run round 2 and apply the pre-registered selection rule.~~ Done: R3 + rules v3, `strict` recommended (`reports/ROUND2_REPORT.md`). Remaining before the hidden benchmark: download the R3 checkpoint, optionally run the window study (§7 rule), and freeze the system (`scripts/challenge_v2.py freeze --verify-pred-dir …`).
+1. ~~Run round 2 and apply the pre-registered selection rule.~~ Done: R3 + rules v3, `strict` recommended (`reports/history/ROUND2_REPORT.md`). The R3 checkpoint is verified locally against every archived prediction, and the CPU inference studies are done (windows unchanged, IPv4 gate rejected). Remaining before the hidden benchmark: freeze the system (`scripts/challenge_v2.py freeze --verify-pred-dir …`).
 2. Evaluate once on the independent `challenge_v2`, and report it as is.
 3. **Evaluate on a governed sample of real prompts**, collected with consent and a privacy review, annotated by two people under `docs/ANNOTATION_GUIDELINES.md`, with inter-annotator agreement measured.
 4. Shadow deployment: log decisions only (no text) without blocking, and measure the block rate and user-reported false blocks.

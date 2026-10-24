@@ -1,13 +1,13 @@
 """Span-level confidence calibration: is a predicted span's score informative about whether it
 is right, and would any threshold remove the false positives?
 
-  python scripts/calibration.py --pred-root results/round1/predictions --pred e2_mbert_v2_fmtA \
-      --eval-dir data/eval --sets validation test test_format_shift challenge_v1
+  python scripts/analysis/calibration.py --pred-root results/round1/predictions --pred e2_mbert_v2_fmtA \
+      --eval-dir data/eval --sets validation test_format_shift test_long challenge_v1
 
 Span score = mean P(not O) over the span's tokens. A span is "correct" if it overlaps a gold
 target of the same type, "wrong-type" if it overlaps a gold target of another type, and a
 false positive otherwise (ignore-span overlaps are skipped, as in the metrics).
-Writes reports/calibration_<pred>.json.
+Writes reports/evidence/calibration_<pred>.json.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.documents import load_documents  # noqa: E402
@@ -64,7 +64,7 @@ def main() -> None:
         print(f"{name:20} spans {c['n_spans']:6} FPs {c['n_false_positives']:5} "
               f"FPs with score>=0.9: {c['share_of_fps_with_score_ge_0.9'] if c['share_of_fps_with_score_ge_0.9'] is None else round(c['share_of_fps_with_score_ge_0.9'], 3)}  "
               + "  ".join(f"{b['score_range']}: P={b['precision_overlap']:.2f} (n={b['n']})" for b in c["bins"]))
-    write_json(ROOT / f"reports/calibration_{args.pred}.json", out)
+    write_json(ROOT / f"reports/evidence/calibration_{args.pred}.json", out)
 
 
 if __name__ == "__main__":

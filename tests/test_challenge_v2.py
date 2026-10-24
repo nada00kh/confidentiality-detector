@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import challenge_v2 as cv2  # noqa: E402
 
 from confidentiality_detector.challenge import load_challenge  # noqa: E402
-from confidentiality_detector.documents import Span  # noqa: E402
+from confidentiality_detector.documents import Span, file_sha256  # noqa: E402
 
 SECRET = "Zq!81kLm"
 CASES = f"""# hidden challenge v2 (test fixture)
@@ -133,7 +133,7 @@ def test_overlay_can_turn_an_ignored_secret_into_an_out_of_scope_negative(tmp_pa
     src = tmp_path / "c.txt"
     src.write_text("@@ code-1 | code\nexport AWS_SECRET_ACCESS_KEY=[[~SECRET:wJalrXUtnFEMIEXAMPLE]]\n", encoding="utf-8")
     overlay = tmp_path / "o.json"
-    overlay.write_text(json.dumps({"applies_to_sha256": cv2.sha256(src), "changes": {
+    overlay.write_text(json.dumps({"applies_to_sha256": file_sha256(src), "changes": {
         "code-1": {"ignore_to_negative": {"wJalrXUtnFEMIEXAMPLE": "APIKEY"}, "reason": "decision F"}}}), encoding="utf-8")
     before = load_challenge(src)
     after = apply_overlay(before, overlay, src)
@@ -143,7 +143,7 @@ def test_overlay_can_turn_an_ignored_secret_into_an_out_of_scope_negative(tmp_pa
     r = evaluate(after, {"code-1": [Span(neg.start, neg.end, "PASSWORD")]})
     assert r["document"]["confusion"]["FP_false_block"] == 1 and r["entity"]["micro"]["fp"] == 1
     bad = tmp_path / "bad.json"
-    bad.write_text(json.dumps({"applies_to_sha256": cv2.sha256(src), "changes": {
+    bad.write_text(json.dumps({"applies_to_sha256": file_sha256(src), "changes": {
         "code-1": {"ignore_to_negative": {"not-there": "APIKEY"}}}}), encoding="utf-8")
     with pytest.raises(ValueError, match="not found as ignore spans"):
         apply_overlay(before, bad, src)

@@ -1,10 +1,10 @@
 """Inference-window study for long inputs (no training; CPU is enough).
 
-  python scripts/window_study.py --model-dir checkpoints/r2_e3b_positive \
+  python scripts/analysis/window_study.py --model-dir checkpoints/r2_e3b_positive \
       --verify-pred-dir results/round2/predictions/r2_e3b_positive
-      ->  reports/window_study_<model>.json
+      ->  reports/evidence/window_study_<model>.json
 
-Background (reports/ROUND2_REPORT.md section 3): on test_long, errors that do not occur on the same
+Background (reports/history/ROUND2_REPORT.md section 3): on test_long, errors that do not occur on the same
 text in isolation concentrate (a) in the last tokens before a window cut, which the round-2
 ("first") stitching predicts with no right context, and (b) at window positions >= 128, where the
 model is barely fine-tuned (99.7% of supervised training tokens sit at positions 0-127).
@@ -25,7 +25,7 @@ import argparse
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -110,7 +110,7 @@ def main() -> None:
            "chosen": chosen, "limit_validation": args.limit_validation,
            "note": "strict mode (argmax) + rules; rule from docs/METHODOLOGY.md section 7; test_long is report-only; "
                    "adopting a candidate requires editing configs/inference/policy.json"}
-    write_json(ROOT / f"reports/window_study_{args.model_dir.name}.json", out)
+    write_json(ROOT / f"reports/evidence/window_study_{args.model_dir.name}.json", out)
     for k, d in decisions.items():
         print(f"{k}: {'ADOPTABLE' if d['adopt'] else 'rejected'} {d['reasons']}")
     print("chosen:", chosen, "(baseline retained)" if chosen == base_key else "(not applied automatically)")

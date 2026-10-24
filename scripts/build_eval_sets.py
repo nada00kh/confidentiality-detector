@@ -5,7 +5,7 @@ Inputs : data/raw/english_pii_43k.jsonl, data/processed/mbert_splits (original s
 Outputs: data/splits/original/{train,validation,test}.ids
          data/eval/*.jsonl + data/eval/manifest.json
 
-Protocol (see reports/README):
+Protocol (see docs/METHODOLOGY.md section 3):
   validation          original validation split, v2 gold      -> model selection / thresholds ONLY
   test                original test split, v2 gold            -> final in-distribution test
   test_unseen_context test entities whose 2-word left context never precedes that label in train

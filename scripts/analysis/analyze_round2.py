@@ -1,6 +1,6 @@
 """Apply the pre-registered round-2 selection rule (docs/METHODOLOGY.md section 6) mechanically.
 
-  python scripts/analyze_round2.py --results results/round2     ->  reports/round2_selection.json
+  python scripts/analysis/analyze_round2.py --results results/round2     ->  reports/evidence/round2_selection.json
 
 Every run is scored as model + rules_v3 (argmax) on the v3 suite; each candidate is compared
 with its parent on the same documents (exact McNemar on per-document correctness).
@@ -10,16 +10,15 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.detectors.hybrid import merge  # noqa: E402
 from confidentiality_detector.documents import load_documents  # noqa: E402
-from confidentiality_detector.metrics import evaluate  # noqa: E402
+from confidentiality_detector.metrics import evaluate, mcnemar_exact as mcnemar_p  # noqa: E402
 from confidentiality_detector.runio import check_provenance, load_predictions, write_json  # noqa: E402
 
 RUNS = {"R0": "e2_mbert_v2_fmtA", "R1": "r2_e2_v3", "R2": "r2_e3a_hardneg", "R3": "r2_e3b_positive", "R4": "r2_e4_combined"}
@@ -30,9 +29,7 @@ SETS = ("dev_v1", "synth_A_heldout", "synth_B_heldout", "test_format_shift", "te
 def mcnemar(a: dict, b: dict, ids) -> dict:
     only_a = sum(a[i] and not b[i] for i in ids)
     only_b = sum(b[i] and not a[i] for i in ids)
-    n = only_a + only_b
-    p = min(1.0, 2 * sum(math.comb(n, k) for k in range(min(only_a, only_b) + 1)) / 2 ** n) if n else 1.0
-    return {"parent_only_correct": only_a, "candidate_only_correct": only_b, "p": p}
+    return {"parent_only_correct": only_a, "candidate_only_correct": only_b, "p": mcnemar_p(only_a, only_b)}
 
 
 def main() -> None:
@@ -107,7 +104,7 @@ def main() -> None:
         selected = chain
     out = {"metrics": metrics, "decisions": decisions, "selected": selected, "selected_run": RUNS[selected],
            "note": "model + rules_v3, argmax; criteria from docs/METHODOLOGY.md section 6"}
-    write_json(ROOT / "reports/round2_selection.json", out)
+    write_json(ROOT / "reports/evidence/round2_selection.json", out)
     print(f"{'run':4} {'set':20} {'FA':>4} {'FB':>4} {'FAR':>7} {'FBR':>7} {'entF1':>7} {'fully':>7}")
     for key in RUNS:
         for s, m in metrics.get(key, {}).items():

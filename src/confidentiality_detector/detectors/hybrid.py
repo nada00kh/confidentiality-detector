@@ -1,4 +1,4 @@
-"""Hybrid detector: union of a model and the deterministic rules.
+"""Model + rules span reconciliation: union of the model and the deterministic rules.
 
 Where a rule span and a model span overlap, the rule span wins for labels in
 `rule_priority_labels` (structured identifiers with validator-backed boundaries) and the
@@ -32,20 +32,3 @@ def merge(
             if not any(r.overlaps(o) for o in out):
                 out.append(r)
     return sorted(out)
-
-
-class HybridDetector:
-    name = "hybrid"
-
-    def __init__(self, model_detector, rule_detector, **merge_kwargs):
-        self.model_detector = model_detector
-        self.rule_detector = rule_detector
-        self.merge_kwargs = merge_kwargs
-
-    def detect_batch(self, texts: list[str]) -> list[list[Span]]:
-        model = self.model_detector.detect_batch(texts)
-        rules = self.rule_detector.detect_batch(texts)
-        return [merge(m, r, **self.merge_kwargs) for m, r in zip(model, rules)]
-
-    def detect(self, text: str) -> list[Span]:
-        return self.detect_batch([text])[0]

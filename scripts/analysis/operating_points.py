@@ -1,6 +1,6 @@
 """Security-mode evidence: False ALLOW vs False BLOCK across operating points, on a selection set.
 
-  python scripts/operating_points.py --pred r2_e3a_hardneg --pred-root results/round2/predictions \
+  python scripts/analysis/operating_points.py --pred r2_e3a_hardneg --pred-root results/round2/predictions \
       --rules rules_v3 --rules-root predictions_v3 --eval-dir data/eval_v3 --set dev_v1
 
 Two knobs, both applied to the model only (rule findings are kept as they are):
@@ -19,7 +19,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.detectors.hybrid import merge  # noqa: E402
@@ -71,7 +71,7 @@ def main() -> None:
     for r in rows:
         print(f"{str(r['token_threshold']):9}  {r['min_span_score']:<9}  {r['false_allow']:<11}  {r['FAR']:.3f}   "
               f"{r['false_block']:<11}  {r['FBR']:.3f}   {r['entity_f1']:.3f}")
-    write_json(ROOT / f"reports/operating_points_{args.pred}{'__' + args.rules if args.rules else ''}_{args.set}.json", rows)
+    write_json(ROOT / f"reports/evidence/operating_points_{args.pred}{'__' + args.rules if args.rules else ''}_{args.set}.json", rows)
 
 
 if __name__ == "__main__":

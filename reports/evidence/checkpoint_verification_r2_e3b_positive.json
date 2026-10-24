@@ -1,0 +1,109 @@
+{
+  "model_dir": "r2_e3b_positive",
+  "pred_dir": "r2_e3b_positive",
+  "files": [
+    "config.json",
+    "history.json",
+    "model.safetensors",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "training_summary.json"
+  ],
+  "weights": {
+    "model.safetensors": {
+      "bytes": 709157780,
+      "sha256": "dc0fdca52f9e144b4017cb8eb37d8cef0d366b5b9619c519a782102ef32850c6"
+    }
+  },
+  "windows": {
+    "max_length": 512,
+    "overlap": 64,
+    "stitching": "first"
+  },
+  "metadata": {
+    "config.json": "identical to archived copy",
+    "training_summary.json": "identical to archived copy"
+  },
+  "sets": {
+    "dev_v1": {
+      "n_docs": 135,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 9.43e-06
+    },
+    "test_long": {
+      "n_docs": 73,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 1.494e-05
+    },
+    "validation": {
+      "n_docs": 4350,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 1.306e-05
+    },
+    "test": {
+      "n_docs": 4349,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 8e-06
+    },
+    "test_unseen_context": {
+      "n_docs": 1460,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 8e-06
+    },
+    "test_unseen_value": {
+      "n_docs": 1931,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 8e-06
+    },
+    "test_novel_template": {
+      "n_docs": 869,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 5.3e-06
+    },
+    "test_familiar_template": {
+      "n_docs": 159,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 5.18e-06
+    },
+    "test_format_shift": {
+      "n_docs": 3055,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 2.214e-05
+    },
+    "challenge_v1": {
+      "n_docs": 154,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 7.97e-06
+    },
+    "challenge_v1_policy": {
+      "n_docs": 154,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 7.97e-06
+    },
+    "synth_A_heldout": {
+      "n_docs": 960,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 1.371e-05
+    },
+    "synth_B_heldout": {
+      "n_docs": 776,
+      "documents_with_different_spans": 0,
+      "differing_ids": [],
+      "max_abs_diff_p_not_O": 9.99e-06
+    }
+  },
+  "problems": [],
+  "verified": true
+}

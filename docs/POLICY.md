@@ -89,7 +89,7 @@ Implemented in `src/confidentiality_detector/policy.py`:
 
 **Fail-closed behaviour is confirmed** (decision D, 2026-10-23). An inspection error and an input over 100,000 characters both BLOCK. The explanation states the actual reason ("the text could not be inspected" / "the text is too large to inspect completely"). It names no category and never claims that sensitive information was found; this is tested in `test_fail_closed_on_error_oversize_and_empty`. Both are single settings in `configs/inference/policy.json`.
 
-**Security modes** (`configs/inference/policy.json`) change how sensitive the model is, never *what* is protected. Evidence for the selected Round 2 system, R3 (`r2_e3b_positive`) + rules v3, from the full pipeline on `dev_v1` (56 BLOCK / 75 ALLOW; `reports/ROUND2_REPORT.md` §8):
+**Security modes** (`configs/inference/policy.json`) change how sensitive the model is, never *what* is protected. Evidence for the selected Round 2 system, R3 (`r2_e3b_positive`) + rules v3, from the full pipeline on `dev_v1` (56 BLOCK / 75 ALLOW; `reports/history/ROUND2_REPORT.md` §8):
 
 | Mode | Decoding | `dev_v1` False ALLOW | `dev_v1` False BLOCK |
 |---|---|---|---|
@@ -99,7 +99,7 @@ Implemented in `src/confidentiality_detector/policy.py`:
 * On `dev_v1`, `maximum` adds 5 false blocks and shows no leakage benefit, because `strict` already has none there.
 * On report-only synthetic sets `maximum` does reduce leakage: format-shifted values 45 → 20 of 3,055; long documents 2 → 0 of 45.
 * It is therefore kept as an option for especially sensitive deployments, not as the default.
-* No point in the `dev_v1` operating-point table lowers false blocks without giving up leaks (`reports/operating_points_r2_e3b_positive__rules_v3_dev_v1.json`).
+* No point in the `dev_v1` operating-point table lowers false blocks without giving up leaks (`reports/evidence/operating_points_r2_e3b_positive__rules_v3_dev_v1.json`).
 
 No false-block "budget" has been invented: the table gives the evidence, and the product owner chooses.
 
@@ -109,8 +109,8 @@ No false-block "budget" has been invented: the table gives the evidence, and the
 
 * After Round 2, the selected system (R3 + rules, `strict`) has 0/56 False ALLOW and 27/75 False BLOCK on the hand-written `dev_v1`. That is fewer leaks than the Round 1 system (5/56) and about the same false blocks (28/75).
 * Almost every false block is on harmless identifiers: tracking, order and meeting IDs, versions, SKUs, error codes, arithmetic. On `dev_v1`, 33 of R3's 34 false-block findings come from the model, not the rules.
-* **Thresholds cannot remove these false blocks.** 68% of R3's false-positive spans on `dev_v1` score ≥ 0.9, and 83% on the held-out hard-negative families (`reports/calibration_r2_e3b_positive.json`).
-* The hard-negative data of Round 2 (experiments R2 and R4) does remove most of them. R4 has 12/75 False BLOCK on `dev_v1`. But R2 alone increased leakage, and the selection rule fixed in advance therefore did not allow R4 (`reports/ROUND2_REPORT.md` §7). Choosing usability over that rule is a product decision; it has not been made.
+* **Thresholds cannot remove these false blocks.** 68% of R3's false-positive spans on `dev_v1` score ≥ 0.9, and 83% on the held-out hard-negative families (`reports/evidence/calibration_r2_e3b_positive.json`).
+* The hard-negative data of Round 2 (experiments R2 and R4) does remove most of them. R4 has 12/75 False BLOCK on `dev_v1`. But R2 alone increased leakage, and the selection rule fixed in advance therefore did not allow R4 (`reports/history/ROUND2_REPORT.md` §7). Choosing usability over that rule is a product decision; it has not been made.
 * The public-figure policy (§3) adds intended blocks that users may experience as friction. They are reported separately and never counted as errors.
 * No real employee prompts have been evaluated. Every rate above comes from synthetic or hand-written data (see `docs/RISKS.md`).
 

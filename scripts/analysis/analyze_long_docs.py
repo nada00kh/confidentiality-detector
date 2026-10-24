@@ -1,7 +1,7 @@
 """Explain test_long results: are long-document errors caused by length/windowing, or are they
 the same errors the model makes on the component documents in isolation?
 
-  python scripts/analyze_long_docs.py --results results/round2   ->  reports/round2_long_docs.json
+  python scripts/analysis/analyze_long_docs.py --results results/round2   ->  reports/evidence/round2_long_docs.json
 
 test_long documents are concatenations of test documents (meta["parents"]): a BLOCK document
 hides one PII-bearing test document among 8-14 target-free ones; an ALLOW document contains
@@ -22,7 +22,7 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from confidentiality_detector.alignment import encode_text, inference_windows  # noqa: E402
@@ -163,7 +163,7 @@ def main() -> None:
             out["runs"][key][sysname] = {
                 "entity_f1": res["entity"]["micro"]["f1"], "confusion": res["document"]["confusion"],
                 "false_block_predicted_from_components": predicted_fb, **summarise(rows), "docs": rows}
-    write_json(ROOT / "reports/round2_long_docs.json", out)
+    write_json(ROOT / "reports/evidence/round2_long_docs.json", out)
 
     print(f"test_long: {out['n_docs']} docs {out['decisions']}, tokens {out['tokens']}, windows/doc {out['windows_per_doc']}, "
           f"components/doc {out['components_per_doc']}")

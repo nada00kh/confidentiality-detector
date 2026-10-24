@@ -28,7 +28,7 @@ def test_label_mapping_matches_original_checkpoint_order():
 
 @pytest.mark.parametrize("split", ["validation", "test"])
 def test_reproduces_original_tokenized_dataset(tokenizer, split):
-    """training_features(policy=v1_original) must equal notebooks/03 output exactly."""
+    """training_features(policy=v1_original) must equal archive/03 output exactly."""
     datasets = pytest.importorskip("datasets")
     raw_dir, tok_dir = ROOT / "data/processed/mbert_splits", ROOT / "data/processed/mbert_tokenized"
     if not raw_dir.exists() or not tok_dir.exists():
