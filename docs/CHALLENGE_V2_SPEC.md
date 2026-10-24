@@ -82,7 +82,7 @@ Mark harmless look-alikes with `[[!TYPE:value]]` (for example `!TRACKING`, `!VER
 2. Validate: `python scripts/challenge_v2.py validate path/to/challenge_v2.txt`. It prints counts, errors and warnings, with case ids only. Fix all errors. Review every warning: CVV without evidence, failed checksums, missing coverage tags.
 3. Seal: `python scripts/challenge_v2.py seal path/to/challenge_v2.txt`. This records the file's sha256 in `reports/challenge_v2/SEAL.json`. Any later edit breaks the seal, and evaluation refuses to run.
 4. Optional: `python scripts/challenge_v2.py contamination path/to/challenge_v2.txt` reports, as aggregates only, how similar the cases are to the training data.
-5. Evaluate the system the developers hand over. They freeze it first: `configs/inference/frozen_system.json` records the weights' sha256, the policy file's sha256, the rules version and the inference windows. Evaluation refuses any other system.
+5. Evaluate the system the developers hand over. They freeze it first. `configs/inference/frozen_system.json` records the sha256 of every checkpoint file (weights, config, tokenizer), of the policy file and of the inference code including the rules, plus the inference windows, the runtime library versions and the git commit. Freezing itself refuses uncommitted code, a checkpoint that does not reproduce its archived predictions, and a system whose decisions differ from the documented results. Evaluation refuses any system that differs from the frozen record.
 
    ```
    python scripts/challenge_v2.py evaluate path/to/challenge_v2.txt --model-dir <checkpoint> --mode strict

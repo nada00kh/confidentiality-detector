@@ -156,14 +156,50 @@ def test_evaluation_refuses_a_system_that_is_not_the_frozen_one(tmp_path, monkey
     model.mkdir()
     (model / "model.safetensors").write_bytes(b"weights-a")
     policy = ROOT / "configs/inference/policy.json"
+    (model / "tokenizer.json").write_text("{}", encoding="utf-8")
     with pytest.raises(SystemExit, match="no frozen system"):
         cv2.check_frozen(model, policy)
-    rec = cv2.freeze(model, policy, None, "dev_v1", ROOT / "data/eval_v3")
+    rec = cv2.freeze(model, policy, None, ["dev_v1"], ROOT / "data/eval_v3", require_clean=False)
     assert rec["rules_version"] and rec["max_length"] == 512 and rec["overlap"] == 64
+    assert "detectors/rules.py" in rec["code_sha256"] and "tokenizer.json" in rec["checkpoint_files_sha256"]
+    assert rec["runtime"]["python"] and "commit" in rec["git"]
     assert cv2.check_frozen(model, policy)["model_sha256"] == rec["model_sha256"]
+    (model / "tokenizer.json").write_text('{"changed": true}', encoding="utf-8")
+    with pytest.raises(SystemExit, match="checkpoint_files_sha256"):
+        cv2.check_frozen(model, policy)
+    (model / "tokenizer.json").write_text("{}", encoding="utf-8")
     (model / "model.safetensors").write_bytes(b"weights-b")
     with pytest.raises(SystemExit, match="model_sha256"):
         cv2.check_frozen(model, policy)
+    (model / "model.safetensors").write_bytes(b"weights-a")
+    for key, value in (("code_sha256", {"detectors/rules.py": "0" * 64}), ("runtime", {"torch": "0.0"})):
+        tampered = dict(rec, **{key: value})
+        cv2.FROZEN.write_text(json.dumps(tampered), encoding="utf-8")
+        with pytest.raises(SystemExit, match=key):
+            cv2.check_frozen(model, policy)
+
+
+def test_freeze_refuses_uncommitted_changes(tmp_path, monkeypatch):
+    monkeypatch.setattr(cv2, "FROZEN", tmp_path / "frozen_system.json")
+    monkeypatch.setattr(cv2, "git_state", lambda: {"commit": "abc", "uncommitted_changes": True})
+    model = tmp_path / "ckpt"
+    model.mkdir()
+    (model / "model.safetensors").write_bytes(b"w")
+    with pytest.raises(SystemExit, match="commit all changes"):
+        cv2.freeze(model, ROOT / "configs/inference/policy.json", None, ["dev_v1"], ROOT / "data/eval_v3")
+    assert not cv2.FROZEN.exists()
+
+
+def test_live_decisions_must_match_the_documented_evidence(tmp_path):
+    evidence = tmp_path / "evidence.json"
+    documented = {"FA": 0, "FB": 2, "false_allow_ids": [], "false_block_ids": ["a", "b"]}
+    evidence.write_text(json.dumps({"sets": {"dev_v1": {"runs": {"R3": {"system_strict": documented}}}}}), encoding="utf-8")
+    same = {"dev_v1/strict": dict(documented, n_docs=5, decisions_sha256="x")}
+    assert cv2.compare_with_evidence(same, evidence, "R3") == []
+    other = {"dev_v1/strict": dict(documented, FB=1, false_block_ids=["a"], n_docs=5, decisions_sha256="y"),
+             "dev_v1/maximum": dict(documented, n_docs=5, decisions_sha256="z")}
+    problems = cv2.compare_with_evidence(other, evidence, "R3")
+    assert any("dev_v1/strict: FB" in p for p in problems) and any("dev_v1/maximum: not in" in p for p in problems)
 
 
 def test_predictions_fingerprint_is_stable_and_text_free():

@@ -20,19 +20,26 @@ Protected categories: `PASSWORD USERNAME EMAIL PHONENUMBER FIRSTNAME LASTNAME SS
 
 ## Quick start
 
-```bash
-uv sync                                   # Python 3.13 environment; installs this package (editable)
-                                          # optional: --group baselines (Presidio baseline), --group notebooks (archive/)
-python -m pytest -q                       # test suite
-confidentiality-detector --model-dir <checkpoint dir> --file prompt.txt   # exit 0 = ALLOW, 10 = BLOCK, 2 = error
-python -m confidentiality_detector --model-dir <checkpoint dir> < prompt.txt          # same, from stdin
+The repository lives in a OneDrive-synced folder, and OneDrive interferes with virtual environments. The project's environment therefore lives **outside** the repository, in `%LOCALAPPDATA%\confidentiality-detector\venv`, built by uv from `uv.lock`. Windows PowerShell:
+
+```powershell
+. .\scripts\dev_env.ps1 -Sync      # first time: create or update the environment from uv.lock, then activate it
+. .\scripts\dev_env.ps1            # any later PowerShell session (VS Code terminals of this workspace are set up automatically)
+python -m pytest -q                 # test suite
+confidentiality-detector --model-dir checkpoints/r2_e3b_positive --file prompt.txt   # exit 0 = ALLOW, 10 = BLOCK, 2 = error
+Get-Content prompt.txt | python -m confidentiality_detector --model-dir checkpoints/r2_e3b_positive   # same, from stdin
 ```
 
-Without uv: `pip install -e .` (Python 3.13), then the same commands. The CLI reads the default policy from `configs/inference/policy.json` in this checkout; pass `--policy` otherwise.
+* **What the script does:** it sets `UV_PROJECT_ENVIRONMENT` for the current session only, so `uv sync` and `uv run` use the external environment, and it activates that environment. No global setting is changed.
+* **VS Code:** the workspace settings in `.vscode/` do the same for this workspace's terminals and propose the interpreter.
+* **Outside OneDrive** (or on Linux/macOS), plain `uv sync` with the default `.venv` works too.
+* **Optional groups:** `uv sync --group baselines` (Presidio baseline), `uv sync --group notebooks` (`archive/`).
+* **Without uv:** `pip install -e .` (Python 3.13).
+* **Policy file:** the CLI reads the default policy from `configs/inference/policy.json` in this checkout; pass `--policy` otherwise.
 
 ```python
 from confidentiality_detector.pipeline import ConfidentialityDetector
-detector = ConfidentialityDetector.load("<checkpoint dir>", "configs/inference/policy.json")
+detector = ConfidentialityDetector.load("checkpoints/r2_e3b_positive", "configs/inference/policy.json")
 print(detector.inspect("please wire the deposit to DE89 3704 0044 0532 0130 00").to_dict())
 ```
 

@@ -1,0 +1,10 @@
+{
+    // The project's Python environment lives outside OneDrive, in %LOCALAPPDATA%\confidentiality-detector\venv
+    // (see scripts/dev_env.ps1). These settings apply to this workspace only.
+    "python.defaultInterpreterPath": "${env:LOCALAPPDATA}\\confidentiality-detector\\venv\\Scripts\\python.exe",
+    "terminal.integrated.env.windows": {
+        "UV_PROJECT_ENVIRONMENT": "${env:LOCALAPPDATA}\\confidentiality-detector\\venv"
+    },
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"]
+}

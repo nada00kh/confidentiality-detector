@@ -1,6 +1,6 @@
 # Scripts
 
-Entry points, in pipeline order. Run from the repository root with the project environment (`uv sync`). Each script's docstring gives its exact usage. The package `src/confidentiality_detector/` holds the shared implementation; the scripts only orchestrate.
+Entry points, in pipeline order. Run from the repository root in the project environment: `. .\scripts\dev_env.ps1`, which uses the environment outside OneDrive (see the main README). Each script's docstring gives its exact usage. The package `src/confidentiality_detector/` holds the shared implementation; the scripts only orchestrate.
 
 ## Pipeline
 
@@ -16,8 +16,12 @@ Entry points, in pipeline order. Run from the repository root with the project e
 | Evaluation | `evaluate.py` | model-level or model + rules (`--hybrid-with`) metrics from stored predictions |
 | | `evaluate_system.py` | the full BLOCK/ALLOW system: stored token probabilities replayed through `ConfidentialityDetector` (decoding, live rules, policy), with model, hybrid and system levels side by side |
 | Freeze and benchmark | `verify_checkpoint.py` | proves that a local checkpoint reproduces its archived predictions |
-| | `challenge_v2.py` | the independent benchmark: `validate`, `seal`, `contamination` and `freeze`, then a single ledgered `evaluate` |
+| | `challenge_v2.py` | the independent benchmark: `validate`, `seal` and `contamination` (author); `freeze` and `verify-frozen` (developers); then a single ledgered `evaluate` |
 | | `contamination.py` | similarity of a text set to all training data (used by `challenge_v2.py contamination`) |
+
+## Environment
+
+* `dev_env.ps1`: dot-source it in PowerShell to use the project environment in `%LOCALAPPDATA%\confidentiality-detector\venv` for this session; with `-Sync` it also creates or updates the environment from `uv.lock`.
 
 ## Round 1 reproduction (frozen)
 

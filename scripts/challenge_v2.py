@@ -7,12 +7,18 @@ written only to the author's own folder, and only when --case-details is passed.
   python scripts/challenge_v2.py validate  <file>        # author: format + policy checks
   python scripts/challenge_v2.py seal      <file>        # author: freeze (sha256 -> reports/challenge_v2/SEAL.json)
   python scripts/challenge_v2.py contamination <file>    # similarity to all training data (aggregates)
-  python scripts/challenge_v2.py freeze --model-dir <ckpt> [--verify-pred-dir <dir>]   # developers
+  python scripts/challenge_v2.py freeze --model-dir <ckpt> --verify-pred-dir <dir> --evidence <json>   # developers
+  python scripts/challenge_v2.py verify-frozen --model-dir <ckpt>       # re-check the frozen system (no challenge data)
   python scripts/challenge_v2.py evaluate  <file> --model-dir <ckpt> [--mode strict]
 
+Freezing refuses uncommitted changes to tracked files, a checkpoint that does not reproduce its
+archived predictions, and a live system whose BLOCK/ALLOW decisions differ from the documented
+evidence. The frozen identity (configs/inference/frozen_system.json) covers every checkpoint file
+(weights, config, tokenizer), the policy file, the inference code (including the rules), the
+inference windows, the runtime library versions and the git commit.
+
 Safeguards: evaluation refuses unsealed or modified files, and refuses a system that does not
-match configs/inference/frozen_system.json (model weights, policy, rules version, windows);
-every evaluation is appended to reports/challenge_v2/LEDGER.jsonl (system fingerprints, mode,
+match configs/inference/frozen_system.json; every evaluation is appended to reports/challenge_v2/LEDGER.jsonl (system fingerprints, mode,
 time, a fingerprint of the predictions) so repeated evaluation is visible; the Colab bundle
 builder refuses to package anything named challenge_v2; data/challenge_v2/ is git-ignored.
 """
@@ -22,7 +28,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import importlib.metadata
+import platform
 import re
+import subprocess
 import sys
 import time
 from collections import Counter
@@ -33,12 +42,19 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from confidentiality_detector.challenge import load_challenge  # noqa: E402
-from confidentiality_detector.documents import Span, file_sha256  # noqa: E402
+from confidentiality_detector.documents import Span, file_sha256, load_documents  # noqa: E402
 from confidentiality_detector.labels import TARGET_LABELS, cvv_has_evidence  # noqa: E402
 from confidentiality_detector.metrics import evaluate_by_tag, evaluate_documents, evaluate_entities  # noqa: E402
 
 STATE = ROOT / "reports/challenge_v2"
 FROZEN = ROOT / "configs/inference/frozen_system.json"
+# Everything that turns a prompt into a decision. Hashes of these files are part of the frozen identity.
+INFERENCE_CODE = ("__init__.py", "__main__.py", "alignment.py", "decoding.py", "documents.py", "labels.py",
+                  "pipeline.py", "policy.py", "detectors/__init__.py", "detectors/hybrid.py", "detectors/rules.py",
+                  "detectors/transformer.py")
+RUNTIME_PACKAGES = ("torch", "transformers", "tokenizers", "safetensors", "numpy", "phonenumbers")
+IDENTITY_KEYS = ("model_sha256", "checkpoint_files_sha256", "policy_sha256", "rules_version", "code_sha256",
+                 "max_length", "overlap", "stitching", "runtime")
 MIN_CASES = {"BLOCK": 100, "ALLOW": 100}
 RECOMMENDED_TAGS = ("enterprise", "lookalike", "structured", "difficult-positive", "unfamiliar-format", "long", "oos-secret")
 # Decision F: API keys, tokens and similar credentials are outside the 13 categories. They must be
@@ -149,31 +165,108 @@ def findings_fingerprint(findings_per_doc: dict[str, list[Span]], decisions: dic
 
 
 def system_fingerprint(model_dir: Path, policy_path: Path) -> dict:
+    """The identity of a deployable system: every file that determines a decision, plus the runtime."""
     from confidentiality_detector.detectors.rules import RULES_VERSION
     from confidentiality_detector.policy import PolicyConfig
 
-    weights = sorted(p for p in Path(model_dir).iterdir() if p.suffix == ".safetensors")
+    files = sorted(p for p in Path(model_dir).iterdir() if p.is_file())
+    weights = [p for p in files if p.suffix == ".safetensors"]
     if not weights:
         raise SystemExit(f"{model_dir}: no .safetensors weights")
     policy = PolicyConfig.from_json(policy_path)  # what ConfidentialityDetector.load uses
-    return {"model_dir": Path(model_dir).name, "model_sha256": {p.name: file_sha256(p) for p in weights},
-            "policy_sha256": file_sha256(policy_path), "rules_version": RULES_VERSION, **policy.inference}
+    package = ROOT / "src/confidentiality_detector"
+    runtime = {"python": platform.python_version()}
+    for name in RUNTIME_PACKAGES:
+        try:
+            runtime[name] = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            runtime[name] = None
+    return {"model_dir": Path(model_dir).name,
+            "model_sha256": {p.name: file_sha256(p) for p in weights},
+            "checkpoint_files_sha256": {p.name: file_sha256(p) for p in files if p.suffix != ".safetensors"},
+            "policy_sha256": file_sha256(policy_path), "rules_version": RULES_VERSION,
+            "code_sha256": {rel: file_sha256(package / rel) for rel in INFERENCE_CODE},
+            **policy.inference, "runtime": runtime}
 
 
-def freeze(model_dir: Path, policy_path: Path, verify_pred_dir: Path | None, verify_set: str, eval_dir: Path) -> dict:
-    """Developers: record the system that will face challenge_v2. With --verify-pred-dir, first prove
-    that this local checkpoint reproduces the stored predictions it was selected on
-    (scripts/verify_checkpoint.py, always under the evaluated 512/64/"first" windows, so the check
-    is about the checkpoint's identity whatever inference settings policy.json now holds)."""
+def git_state() -> dict:
+    def git(*args: str) -> str:
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True, check=True).stdout.strip()
+
+    try:
+        return {"commit": git("rev-parse", "HEAD"),
+                "uncommitted_changes": bool(git("status", "--porcelain", "--untracked-files=no"))}
+    except (OSError, subprocess.CalledProcessError):
+        return {"commit": None, "uncommitted_changes": None}
+
+
+def behaviour(model_dir: Path, policy_path: Path, sets: list[str], eval_dir: Path) -> dict:
+    """Run the live system (real checkpoint, rules, policy) in both modes; record decisions only."""
+    from confidentiality_detector.pipeline import ConfidentialityDetector
+
+    detector = ConfidentialityDetector.load(model_dir, policy_path)
+    out = {}
+    for s in sets:
+        docs = load_documents(eval_dir / f"{s}.jsonl")
+        for mode in ("strict", "maximum"):
+            results = detector.inspect_batch([d.text for d in docs], mode)
+            findings = {d.doc_id: [Span(f.start, f.end, f.label) for f in r.findings] for d, r in zip(docs, results)}
+            decisions = {d.doc_id: r.blocked for d, r in zip(docs, results)}
+            m = evaluate_documents(docs, {k: [Span(0, 1, "BLOCK")] if v else [] for k, v in decisions.items()})
+            out[f"{s}/{mode}"] = {"n_docs": len(docs), "FA": m["confusion"]["FN_false_allow"],
+                                  "FB": m["confusion"]["FP_false_block"],
+                                  "false_allow_ids": m["false_allow_doc_ids"], "false_block_ids": m["false_block_doc_ids"],
+                                  "decisions_sha256": findings_fingerprint(findings, decisions)}
+    return out
+
+
+def compare_with_evidence(observed: dict, evidence_path: Path, run: str) -> list[str]:
+    """Differences between the live system and the documented results (scripts/evaluate_system.py --detail)."""
+    evidence = json.loads(Path(evidence_path).read_text(encoding="utf-8"))["sets"]
+    problems = []
+    for key, obs in observed.items():
+        s, mode = key.split("/")
+        documented = evidence.get(s, {}).get("runs", {}).get(run, {}).get(f"system_{mode}")
+        if documented is None:
+            problems.append(f"{key}: not in {Path(evidence_path).name}")
+            continue
+        for k in ("FA", "FB", "false_allow_ids", "false_block_ids"):
+            if obs[k] != documented[k]:
+                problems.append(f"{key}: {k} differs from the evidence")
+    return problems
+
+
+def freeze(model_dir: Path, policy_path: Path, verify_pred_dir: Path | None, verify_sets: list[str], eval_dir: Path,
+           evidence: Path | None = None, evidence_run: str = "R3", require_clean: bool = True) -> dict:
+    """Developers: record the system that will face challenge_v2, refusing anything unverified.
+
+    1. No uncommitted changes to tracked files, so the git commit identifies the code.
+    2. With --verify-pred-dir: the local checkpoint reproduces the stored predictions it was selected
+       on (scripts/verify_checkpoint.py, under the evaluated 512/64/"first" windows).
+    3. With --evidence: the live full system (both modes) makes exactly the documented BLOCK/ALLOW
+       decisions on the verification sets."""
+    git = git_state()
+    if require_clean and (git["commit"] is None or git["uncommitted_changes"]):
+        raise SystemExit("refusing to freeze: commit all changes to tracked files first (the freeze records the git commit)")
     record = system_fingerprint(model_dir, policy_path)
+    record["git"] = git
     if verify_pred_dir is not None:
         from verify_checkpoint import verify
 
-        report = verify(model_dir, verify_pred_dir, [verify_set], eval_dir)
+        report = verify(model_dir, verify_pred_dir, verify_sets, eval_dir)
         if report["problems"]:
             raise SystemExit("refusing to freeze: " + "; ".join(report["problems"]))
-        record["verified_against"] = {"pred_dir": Path(verify_pred_dir).name, "set": verify_set,
-                                      "n_docs": report["sets"][verify_set]["n_docs"], "documents_differing": 0}
+        record["verified_against"] = {"pred_dir": Path(verify_pred_dir).name,
+                                      "sets": {s: {"n_docs": r["n_docs"], "documents_differing": 0,
+                                                   "max_abs_diff_p_not_O": r["max_abs_diff_p_not_O"]}
+                                               for s, r in report["sets"].items()}}
+    if evidence is not None:
+        observed = behaviour(model_dir, policy_path, verify_sets, eval_dir)
+        problems = compare_with_evidence(observed, evidence, evidence_run)
+        if problems:
+            raise SystemExit("refusing to freeze: " + "; ".join(problems))
+        record["behaviour"] = {"matches": f"{Path(evidence).name} (run {evidence_run}, sha256 {file_sha256(evidence)[:16]})",
+                               **{k: {m: v[m] for m in ("n_docs", "FA", "FB", "decisions_sha256")} for k, v in observed.items()}}
     record["frozen_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
     FROZEN.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
     return record
@@ -184,11 +277,24 @@ def check_frozen(model_dir: Path, policy_path: Path) -> dict:
         raise SystemExit("no frozen system: run `challenge_v2.py freeze --model-dir <ckpt>` before the hidden evaluation")
     frozen = json.loads(FROZEN.read_text(encoding="utf-8"))
     actual = system_fingerprint(model_dir, policy_path)
-    diffs = [k for k in ("model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching")
-             if frozen.get(k) != actual[k]]
+    diffs = [k for k in IDENTITY_KEYS if frozen.get(k) != actual[k]]
     if diffs:
         raise SystemExit(f"this system does not match the frozen system ({', '.join(diffs)} differ); refusing to evaluate")
     return frozen
+
+
+def verify_frozen(model_dir: Path, policy_path: Path, eval_dir: Path) -> dict:
+    """Identity check plus a re-run of the recorded behaviour; touches no challenge_v2 data."""
+    frozen = check_frozen(model_dir, policy_path)
+    recorded = {k: v for k, v in frozen.get("behaviour", {}).items() if k != "matches"}
+    if not recorded:
+        raise SystemExit("the frozen record has no behaviour fingerprint; freeze with --evidence")
+    observed = behaviour(model_dir, policy_path, sorted({k.split("/")[0] for k in recorded}), eval_dir)
+    differing = [k for k in recorded if observed[k]["decisions_sha256"] != recorded[k]["decisions_sha256"]]
+    if differing:
+        raise SystemExit(f"decisions differ from the frozen record on {differing}")
+    return {"identity": "matches the frozen record", "behaviour": {k: "identical decisions and findings" for k in recorded},
+            "frozen_at": frozen["frozen_at"], "git_commit": frozen["git"]["commit"]}
 
 
 def case_details(docs, findings_per_doc, decisions) -> list[dict]:
@@ -220,7 +326,13 @@ def main() -> None:
     p.add_argument("--model-dir", type=Path, required=True)
     p.add_argument("--policy", type=Path, default=ROOT / "configs/inference/policy.json")
     p.add_argument("--verify-pred-dir", type=Path, default=None, help="stored predictions of this checkpoint")
-    p.add_argument("--verify-set", default="dev_v1")
+    p.add_argument("--verify-sets", nargs="+", default=["dev_v1", "test_long"])
+    p.add_argument("--evidence", type=Path, default=None, help="documented results (scripts/evaluate_system.py --detail)")
+    p.add_argument("--evidence-run", default="R3")
+    p.add_argument("--eval-dir", type=Path, default=ROOT / "data/eval_v3")
+    p = sub.add_parser("verify-frozen")
+    p.add_argument("--model-dir", type=Path, required=True)
+    p.add_argument("--policy", type=Path, default=ROOT / "configs/inference/policy.json")
     p.add_argument("--eval-dir", type=Path, default=ROOT / "data/eval_v3")
     for name in ("validate", "seal", "contamination", "evaluate"):
         p = sub.add_parser(name)
@@ -234,7 +346,11 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.cmd == "freeze":
-        print(json.dumps(freeze(args.model_dir, args.policy, args.verify_pred_dir, args.verify_set, args.eval_dir), indent=2))
+        print(json.dumps(freeze(args.model_dir, args.policy, args.verify_pred_dir, args.verify_sets, args.eval_dir,
+                                args.evidence, args.evidence_run), indent=2))
+        return
+    if args.cmd == "verify-frozen":
+        print(json.dumps(verify_frozen(args.model_dir, args.policy, args.eval_dir), indent=2))
         return
     if args.cmd == "validate":
         r = validate(args.file)
@@ -261,7 +377,7 @@ def main() -> None:
     result = score(docs, findings, decisions)
     mode = detector.policy.mode(args.mode).name
     entry = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "challenge_sha256": record["sha256"],
-             **{k: frozen[k] for k in ("model_dir", "model_sha256", "policy_sha256", "rules_version", "max_length", "overlap", "stitching")},
+             **{k: frozen[k] for k in ("model_dir", *IDENTITY_KEYS)}, "git_commit": frozen.get("git", {}).get("commit"),
              "frozen_at": frozen.get("frozen_at"), "mode": mode, "predictions_sha256": findings_fingerprint(findings, decisions),
              "far": result["document"]["false_allow_rate"], "fbr": result["document"]["false_block_rate"]}
     STATE.mkdir(parents=True, exist_ok=True)
