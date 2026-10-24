@@ -1,0 +1,1882 @@
+{
+  "pred": "rules_v2",
+  "threshold": null,
+  "hybrid_with": null,
+  "rule_priority": [
+    "CREDITCARDNUMBER",
+    "EMAIL",
+    "IBAN",
+    "IPV4",
+    "SSN"
+  ],
+  "rule_labels": null,
+  "sets": {
+    "validation": {
+      "entity": {
+        "micro": {
+          "precision": 0.9908480780964003,
+          "recall": 0.34175084175084175,
+          "f1": 0.5082146768893757,
+          "tp": 1624,
+          "fp": 15,
+          "fn": 3128,
+          "support": 4752,
+          "overlap_recall": 0.3421717171717172,
+          "caught_any_type": 0.34364478114478114
+        },
+        "macro_f1": 0.522663777244444,
+        "per_class": {
+          "PASSWORD": {
+            "precision": 0.968421052631579,
+            "recall": 0.37398373983739835,
+            "f1": 0.5395894428152492,
+            "tp": 92,
+            "fp": 3,
+            "fn": 154,
+            "support": 246,
+            "overlap_recall": 0.37398373983739835,
+            "caught_any_type": 0.37398373983739835
+          },
+          "USERNAME": {
+            "precision": 0.75,
+            "recall": 0.036923076923076927,
+            "f1": 0.07038123167155426,
+            "tp": 12,
+            "fp": 4,
+            "fn": 313,
+            "support": 325,
+            "overlap_recall": 0.036923076923076927,
+            "caught_any_type": 0.036923076923076927
+          },
+          "EMAIL": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 441,
+            "fp": 0,
+            "fn": 0,
+            "support": 441,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "PHONENUMBER": {
+            "precision": 0.9259259259259259,
+            "recall": 0.09541984732824428,
+            "f1": 0.17301038062283738,
+            "tp": 25,
+            "fp": 2,
+            "fn": 237,
+            "support": 262,
+            "overlap_recall": 0.10305343511450382,
+            "caught_any_type": 0.10687022900763359
+          },
+          "FIRSTNAME": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 1319,
+            "support": 1319,
+            "overlap_recall": 0.0,
+            "caught_any_type": 0.0
+          },
+          "LASTNAME": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 498,
+            "support": 498,
+            "overlap_recall": 0.0,
+            "caught_any_type": 0.0
+          },
+          "SSN": {
+            "precision": 1.0,
+            "recall": 0.33816425120772947,
+            "f1": 0.5054151624548737,
+            "tp": 70,
+            "fp": 0,
+            "fn": 137,
+            "support": 207,
+            "overlap_recall": 0.33816425120772947,
+            "caught_any_type": 0.34299516908212563
+          },
+          "CREDITCARDNUMBER": {
+            "precision": 0.9888888888888889,
+            "recall": 0.664179104477612,
+            "f1": 0.7946428571428571,
+            "tp": 178,
+            "fp": 2,
+            "fn": 90,
+            "support": 268,
+            "overlap_recall": 0.664179104477612,
+            "caught_any_type": 0.6753731343283582
+          },
+          "CREDITCARDCVV": {
+            "precision": 1.0,
+            "recall": 0.5875,
+            "f1": 0.7401574803149606,
+            "tp": 47,
+            "fp": 0,
+            "fn": 33,
+            "support": 80,
+            "overlap_recall": 0.5875,
+            "caught_any_type": 0.5875
+          },
+          "IBAN": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 187,
+            "fp": 0,
+            "fn": 0,
+            "support": 187,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "ACCOUNTNUMBER": {
+            "precision": 0.9791666666666666,
+            "recall": 0.6245847176079734,
+            "f1": 0.7626774847870182,
+            "tp": 188,
+            "fp": 4,
+            "fn": 113,
+            "support": 301,
+            "overlap_recall": 0.6245847176079734,
+            "caught_any_type": 0.6312292358803987
+          },
+          "STREET": {
+            "precision": 1.0,
+            "recall": 0.11742424242424243,
+            "f1": 0.21016949152542375,
+            "tp": 31,
+            "fp": 0,
+            "fn": 233,
+            "support": 264,
+            "overlap_recall": 0.11742424242424243,
+            "caught_any_type": 0.11742424242424243
+          },
+          "IPV4": {
+            "precision": 1.0,
+            "recall": 0.9971751412429378,
+            "f1": 0.9985855728429986,
+            "tp": 353,
+            "fp": 0,
+            "fn": 1,
+            "support": 354,
+            "overlap_recall": 0.9971751412429378,
+            "caught_any_type": 0.9971751412429378
+          }
+        },
+        "fn_breakdown": {
+          "missed": 3119,
+          "type_confusion": 7,
+          "boundary": 2
+        },
+        "fp_breakdown": {
+          "type_confusion": 7,
+          "hard_negative": 4,
+          "boundary": 2,
+          "spurious": 2
+        },
+        "type_confusion": {
+          "CREDITCARDNUMBER->ACCOUNTNUMBER": 3,
+          "ACCOUNTNUMBER->USERNAME": 2,
+          "SSN->ACCOUNTNUMBER": 1,
+          "PHONENUMBER->CREDITCARDNUMBER": 1
+        },
+        "hard_negative_fp": {
+          "PIN->PASSWORD": 3,
+          "BUILDINGNUMBER->CREDITCARDNUMBER": 1,
+          "PHONEIMEI->CREDITCARDNUMBER": 1
+        },
+        "examples": {
+          "fn_missed": [
+            {
+              "doc_id": "202842",
+              "start": 42,
+              "end": 48,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "177425",
+              "start": 60,
+              "end": 72,
+              "label": "PASSWORD",
+              "shape": "AAaaAaa__A9A"
+            },
+            {
+              "doc_id": "196020",
+              "start": 52,
+              "end": 56,
+              "label": "FIRSTNAME",
+              "shape": "Aaaa"
+            },
+            {
+              "doc_id": "169637",
+              "start": 196,
+              "end": 208,
+              "label": "PASSWORD",
+              "shape": "AaaaaAAA9AA9"
+            },
+            {
+              "doc_id": "178169",
+              "start": 8,
+              "end": 14,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "166445",
+              "start": 118,
+              "end": 134,
+              "label": "CREDITCARDNUMBER",
+              "shape": "9999999999999999"
+            },
+            {
+              "doc_id": "196881",
+              "start": 131,
+              "end": 144,
+              "label": "STREET",
+              "shape": "Aaaaa Aaaaaaa"
+            },
+            {
+              "doc_id": "196881",
+              "start": 157,
+              "end": 173,
+              "label": "PHONENUMBER",
+              "shape": "+999 99 999.9999"
+            },
+            {
+              "doc_id": "197234",
+              "start": 101,
+              "end": 107,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "178316",
+              "start": 8,
+              "end": 17,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaaaaa"
+            },
+            {
+              "doc_id": "173182",
+              "start": 5,
+              "end": 10,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaa"
+            },
+            {
+              "doc_id": "192477",
+              "start": 191,
+              "end": 208,
+              "label": "PHONENUMBER",
+              "shape": "+999.999-999-9999"
+            },
+            {
+              "doc_id": "194838",
+              "start": 5,
+              "end": 20,
+              "label": "USERNAME",
+              "shape": "Aaaaaaa_Aaaaaaa"
+            },
+            {
+              "doc_id": "194838",
+              "start": 153,
+              "end": 165,
+              "label": "PASSWORD",
+              "shape": "aaAA9aAaAaAA"
+            },
+            {
+              "doc_id": "182793",
+              "start": 203,
+              "end": 219,
+              "label": "PHONENUMBER",
+              "shape": "+99.999.999 9999"
+            },
+            {
+              "doc_id": "174404",
+              "start": 134,
+              "end": 147,
+              "label": "PHONENUMBER",
+              "shape": "9999.99999999"
+            },
+            {
+              "doc_id": "198069",
+              "start": 104,
+              "end": 112,
+              "label": "ACCOUNTNUMBER",
+              "shape": "99999999"
+            },
+            {
+              "doc_id": "194431",
+              "start": 195,
+              "end": 208,
+              "label": "PHONENUMBER",
+              "shape": "9999 999 9999"
+            },
+            {
+              "doc_id": "172195",
+              "start": 62,
+              "end": 78,
+              "label": "STREET",
+              "shape": "Aaaaaaaaa Aaaaaa"
+            },
+            {
+              "doc_id": "172195",
+              "start": 141,
+              "end": 157,
+              "label": "CREDITCARDNUMBER",
+              "shape": "9999999999999999"
+            },
+            {
+              "doc_id": "174368",
+              "start": 6,
+              "end": 14,
+              "label": "USERNAME",
+              "shape": "Aaaaaa99"
+            },
+            {
+              "doc_id": "199029",
+              "start": 12,
+              "end": 18,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "173600",
+              "start": 0,
+              "end": 5,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaa"
+            },
+            {
+              "doc_id": "173600",
+              "start": 6,
+              "end": 13,
+              "label": "LASTNAME",
+              "shape": "Aaaaaaa"
+            },
+            {
+              "doc_id": "207335",
+              "start": 35,
+              "end": 46,
+              "label": "STREET",
+              "shape": "Aaaaa Aaaaa"
+            }
+          ],
+          "fn_type_confusion": [
+            {
+              "doc_id": "178377",
+              "start": 81,
+              "end": 97,
+              "label": "CREDITCARDNUMBER",
+              "shape": "9999999999999999",
+              "pred_labels": [
+                "ACCOUNTNUMBER"
+              ]
+            },
+            {
+              "doc_id": "191879",
+              "start": 69,
+              "end": 77,
+              "label": "ACCOUNTNUMBER",
+              "shape": "99999999",
+              "pred_labels": [
+                "USERNAME"
+              ]
+            },
+            {
+              "doc_id": "186635",
+              "start": 163,
+              "end": 171,
+              "label": "ACCOUNTNUMBER",
+              "shape": "99999999",
+              "pred_labels": [
+                "USERNAME"
+              ]
+            },
+            {
+              "doc_id": "201786",
+              "start": 135,
+              "end": 146,
+              "label": "SSN",
+              "shape": "999 99 9999",
+              "pred_labels": [
+                "ACCOUNTNUMBER"
+              ]
+            },
+            {
+              "doc_id": "180994",
+              "start": 61,
+              "end": 77,
+              "label": "CREDITCARDNUMBER",
+              "shape": "9999999999999999",
+              "pred_labels": [
+                "ACCOUNTNUMBER"
+              ]
+            },
+            {
+              "doc_id": "182189",
+              "start": 121,
+              "end": 137,
+              "label": "CREDITCARDNUMBER",
+              "shape": "9999999999999999",
+              "pred_labels": [
+                "ACCOUNTNUMBER"
+              ]
+            },
+            {
+              "doc_id": "167607",
+              "start": 145,
+              "end": 162,
+              "label": "PHONENUMBER",
+              "shape": "+999 999 999 9999",
+              "pred_labels": [
+                "CREDITCARDNUMBER"
+              ]
+            }
+          ],
+          "fp_hard_negative": [
+            {
+              "doc_id": "205732",
+              "start": 165,
+              "end": 169,
+              "label": "PASSWORD",
+              "shape": "9999",
+              "negative_label": "PIN"
+            },
+            {
+              "doc_id": "176672",
+              "start": 28,
+              "end": 50,
+              "label": "CREDITCARDNUMBER",
+              "shape": "999-99-999999-999999-9",
+              "negative_label": "BUILDINGNUMBER"
+            },
+            {
+              "doc_id": "187709",
+              "start": 83,
+              "end": 87,
+              "label": "PASSWORD",
+              "shape": "9999",
+              "negative_label": "PIN"
+            },
+            {
+              "doc_id": "189186",
+              "start": 220,
+              "end": 224,
+              "label": "PASSWORD",
+              "shape": "9999",
+              "negative_label": "PIN"
+            }
+          ],
+          "fn_boundary": [
+            {
+              "doc_id": "178190",
+              "start": 83,
+              "end": 99,
+              "label": "PHONENUMBER",
+              "shape": "+99 999-999-9999",
+              "pred": [
+                [
+                  87,
+                  99
+                ]
+              ]
+            },
+            {
+              "doc_id": "208270",
+              "start": 177,
+              "end": 193,
+              "label": "PHONENUMBER",
+              "shape": "+99 999-999.9999",
+              "pred": [
+                [
+                  181,
+                  193
+                ]
+              ]
+            }
+          ],
+          "fp_spurious": [
+            {
+              "doc_id": "202977",
+              "start": 92,
+              "end": 100,
+              "label": "USERNAME",
+              "shape": "aaaaaaaa"
+            },
+            {
+              "doc_id": "198651",
+              "start": 22,
+              "end": 31,
+              "label": "USERNAME",
+              "shape": "aaaaaaaaa"
+            }
+          ]
+        }
+      },
+      "document": {
+        "block_precision": 0.9986320109439124,
+        "block_recall": 0.4839244282399735,
+        "block_f1": 0.6519312346505917,
+        "confusion": {
+          "TP_block": 1460,
+          "FN_false_allow": 1557,
+          "FP_false_block": 2,
+          "TN_allow": 1152
+        },
+        "n_docs": 4171,
+        "n_block_docs": 3017,
+        "n_allow_docs": 1154,
+        "n_ambiguous_excluded": 179,
+        "false_allow_rate": 0.5160755717600265,
+        "false_allow_rate_ci95": [
+          0.4982338931756238,
+          0.5338763637805833
+        ],
+        "false_block_rate": 0.0017331022530329288,
+        "false_block_rate_ci95": [
+          0.00047539792932241483,
+          0.006297203780617873
+        ],
+        "accuracy": 0.6262287221289858,
+        "false_allow_doc_ids": [
+          "202842",
+          "177425",
+          "178169",
+          "166445",
+          "196881",
+          "197234",
+          "178316",
+          "194838",
+          "198069",
+          "194431",
+          "172195",
+          "174368",
+          "199029",
+          "173600",
+          "207335",
+          "199896",
+          "203269",
+          "204701",
+          "169701",
+          "191748",
+          "171005",
+          "182240",
+          "167752",
+          "183369",
+          "199877",
+          "197212",
+          "207806",
+          "177667",
+          "193822",
+          "209026",
+          "204124",
+          "194095",
+          "172224",
+          "173414",
+          "198274",
+          "167512",
+          "189591",
+          "172381",
+          "201006",
+          "185447",
+          "205025",
+          "194468",
+          "173439",
+          "192670",
+          "191412",
+          "184031",
+          "186024",
+          "169645",
+          "194244",
+          "171785"
+        ],
+        "false_block_doc_ids": [
+          "202977",
+          "189186"
+        ]
+      }
+    },
+    "dev_v1": {
+      "entity": {
+        "micro": {
+          "precision": 0.8048780487804879,
+          "recall": 0.38372093023255816,
+          "f1": 0.5196850393700788,
+          "tp": 33,
+          "fp": 8,
+          "fn": 53,
+          "support": 86,
+          "overlap_recall": 0.4069767441860465,
+          "caught_any_type": 0.4186046511627907
+        },
+        "macro_f1": 0.6307303807303808,
+        "per_class": {
+          "PASSWORD": {
+            "precision": 0.7142857142857143,
+            "recall": 0.38461538461538464,
+            "f1": 0.5,
+            "tp": 5,
+            "fp": 2,
+            "fn": 8,
+            "support": 13,
+            "overlap_recall": 0.46153846153846156,
+            "caught_any_type": 0.5384615384615384
+          },
+          "USERNAME": {
+            "precision": 1.0,
+            "recall": 0.23529411764705882,
+            "f1": 0.38095238095238093,
+            "tp": 4,
+            "fp": 0,
+            "fn": 13,
+            "support": 17,
+            "overlap_recall": 0.23529411764705882,
+            "caught_any_type": 0.23529411764705882
+          },
+          "EMAIL": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888888888888889,
+            "tp": 4,
+            "fp": 1,
+            "fn": 0,
+            "support": 4,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "PHONENUMBER": {
+            "precision": 0.3333333333333333,
+            "recall": 0.25,
+            "f1": 0.28571428571428575,
+            "tp": 1,
+            "fp": 2,
+            "fn": 3,
+            "support": 4,
+            "overlap_recall": 0.5,
+            "caught_any_type": 0.5
+          },
+          "FIRSTNAME": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 16,
+            "support": 16,
+            "overlap_recall": 0.0,
+            "caught_any_type": 0.0
+          },
+          "LASTNAME": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 10,
+            "support": 10,
+            "overlap_recall": 0.0,
+            "caught_any_type": 0.0
+          },
+          "SSN": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "support": 2,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "CREDITCARDNUMBER": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "support": 3,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "CREDITCARDCVV": {
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.7499999999999999,
+            "tp": 3,
+            "fp": 0,
+            "fn": 2,
+            "support": 5,
+            "overlap_recall": 0.6,
+            "caught_any_type": 0.6
+          },
+          "IBAN": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 4,
+            "fp": 0,
+            "fn": 0,
+            "support": 4,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "ACCOUNTNUMBER": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "support": 2,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          },
+          "STREET": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "tp": 1,
+            "fp": 0,
+            "fn": 1,
+            "support": 2,
+            "overlap_recall": 0.5,
+            "caught_any_type": 0.5
+          },
+          "IPV4": {
+            "precision": 0.5714285714285714,
+            "recall": 1.0,
+            "f1": 0.7272727272727273,
+            "tp": 4,
+            "fp": 3,
+            "fn": 0,
+            "support": 4,
+            "overlap_recall": 1.0,
+            "caught_any_type": 1.0
+          }
+        },
+        "fn_breakdown": {
+          "missed": 50,
+          "boundary": 2,
+          "type_confusion": 1
+        },
+        "fp_breakdown": {
+          "hard_negative": 3,
+          "spurious": 2,
+          "boundary": 2,
+          "type_confusion": 1
+        },
+        "type_confusion": {
+          "PASSWORD->EMAIL": 1
+        },
+        "hard_negative_fp": {
+          "VERSION->IPV4": 3
+        },
+        "examples": {
+          "fp_hard_negative": [
+            {
+              "doc_id": "hn-010",
+              "start": 23,
+              "end": 30,
+              "label": "IPV4",
+              "shape": "9.9.9.9",
+              "negative_label": "VERSION"
+            },
+            {
+              "doc_id": "hn-010",
+              "start": 34,
+              "end": 41,
+              "label": "IPV4",
+              "shape": "9.9.9.9",
+              "negative_label": "VERSION"
+            },
+            {
+              "doc_id": "hn-064",
+              "start": 42,
+              "end": 49,
+              "label": "IPV4",
+              "shape": "9.9.9.9",
+              "negative_label": "VERSION"
+            }
+          ],
+          "fp_spurious": [
+            {
+              "doc_id": "hn-063",
+              "start": 22,
+              "end": 36,
+              "label": "PHONENUMBER",
+              "shape": "9-999-999-9999"
+            },
+            {
+              "doc_id": "dp-052",
+              "start": 87,
+              "end": 94,
+              "label": "PASSWORD",
+              "shape": "aaaaaaa"
+            }
+          ],
+          "fn_missed": [
+            {
+              "doc_id": "dp-001",
+              "start": 13,
+              "end": 18,
+              "label": "FIRSTNAME",
+              "shape": "aaaaa"
+            },
+            {
+              "doc_id": "dp-002",
+              "start": 11,
+              "end": 17,
+              "label": "FIRSTNAME",
+              "shape": "aaaaaa"
+            },
+            {
+              "doc_id": "dp-002",
+              "start": 22,
+              "end": 26,
+              "label": "FIRSTNAME",
+              "shape": "aaaa"
+            },
+            {
+              "doc_id": "dp-003",
+              "start": 4,
+              "end": 8,
+              "label": "FIRSTNAME",
+              "shape": "aaaa"
+            },
+            {
+              "doc_id": "dp-003",
+              "start": 9,
+              "end": 15,
+              "label": "LASTNAME",
+              "shape": "aaaaaa"
+            },
+            {
+              "doc_id": "dp-004",
+              "start": 62,
+              "end": 69,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaaa"
+            },
+            {
+              "doc_id": "dp-004",
+              "start": 73,
+              "end": 79,
+              "label": "LASTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "dp-005",
+              "start": 25,
+              "end": 30,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaa"
+            },
+            {
+              "doc_id": "dp-005",
+              "start": 31,
+              "end": 42,
+              "label": "LASTNAME",
+              "shape": "Aaaaaaaaaaa"
+            },
+            {
+              "doc_id": "dp-005",
+              "start": 43,
+              "end": 59,
+              "label": "PHONENUMBER",
+              "shape": "+99 99 9999 9999"
+            },
+            {
+              "doc_id": "dp-006",
+              "start": 19,
+              "end": 25,
+              "label": "FIRSTNAME",
+              "shape": "Aaaaaa"
+            },
+            {
+              "doc_id": "dp-006",
+              "start": 26,
+              "end": 37,
+              "label": "LASTNAME",
+              "shape": "Aaaaaa-Aaaa"
+            },
+            {
+              "doc_id": "dp-006",
+              "start": 50,
+              "end": 57,
+              "label": "USERNAME",
+              "shape": "aaaaaaa"
+            },
+            {
+              "doc_id": "dp-006",
+              "start": 73,
+              "end": 85,
+              "label": "PASSWORD",
+              "shape": "Aaaaaaa#9999"
+            },
+            {
+              "doc_id": "dp-008",
+              "start": 12,
+              "end": 25,
+              "label": "USERNAME",
+              "shape": "aaaaaa_aaaaaa"
+            },
+            {
+              "doc_id": "dp-008",
+              "start": 102,
+              "end": 115,
+              "label": "USERNAME",
+              "shape": "aaaaaa_aaaaaa"
+            },
+            {
+              "doc_id": "dp-009",
+              "start": 12,
+              "end": 22,
+              "label": "USERNAME",
+              "shape": "aaa_aaaaaa"
+            },
+            {
+              "doc_id": "dp-009",
+              "start": 43,
+              "end": 53,
+              "label": "PASSWORD",
+              "shape": "Aaa9aa!Aaa"
+            },
+            {
+              "doc_id": "dp-012",
+              "start": 13,
+              "end": 20,
+              "label": "USERNAME",
+              "shape": "aaaaaaa"
+            },
+            {
+              "doc_id": "dp-013",
+              "start": 18,
+              "end": 25,
+              "label": "USERNAME",
+              "shape": "aaaaaaa"
+            },
+            {
+              "doc_id": "dp-014",
+              "start": 28,
+              "end": 38,
+              "label": "USERNAME",
+              "shape": "aaaaaa-aaa"
+            },
+            {
+              "doc_id": "dp-015",
+              "start": 1,
+              "end": 7,
+              "label": "USERNAME",
+              "shape": "aaaa.a"
+            },
+            {
+              "doc_id": "dp-016",
+              "start": 21,
+              "end": 31,
+              "label": "USERNAME",
+              "shape": "aaa_aaaaaa"
+            },
+            {
+              "doc_id": "dp-018",
+              "start": 73,
+              "end": 76,
+              "label": "CREDITCARDCVV",
+              "shape": "999"
+            },
+            {
+              "doc_id": "dp-019",
+              "start": 36,
+              "end": 40,
+              "label": "CREDITCARDCVV",
+              "shape": "9999"
+            }
+          ],
+          "fn_boundary": [
+            {
+              "doc_id": "dp-008",
+              "start": 41,
+              "end": 52,
+              "label": "PASSWORD",
+              "shape": "Aa-9999-aa!",
+              "pred": [
+                [
+                  41,
+                  51
+                ]
+              ]
+            },
+            {
+              "doc_id": "dp-026",
+              "start": 12,
+              "end": 29,
+              "label": "PHONENUMBER",
+              "shape": "+9 (999) 999-9999",
+              "pred": [
+                [
+                  12,
+                  39
+                ]
+              ]
+            }
+          ],
+          "fn_type_confusion": [
+            {
+              "doc_id": "dp-011",
+              "start": 24,
+              "end": 32,
+              "label": "PASSWORD",
+              "shape": "Aa9aA9aA",
+              "pred_labels": [
+                "EMAIL"
+              ]
+            }
+          ]
+        }
+      },
+      "document": {
+        "block_precision": 0.9117647058823529,
+        "block_recall": 0.5535714285714286,
+        "block_f1": 0.6888888888888888,
+        "confusion": {
+          "TP_block": 31,
+          "FN_false_allow": 25,
+          "FP_false_block": 3,
+          "TN_allow": 72
+        },
+        "n_docs": 131,
+        "n_block_docs": 56,
+        "n_allow_docs": 75,
+        "n_ambiguous_excluded": 4,
+        "false_allow_rate": 0.44642857142857145,
+        "false_allow_rate_ci95": [
+          0.3238651625129941,
+          0.5758701386821612
+        ],
+        "false_block_rate": 0.04,
+        "false_block_rate_ci95": [
+          0.013695816001486477,
+          0.11113168623083756
+        ],
+        "accuracy": 0.7862595419847328,
+        "false_allow_doc_ids": [
+          "dp-001",
+          "dp-002",
+          "dp-003",
+          "dp-005",
+          "dp-006",
+          "dp-009",
+          "dp-012",
+          "dp-013",
+          "dp-014",
+          "dp-015",
+          "dp-016",
+          "dp-019",
+          "dp-027",
+          "dp-031",
+          "dp-037",
+          "dp-040",
+          "dp-041",
+          "dp-042",
+          "dp-043",
+          "dp-046",
+          "dp-047",
+          "dp-048",
+          "dp-049",
+          "dp-050",
+          "dp-051"
+        ],
+        "false_block_doc_ids": [
+          "hn-010",
+          "hn-063",
+          "hn-064"
+        ]
+      },
+      "by_tag": {
+        "account": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "allow": {
+          "n_docs": 75,
+          "false_allow": 0,
+          "false_block": 3,
+          "block_docs": 0,
+          "allow_docs": 75,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "ambiguous": {
+          "n_docs": 0,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "asset": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "bic": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "block": {
+          "n_docs": 56,
+          "false_allow": 25,
+          "false_block": 0,
+          "block_docs": 56,
+          "allow_docs": 0,
+          "entity_f1": 0.5365853658536586,
+          "entity_caught_any_type": 0.4186046511627907
+        },
+        "booking": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "card": {
+          "n_docs": 3,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 3,
+          "allow_docs": 0,
+          "entity_f1": 0.888888888888889,
+          "entity_caught_any_type": 0.8
+        },
+        "case-number": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "chat": {
+          "n_docs": 64,
+          "false_allow": 14,
+          "false_block": 1,
+          "block_docs": 22,
+          "allow_docs": 42,
+          "entity_f1": 0.43243243243243246,
+          "entity_caught_any_type": 0.2962962962962963
+        },
+        "cidr": {
+          "n_docs": 0,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "clean": {
+          "n_docs": 10,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 10,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "code": {
+          "n_docs": 23,
+          "false_allow": 4,
+          "false_block": 1,
+          "block_docs": 8,
+          "allow_docs": 15,
+          "entity_f1": 0.625,
+          "entity_caught_any_type": 0.5
+        },
+        "color": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "company-id": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "company-name": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "connstring": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 0.8000000000000002,
+          "entity_caught_any_type": 1.0
+        },
+        "container": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "coordinates": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "cron": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "csv": {
+          "n_docs": 2,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "cvv": {
+          "n_docs": 5,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 5,
+          "allow_docs": 0,
+          "entity_f1": 0.8333333333333333,
+          "entity_caught_any_type": 0.7142857142857143
+        },
+        "diverse": {
+          "n_docs": 2,
+          "false_allow": 2,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "docker": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "email": {
+          "n_docs": 15,
+          "false_allow": 1,
+          "false_block": 1,
+          "block_docs": 8,
+          "allow_docs": 7,
+          "entity_f1": 0.5217391304347827,
+          "entity_caught_any_type": 0.4666666666666667
+        },
+        "env": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "errorcode": {
+          "n_docs": 5,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 4,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "fictional": {
+          "n_docs": 0,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "finance": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "flight": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "form": {
+          "n_docs": 4,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 4,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "hardneg": {
+          "n_docs": 65,
+          "false_allow": 0,
+          "false_block": 3,
+          "block_docs": 0,
+          "allow_docs": 65,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "hash": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "header": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.5,
+          "entity_caught_any_type": 0.3333333333333333
+        },
+        "iban": {
+          "n_docs": 4,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 4,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "invoice": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 1,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "ip": {
+          "n_docs": 4,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 4,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "ipv4-shaped": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 2,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "json": {
+          "n_docs": 3,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 1,
+          "entity_f1": 0.2857142857142857,
+          "entity_caught_any_type": 0.16666666666666666
+        },
+        "location": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "log": {
+          "n_docs": 3,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 1,
+          "entity_f1": 0.5,
+          "entity_caught_any_type": 0.5
+        },
+        "long": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 1,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "lot": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "lowercase": {
+          "n_docs": 6,
+          "false_allow": 6,
+          "false_block": 0,
+          "block_docs": 6,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "math": {
+          "n_docs": 4,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 4,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "meeting": {
+          "n_docs": 4,
+          "false_allow": 1,
+          "false_block": 1,
+          "block_docs": 1,
+          "allow_docs": 3,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "mention": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "metrics": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "mixed": {
+          "n_docs": 4,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 4,
+          "allow_docs": 0,
+          "entity_f1": 0.8571428571428571,
+          "entity_caught_any_type": 0.75
+        },
+        "name": {
+          "n_docs": 14,
+          "false_allow": 12,
+          "false_block": 0,
+          "block_docs": 14,
+          "allow_docs": 0,
+          "entity_f1": 0.12121212121212122,
+          "entity_caught_any_type": 0.06451612903225806
+        },
+        "name-like-words": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "netrc": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.6666666666666666,
+          "entity_caught_any_type": 0.5
+        },
+        "nocue": {
+          "n_docs": 3,
+          "false_allow": 3,
+          "false_block": 0,
+          "block_docs": 3,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "nocue-literal": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "order": {
+          "n_docs": 3,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 2,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "out-of-scope-credential": {
+          "n_docs": 0,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "partial-card": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "password": {
+          "n_docs": 13,
+          "false_allow": 6,
+          "false_block": 0,
+          "block_docs": 13,
+          "allow_docs": 0,
+          "entity_f1": 0.5128205128205128,
+          "entity_caught_any_type": 0.4444444444444444
+        },
+        "path": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "phone": {
+          "n_docs": 4,
+          "false_allow": 2,
+          "false_block": 0,
+          "block_docs": 4,
+          "allow_docs": 0,
+          "entity_f1": 0.25,
+          "entity_caught_any_type": 0.3333333333333333
+        },
+        "pin": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "pin-policy": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "placeholder": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "port": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "product-code": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "product-name": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "publicname": {
+          "n_docs": 2,
+          "false_allow": 2,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "release-notes": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "routing": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 1,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "serial": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "short-number": {
+          "n_docs": 5,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 5,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "signature": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "sku": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "spreadsheet": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "sql": {
+          "n_docs": 4,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 3,
+          "allow_docs": 1,
+          "entity_f1": 0.2,
+          "entity_caught_any_type": 0.25
+        },
+        "ssn": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "street": {
+          "n_docs": 2,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 0.6666666666666666,
+          "entity_caught_any_type": 0.5
+        },
+        "table": {
+          "n_docs": 1,
+          "false_allow": 1,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 0,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": 0.0
+        },
+        "telemetry": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "ticket": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 2,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "tracking": {
+          "n_docs": 4,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 1,
+          "allow_docs": 3,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        },
+        "username": {
+          "n_docs": 15,
+          "false_allow": 8,
+          "false_block": 0,
+          "block_docs": 15,
+          "allow_docs": 0,
+          "entity_f1": 0.45000000000000007,
+          "entity_caught_any_type": 0.39285714285714285
+        },
+        "uuid": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "vendor": {
+          "n_docs": 1,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 0,
+          "allow_docs": 1,
+          "entity_f1": 0.0,
+          "entity_caught_any_type": null
+        },
+        "version": {
+          "n_docs": 5,
+          "false_allow": 0,
+          "false_block": 2,
+          "block_docs": 1,
+          "allow_docs": 4,
+          "entity_f1": 0.4,
+          "entity_caught_any_type": 1.0
+        },
+        "yaml": {
+          "n_docs": 2,
+          "false_allow": 0,
+          "false_block": 0,
+          "block_docs": 2,
+          "allow_docs": 0,
+          "entity_f1": 1.0,
+          "entity_caught_any_type": 1.0
+        }
+      }
+    }
+  }
+}

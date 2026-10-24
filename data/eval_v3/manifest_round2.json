@@ -1,0 +1,67 @@
+{
+  "label_policy": "v3",
+  "seed": 13,
+  "split_manifests": {
+    "train": 34802,
+    "validation": 4350,
+    "test": 4349
+  },
+  "challenge_sha256": "c19cd914a2485025a60a3baf35cccb9292233e7dfcccfe3216479173c800a0b5",
+  "overlay_sha256": "5a1384814ec33dddc6141d47587ac5ae2b00d6953fe828fa3274116e17d8584f",
+  "dev_sha256": "3ea038b18f2cf84de7d0f52af4725455f27f60ff936c3829c81875f036a1179f",
+  "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+  "sets": {
+    "validation": {
+      "n_docs": 4350,
+      "sha256": "759eb52b39ca9f3a3a46d7b85b46a373396550dc994ff4e0989ea29302b24f5c"
+    },
+    "test": {
+      "n_docs": 4349,
+      "sha256": "4d1b60d6eaec4297b3dea88b91df70c20ae76f6d845f2eb4cbe2bc25f9edadfb"
+    },
+    "test_unseen_context": {
+      "n_docs": 1460,
+      "sha256": "c93e953dd3d57be55139ef7147d1761e417d5fa88d1eeb89118dd3364f6412f3"
+    },
+    "test_unseen_value": {
+      "n_docs": 1931,
+      "sha256": "aa20d161ac1aeafb7cdabca3a0dcd591212c57dd316d38f62c4e92cd361c284a"
+    },
+    "test_novel_template": {
+      "n_docs": 869,
+      "sha256": "78bbddc3afdc7c8247321ac884859f809eb601c57320e2315e6ab3ccac2a7f5d"
+    },
+    "test_familiar_template": {
+      "n_docs": 159,
+      "sha256": "4c73f5a56e2af7e4cf7d99593302a737f0ebe560dfff34be83b937bd99a4186e"
+    },
+    "test_format_shift": {
+      "n_docs": 3055,
+      "sha256": "fb213b8db6b7eff447e2b3ecb6475e8868a494ecbdbb8dce07f418e238cd5a30"
+    },
+    "test_long": {
+      "n_docs": 73,
+      "sha256": "66d56e55cbf237874188af8ea99ff7514a8c80b0fe72871ddf9aeb22f0ea398d"
+    },
+    "challenge_v1": {
+      "n_docs": 154,
+      "sha256": "6b7155ba0631be773760fa3d41ac94888232eaf671195827dd4b2fce8324aba0"
+    },
+    "challenge_v1_policy": {
+      "n_docs": 154,
+      "sha256": "62b072d7a9d4727dbb9f7c726a160d2b6d8c9c07b62bde2a35698513e30a6f6d"
+    },
+    "dev_v1": {
+      "n_docs": 135,
+      "sha256": "b11df16f4f76d42e4a7179f546ddea79fd29a3c19e714c8c6f00d2d95899bee5"
+    },
+    "synth_A_heldout": {
+      "n_docs": 960,
+      "sha256": "f3be0579145cf3a1d9c3c5e003b924bf00a378808aa4537815d8ef67865a96d0"
+    },
+    "synth_B_heldout": {
+      "n_docs": 776,
+      "sha256": "1fd3aa3e5190b367353772529f8af75e8318c1f4d7dc3d1366bc384a586f1498"
+    }
+  }
+}

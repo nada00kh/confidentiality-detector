@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "default_mode": "strict",
+  "blocking_labels": ["PASSWORD", "USERNAME", "EMAIL", "PHONENUMBER", "FIRSTNAME", "LASTNAME", "SSN",
+                      "CREDITCARDNUMBER", "CREDITCARDCVV", "IBAN", "ACCOUNTNUMBER", "STREET", "IPV4"],
+  "max_chars": 100000,
+  "on_error": "BLOCK",
+  "on_oversize": "BLOCK",
+  "inference": {"max_length": 512, "overlap": 64, "stitching": "first"},
+  "postprocessing": {"ipv4_requires_valid_address": false},
+  "modes": {
+    "strict": {
+      "token_threshold": null,
+      "use_rules": true,
+      "description": "Default. Model (argmax decoding) + deterministic rules; any target finding blocks.",
+      "evidence": "Round 2 (reports/ROUND2_REPORT.md): selected system r2_e3b_positive + rules v3, full pipeline on dev_v1 (56 BLOCK / 75 ALLOW): False ALLOW 0/56 (95% CI 0-6.4%), False BLOCK 27/75 (36%). Recommended default."
+    },
+    "maximum": {
+      "token_threshold": 0.05,
+      "use_rules": true,
+      "description": "Higher recall at the cost of more false blocks: a token is flagged when P(not O) >= 0.05.",
+      "evidence": "Round 2, same system on dev_v1: False ALLOW 0/56, False BLOCK 32/75 (43%): no leakage benefit observable on dev_v1, +5 false blocks. On report-only synthetic sets fewer leaks (format shift 45 -> 20 of 3055; long documents 2 -> 0 of 45). Optional mode for especially sensitive deployments."
+    }
+  }
+}

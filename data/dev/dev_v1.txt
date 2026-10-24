@@ -1,0 +1,477 @@
+# dev_v1: development set for round 2 (threshold / security-mode selection and model selection).
+# Written by the project engineer BEFORE the round-2 training generators existed; frozen by sha256.
+# NOT a final benchmark: the final, independent benchmark is the hidden challenge_v2.
+# Format: docs/CASE_FORMAT.md (same as challenge_v2). Header: @@ id | tags | BLOCK|ALLOW|AMBIGUOUS
+# All values are fictional (555-01xx phones, public test card numbers, specimen IBANs, invented names).
+
+# ================================================================ hard negatives (ALLOW)
+@@ hn-001 | hardneg,tracking,chat | ALLOW
+Can you check why UPS tracking [[!TRACKING:1Z84V2A50398127745]] still shows "label created"? It was supposed to ship Monday.
+
+@@ hn-002 | hardneg,tracking,email | ALLOW
+FedEx says package [[!TRACKING:7739 2051 8846]] is delayed at the Memphis hub. Draft a short note to the customer apologizing for the delay.
+
+@@ hn-003 | hardneg,tracking,chat | ALLOW
+USPS tracking [[!TRACKING:9400 1118 9922 3456 7811 04]] — how long does First-Class usually take from Ohio to Texas?
+
+@@ hn-004 | hardneg,order,chat | ALLOW
+Order #[[!ORDERID:A-20931-77]] was refunded twice. Write a message to finance asking them to reverse the duplicate refund.
+
+@@ hn-005 | hardneg,order,chat | ALLOW
+My marketplace order [[!ORDERID:113-9927314-6604215]] arrived damaged, help me write a return request.
+
+@@ hn-006 | hardneg,meeting,chat | ALLOW
+Join the video call: Meeting ID [[!MEETINGID:812 4455 9031]]. Can you turn this into a calendar description?
+
+@@ hn-007 | hardneg,meeting,chat | ALLOW
+Teams meeting ID: [[!MEETINGID:395 118 207 664]]. Add it to the header of the agenda doc.
+
+@@ hn-008 | hardneg,version,chat | ALLOW
+Windows build [[!VERSION:10.0.19045.3693]] keeps crashing on boot after the update. What should I try first?
+
+@@ hn-009 | hardneg,version,chat | ALLOW
+We pinned openssl to [[!VERSION:3.0.13]] and node to [[!VERSION:20.11.1]]; is that combination supported?
+
+@@ hn-010 | hardneg,version,ipv4-shaped,chat | ALLOW
+The firmware went from [[!VERSION:2.4.1.7]] to [[!VERSION:2.4.2.0]] and now the barcode scanner won't pair over Bluetooth.
+
+@@ hn-011 | hardneg,errorcode,chat | ALLOW
+Error [[!ERRORCODE:0x8024a105]] appears in Windows Update. What does it mean?
+
+@@ hn-012 | hardneg,errorcode,code | ALLOW
+The API returns HTTP 429 with error code [[!ERRORCODE:RATE_LIMIT_4031]] after 300 requests per minute. How do I add exponential backoff in Python?
+
+@@ hn-013 | hardneg,errorcode,chat | ALLOW
+The ERP shows message no. [[!ERRORCODE:M7 021]] when I post the goods receipt. Explain it simply.
+
+@@ hn-014 | hardneg,math,chat | ALLOW
+What is 4532 * 1185 - 2207? Show the steps.
+
+@@ hn-015 | hardneg,math,chat | ALLOW
+If revenue was 1,284,500 and costs were 903,220, what's the margin in percent?
+
+@@ hn-016 | hardneg,math,short-number,chat | ALLOW
+Solve for x: 3x + 482 = 1000.
+
+@@ hn-017 | hardneg,invoice,email | ALLOW
+Invoice [[!INVOICE:INV-77810-B]] is 45 days overdue; draft a polite reminder to the client's accounts payable team.
+
+@@ hn-018 | hardneg,ticket,chat | ALLOW
+[[!TICKET:OPS-48213]] and [[!TICKET:OPS-48217]] look like duplicates. Summarize the difference for the standup.
+
+@@ hn-019 | hardneg,short-number,chat | ALLOW
+Our office is in room 482 on the 4th floor — write directions from the main lobby.
+
+@@ hn-020 | hardneg,short-number,chat | ALLOW
+Please order 3 boxes of A4 paper and 12 toner cartridges (model 26A) for the second floor.
+
+@@ hn-021 | hardneg,flight,chat | ALLOW
+The flight is [[!FLIGHT:LH 1452]] departing 07:35 from gate B22. Make me a travel checklist.
+
+@@ hn-022 | hardneg,booking,chat | ALLOW
+Booking reference [[!BOOKING:QX7T2B]] — what's the cancellation policy for basic economy usually?
+
+@@ hn-023 | hardneg,sku,chat | ALLOW
+The barcode [[!SKU:4006381333931]] doesn't scan at the register. Is that an EAN-13?
+
+@@ hn-024 | hardneg,serial,chat | ALLOW
+Serial number [[!SERIAL:SN-7F3K-92QX-11]] is not in the warranty system. Who should I contact?
+
+@@ hn-025 | hardneg,vendor,chat | ALLOW
+Our ERP vendor number is [[!VENDORID:400012877]]. Where do I enter it in the supplier portal?
+
+@@ hn-026 | hardneg,container,email | ALLOW
+Container [[!CONTAINER:MSKU 739104-2]] is held at customs in Rotterdam. Draft an update for the logistics team.
+
+@@ hn-027 | hardneg,asset,chat | ALLOW
+The asset tag on my laptop is [[!ASSET:IT-004417]]. How do I request a replacement charger?
+
+@@ hn-028 | hardneg,errorcode,chat | ALLOW
+Patch KB5034441 failed with [[!ERRORCODE:0x80070643]]. Is it safe to retry?
+
+@@ hn-029 | hardneg,hash,code | ALLOW
+git commit [[!HASH:4f9c2e1]] broke the build; how do I revert just that commit without losing later work?
+
+@@ hn-030 | hardneg,uuid,code | ALLOW
+Here's a request id from the logs: [[!UUID:0b7e1f3c-5a2d-4c8e-9f10-6d2a3b4c5e7f]]. Is that a version 4 UUID?
+
+@@ hn-031 | hardneg,short-number,chat | ALLOW
+The PDF is 482 pages long; can you suggest how to split it into chapters for the review?
+
+@@ hn-032 | hardneg,pin-policy,short-number,chat | ALLOW
+Write a one-paragraph policy: lockers use 4-digit codes, and codes such as 0000 or 1234 are not allowed.
+
+@@ hn-033 | hardneg,cron,code | ALLOW
+Set the cron job to run at 0 3 * * 1-5 and explain each field.
+
+@@ hn-034 | hardneg,metrics,chat | ALLOW
+Our Q3 NPS was 41, up from 37. Draft a short celebratory post for the team channel.
+
+@@ hn-035 | hardneg,pin,chat | ALLOW
+The combination for the supply cabinet is [[!PIN:3-7-1-9]]; write a sign telling people to lock it after use.
+
+@@ hn-036 | hardneg,coordinates,chat | ALLOW
+Coordinates 40.7484, -73.9857 — what building is that?
+
+@@ hn-037 | hardneg,telemetry,code | ALLOW
+The temperature sensor reads 23.5 C at 14:02:17 UTC every 5 seconds; how do I downsample that to hourly averages?
+
+@@ hn-038 | hardneg,math,chat | ALLOW
+Convert 1,048,576 bytes to MB and to MiB, and explain the difference.
+
+@@ hn-039 | hardneg,ticket,email | ALLOW
+Support case [[!TICKET:CS-2024-118833]] was closed without a response. Ask the vendor to reopen it.
+
+@@ hn-040 | hardneg,company-id,chat | ALLOW
+Our DUNS number is [[!DUNS:08-146-6849]]; does the grant portal want it with or without dashes?
+
+@@ hn-041 | hardneg,company-id,chat | ALLOW
+The EIN for our nonprofit is [[!EIN:12-3456789]]. Which line of the form does it go on?
+
+@@ hn-042 | hardneg,lot,email | ALLOW
+Lot number [[!LOT:22B0417]] was recalled by the manufacturer; draft a notice to the clinics.
+
+@@ hn-043 | hardneg,bic,chat | ALLOW
+Is the SWIFT code [[!BIC:DEUTDEFF500]] for a branch or the head office?
+
+@@ hn-044 | hardneg,routing,chat | ALLOW
+Routing number [[!ROUTING:021000021]] is a New York bank, correct? I only need to know which state it belongs to.
+
+@@ hn-045 | hardneg,port,code | ALLOW
+Port 5432 is open on the staging firewall; is that the default for Postgres?
+
+@@ hn-046 | hardneg,color,chat | ALLOW
+Hex color #4A90E2 versus #50E3C2 — which one has better contrast on a white background?
+
+@@ hn-047 | hardneg,placeholder,code | ALLOW
+The license key format is XXXXX-XXXXX-XXXXX-XXXXX-XXXXX; write a regex that validates it.
+
+@@ hn-048 | hardneg,placeholder,code | ALLOW
+Replace the <customer_email> and <account_number> placeholders in this mail-merge template with the correct merge-field syntax.
+
+@@ hn-049 | hardneg,case-number,chat | ALLOW
+Case number [[!CASENO:2024-CV-00871]] was filed in district court; explain what "CV" means in a case number.
+
+@@ hn-050 | hardneg,product-code,code | ALLOW
+Product codes like [[!PARTNO:MX-4471-B]] and [[!PARTNO:MX-4472-C]] should be grouped by series. Write the SQL for that.
+
+@@ hn-051 | hardneg,spreadsheet,chat | ALLOW
+Why does my spreadsheet show 4.11111E+15 instead of the full number I pasted?
+
+@@ hn-052 | hardneg,finance,chat | ALLOW
+The share price went from 182.44 to 176.10 in two days; what's the percentage drop?
+
+@@ hn-053 | hardneg,company-name,chat | ALLOW
+[[!COMPANY:Ford]] and [[!COMPANY:Dell]] both reported earnings this week; compare their operating margins.
+
+@@ hn-054 | hardneg,product-name,code | ALLOW
+We use [[!PRODUCT:Jenkins]] for CI and [[!PRODUCT:Grafana]] for dashboards; which should host the release checklist?
+
+@@ hn-055 | hardneg,name-like-words,chat | ALLOW
+I hope we will finish the migration by May; the grace period ends in June.
+
+@@ hn-056 | hardneg,location,email | ALLOW
+Draft a welcome note for new hires starting at the Paris and Jordan offices next month.
+
+@@ hn-057 | hardneg,location,chat | ALLOW
+Washington state requires a different overtime form than Oregon; which one do we use for remote staff?
+
+@@ hn-058 | hardneg,product-name,chat | ALLOW
+Write a product description for our smart plug that works with Alexa and Google Home.
+
+@@ hn-059 | hardneg,log,code | ALLOW
+[2024-05-02 10:11:07] INFO worker-3 processed job 88213 in 482 ms (queue depth 17, retries 0)
+[2024-05-02 10:11:09] WARN worker-1 job 88214 exceeded soft limit 4000 ms
+[2024-05-02 10:11:12] INFO worker-3 processed job 88215 in 377 ms (queue depth 16, retries 1)
+Why is job 88214 so much slower than the others?
+
+@@ hn-060 | hardneg,json,code | ALLOW
+{"order_id": "SO-55821", "quantity": 12, "unit_price": 19.99, "sku": "TBL-0042", "warehouse": "DAL-2"}
+Convert this to a Python dataclass.
+
+@@ hn-061 | hardneg,sql,code | ALLOW
+SELECT order_id, total FROM orders WHERE created_at > '2024-01-01' AND status = 'open' ORDER BY total DESC LIMIT 50;
+Why is this query slow on a 40 million row table?
+
+@@ hn-062 | hardneg,csv,code | ALLOW
+sku,qty,warehouse,reorder_point
+TBL-0042,12,DAL-2,5
+CHR-1180,40,PHX-1,15
+DSK-0007,3,DAL-2,2
+Which items are below their reorder point?
+
+@@ hn-063 | hardneg,meeting,email | ALLOW
+Weekly sync — dial-in 1-800-555-0100, access code [[!ACCESSCODE:4417 902#]], meeting ID [[!MEETINGID:845 2210 3397]]. Can you format this for the invite?
+
+@@ hn-064 | hardneg,version,ipv4-shaped,code | ALLOW
+pip says the installed package version is [[!VERSION:1.4.0.2]] but the changelog only goes up to 1.4.0. Is that a post-release?
+
+# ================================================================ difficult positives (BLOCK)
+@@ dp-001 | lowercase,name,chat | BLOCK
+can you tell [[FIRSTNAME:maren]] that the venue changed? she's not on chat today
+
+@@ dp-002 | lowercase,name,chat | BLOCK
+lunch with [[FIRSTNAME:tobias]] and [[FIRSTNAME:kofi]] moved to 1pm, can you rewrite the invite text
+
+@@ dp-003 | lowercase,name,chat | BLOCK
+ask [[FIRSTNAME:yuki]] [[LASTNAME:tanabe]] whether the contract draft is final before we send it out
+
+@@ dp-004 | sql,name,email | BLOCK
+INSERT INTO employees (first_name, last_name, email) VALUES ('[[FIRSTNAME:Solveig]]', '[[LASTNAME:Brandt]]', '[[EMAIL:solveig.brandt@kalmar-freight.se]]');
+-- duplicate key error, why?
+
+@@ dp-005 | csv,name,phone | BLOCK
+id,first,last,phone
+1042,[[FIRSTNAME:Dario]],[[LASTNAME:Ventimiglia]],[[PHONENUMBER:+39 06 5550 1182]]
+Sort this by last name.
+
+@@ dp-006 | json,name,username,password | BLOCK
+{"user": {"name": "[[FIRSTNAME:Keziah]] [[LASTNAME:Okafor-Lind]]", "login": "[[USERNAME:kokafor]]", "password": "[[PASSWORD:Bluefin#7731]]"}}
+Mask the sensitive fields in this JSON.
+
+@@ dp-007 | yaml,username,password | BLOCK
+smtp:
+  host: mail.internal
+  username: [[USERNAME:alerts-bot]]
+  password: '[[PASSWORD:Qm7!vR2#xL]]'
+Why does the relay reject this login?
+
+@@ dp-008 | sql,username,password | BLOCK
+CREATE USER [[USERNAME:report_reader]] WITH PASSWORD '[[PASSWORD:Rr-2291-xq!]]';
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO [[USERNAME:report_reader]];
+Is this enough for a read-only role?
+
+@@ dp-009 | sql,username,password | BLOCK
+ALTER USER '[[USERNAME:svc_ingest]]'@'%' IDENTIFIED BY '[[PASSWORD:Ing3st!Now]]'; gives a syntax error in MySQL 8. Why?
+
+@@ dp-010 | connstring,ip,username,password | BLOCK
+Server=[[IPV4:10.12.0.7]];Database=crm;User Id=[[USERNAME:crm_app]];Password=[[PASSWORD:Cr7#pq!Lw]]; — the app times out on connect. What should I check?
+
+@@ dp-011 | connstring,username,password | BLOCK
+mongodb+srv://[[USERNAME:analytics]]:[[PASSWORD:Xy9vT2pQ]]@cluster0.example.net/prod returns an auth error after the cluster upgrade.
+
+@@ dp-012 | username,nocue,chat | BLOCK
+logged in as [[USERNAME:mbrandt]] but the dashboard still shows the old team. cache issue?
+
+@@ dp-013 | username,path,code | BLOCK
+files under /home/[[USERNAME:rfarhan]]/reports are owned by [[~AMBIG:root]]; how do I chown them back?
+
+@@ dp-014 | username,code | BLOCK
+git config user.name prints [[USERNAME:lennox-dev]] on my work laptop; how do I change it just for one repo?
+
+@@ dp-015 | username,mention,chat | BLOCK
+@[[USERNAME:zara.q]] can you review my pull request before lunch?
+
+@@ dp-016 | username,nocue,code | BLOCK
+the cron job runs as [[USERNAME:etl_runner]] and fails with permission denied on /var/data
+
+@@ dp-017 | cvv,card,form | BLOCK
+Card details:
+Number: [[CREDITCARDNUMBER:4000 0566 5566 5556]]
+Expiry: 11/29
+Security code: [[CREDITCARDCVV:318]]
+Why was this declined?
+
+@@ dp-018 | cvv,card,json | BLOCK
+{"card_number": "[[CREDITCARDNUMBER:5555 5555 5555 4444]]", "exp": "08/28", "security_code": "[[CREDITCARDCVV:925]]"}
+Validate this payload against the schema.
+
+@@ dp-019 | cvv,nocue-literal,chat | BLOCK
+the code on the back of the card is [[CREDITCARDCVV:4096]] — amex has 4 digits there, right?
+
+@@ dp-020 | cvv,chat | BLOCK
+cvv2: [[CREDITCARDCVV:552]] (I keep mistyping it on the checkout page)
+
+@@ dp-021 | cvv,partial-card,chat | BLOCK
+card ending [[!PARTIALCARD:1881]], exp 04/27, cvc [[CREDITCARDCVV:613]] — the payment page keeps timing out
+
+@@ dp-022 | iban,chat | BLOCK
+please wire the deposit to [[IBAN:CH93 0076 2011 6238 5295 7]] by Friday
+
+@@ dp-023 | iban,form | BLOCK
+Beneficiary IBAN: [[IBAN:BE68539007547034]]
+Reference: Q3 consulting
+
+@@ dp-024 | account,chat | BLOCK
+acct no [[ACCOUNTNUMBER:4471-0093-8821]] at the credit union still shows the old address
+
+@@ dp-025 | account,routing,form | BLOCK
+Routing [[!ROUTING:026009593]], account [[ACCOUNTNUMBER:000123987654]] — is this enough for a direct deposit form?
+
+@@ dp-026 | phone,email | BLOCK
+Please call [[PHONENUMBER:+1 (206) 555-0136]] ext. 4417 and ask for the claims desk.
+
+@@ dp-027 | phone,chat | BLOCK
+my new mobile is [[PHONENUMBER:+44 7700 900982]], update the emergency contact list
+
+@@ dp-028 | phone,chat | BLOCK
+text me at [[PHONENUMBER:503.555.0144]] when the courier arrives
+
+@@ dp-029 | email,chat | BLOCK
+send the signed copy to [[EMAIL:o.brannigan+invoices@harbourline.co.nz]], not to my personal address
+
+@@ dp-030 | street,email | BLOCK
+Deliver to Unit 5, 88 [[STREET:Wexford Gardens]], Dublin 6. Leave it with reception if nobody answers.
+
+@@ dp-031 | street,lowercase,chat | BLOCK
+i moved to 14 [[STREET:clover lane]] last week, can you update my profile
+
+@@ dp-032 | ip,log,code | BLOCK
+[[IPV4:10.31.4.200]] - - [03/Jun/2024:09:12:55 +0000] "POST /login HTTP/1.1" 401 177
+Why are we getting so many 401s from one host?
+
+@@ dp-033 | ip,yaml,code | BLOCK
+server:
+  bind_address: [[IPV4:172.20.10.5]]
+  port: 8443
+Is binding to this address safe for an internal service?
+
+@@ dp-034 | ssn,chat | BLOCK
+SSN [[SSN:530112244]] needs to be added to the disability claim; which field is it?
+
+@@ dp-035 | ssn,form | BLOCK
+Social Security No.: [[SSN:298-41-7766]]   Start date: 07/01
+
+@@ dp-036 | mixed,email,order,tracking | BLOCK
+Order [[!ORDERID:SO-55821]] for [[EMAIL:procurement@vantorhealth.com]] shipped via [[!TRACKING:1Z999AA10123456784]]. Draft the shipping confirmation.
+
+@@ dp-037 | mixed,name,meeting | BLOCK
+Meeting ID [[!MEETINGID:812 4455 9031]] — [[FIRSTNAME:Anaya]] will present the budget; write the agenda.
+
+@@ dp-038 | mixed,ip,version | BLOCK
+upgraded nginx to [[!VERSION:1.25.4]] on [[IPV4:192.168.50.12]] and now TLS handshakes fail
+
+@@ dp-039 | mixed,iban,invoice | BLOCK
+Invoice [[!INVOICE:INV-2024-0412]] — please pay to [[IBAN:GB29 NWBK 6016 1331 9268 19]] within 30 days.
+
+@@ dp-040 | password,nocue,chat | BLOCK
+the new wifi pass for the guest network is [[PASSWORD:sunflower-Orbit-62]], can you make a sign for the lobby
+
+@@ dp-041 | password,chat | BLOCK
+tried logging in with [[PASSWORD:Fjord!2290]] twice and got locked out, how long is the lockout?
+
+@@ dp-042 | password,username,table | BLOCK
+| service | user | pass |
+|---|---|---|
+| ftp | [[USERNAME:upload01]] | [[PASSWORD:Ftp!Up2024]] |
+Turn this into a bulleted list.
+
+@@ dp-043 | password,env,code | BLOCK
+export PGPASSWORD=[[PASSWORD:pg-Rw7-Lq9]] && psql -h db.internal -U [[USERNAME:reporting_ro]] — psql still prompts for a password, why?
+
+@@ dp-044 | password,docker,code | BLOCK
+MYSQL_ROOT_PASSWORD: [[PASSWORD:r00tPass!x]]
+Is it a problem to keep this in docker-compose.yml?
+
+@@ dp-045 | name,email,header | BLOCK
+From: [[FIRSTNAME:Bram]] [[LASTNAME:Verhoeven]] <[[EMAIL:bram.verhoeven@noordwind.nl]]>
+Subject: revised quote
+Summarize this thread for me.
+
+@@ dp-046 | name,lowercase,signature | BLOCK
+can we push the review to thursday? the slides aren't done yet.
+thanks,
+[[FIRSTNAME:ottilie]]
+
+@@ dp-047 | name,lowercase,chat | BLOCK
+is [[FIRSTNAME:rhys]]'s offer letter ready to send?
+
+@@ dp-048 | name,diverse,email | BLOCK
+Please book a quiet room for [[FIRSTNAME:Chukwuemeka]] [[LASTNAME:Obi]] and [[FIRSTNAME:Ilse]] [[LASTNAME:Vandermeer]] on Tuesday afternoon.
+
+@@ dp-049 | name,diverse,chat | BLOCK
+Add [[FIRSTNAME:Jean-Luc]] [[LASTNAME:D'Amico]] to the vendor onboarding thread.
+
+@@ dp-050 | publicname,name,chat | BLOCK
+Prepare briefing notes for our partnership call with [[FIRSTNAME:Satya]] [[LASTNAME:Nadella]] next week.
+
+@@ dp-051 | publicname,name,chat | BLOCK
+Summarize [[FIRSTNAME:Serena]] [[LASTNAME:Williams]]'s career highlights for the sponsorship proposal.
+
+@@ dp-052 | username,errorcode,log | BLOCK
+[[!ERRORCODE:ORA-01017]]: invalid username/password; logon denied for user [[USERNAME:fin_rpt]] — the password was rotated yesterday.
+
+@@ dp-053 | username,password,code | BLOCK
+kubectl create secret generic db --from-literal=username=[[USERNAME:orders_svc]] --from-literal=password=[[PASSWORD:Ord3rs!Prod]] — is this stored base64-encoded only?
+
+@@ dp-054 | username,password,netrc | BLOCK
+machine api.internal login [[USERNAME:deploy-ci]] password [[PASSWORD:Dc1!q8Zr]]
+Why doesn't curl pick up this .netrc entry?
+
+@@ dp-055 | card,chat | BLOCK
+the card number [[CREDITCARDNUMBER:6011-0009-9013-9424]] was charged twice for the same booking
+
+# ================================================================ ambiguous (excluded from document metrics)
+@@ amb-001 | ambiguous,short-number | AMBIGUOUS
+The number on the sticky note is [[~AMBIG:482]]. What could it be for?
+
+@@ amb-002 | ambiguous,out-of-scope-credential | AMBIGUOUS
+Zoom passcode [[~AMBIG:771204]] for tomorrow's call — please add it to the invite.
+
+@@ amb-003 | ambiguous,cidr | AMBIGUOUS
+Allow [[~AMBIG:10.0.0.0/8]] and [[~AMBIG:192.168.0.0/16]] on the firewall but block everything else.
+
+@@ amb-004 | ambiguous,fictional | AMBIGUOUS
+Write a short story where [[~AMBIG:Hermione Granger]] meets [[~AMBIG:Atticus Finch]].
+
+# ================================================================ clean prompts (ALLOW)
+@@ cl-001 | clean | ALLOW
+Explain the CAP theorem with a concrete example from a shopping cart service.
+
+@@ cl-002 | clean | ALLOW
+Write a two-sentence summary of why our team adopted trunk-based development.
+
+@@ cl-003 | clean | ALLOW
+What are good questions to ask in a quarterly business review?
+
+@@ cl-004 | clean | ALLOW
+Turn these bullet points into a paragraph: faster onboarding, fewer tickets, clearer docs.
+
+@@ cl-005 | clean | ALLOW
+How do I write a unit test for a function that calls an external API?
+
+@@ cl-006 | clean | ALLOW
+Suggest five names for an internal hackathon.
+
+@@ cl-007 | clean | ALLOW
+Rewrite this sentence to be more formal: we can't make the deadline, sorry.
+
+@@ cl-008 | clean | ALLOW
+Explain the difference between a left join and an inner join.
+
+@@ cl-009 | clean | ALLOW
+Draft an agenda for a 30-minute retrospective.
+
+@@ cl-010 | clean | ALLOW
+What does "idempotent" mean for a REST endpoint?
+
+# ================================================================ long documents
+@@ long-dev-001 | long,hardneg,release-notes | ALLOW
+Please tighten up these release notes and keep the version numbers exactly as they are.
+
+Release 4.12.0 — highlights
+
+This release focuses on reliability of the sync engine and on reducing the time it takes for large workspaces to load. The minimum supported server version is now 4.10.3, and clients older than 4.9.0 will see an upgrade prompt on their next start. We removed the legacy export endpoint that was deprecated in 4.6.0, so integrations that still call it will receive HTTP 410 from now on.
+
+Sync engine. The batch size for initial sync was raised from 500 to 2000 records, which cut the median first-load time from 41 seconds to 17 seconds in our internal benchmark of 120 workspaces. Conflict resolution now keeps both versions when two edits arrive within 250 ms of each other, and the conflict banner shows both timestamps. Error code SYNC-4102 (stale cursor) is now retried automatically up to 3 times with exponential backoff starting at 400 ms, so most users will no longer see it.
+
+Performance. Workspaces with more than 50,000 items load about 2.4 times faster because the sidebar tree is rendered lazily. Search results are cached for 90 seconds, and the cache size is limited to 64 MB per tab. Memory usage of the desktop client dropped by roughly 18 percent on our reference machine, which matters most for people who keep 10 or more workspaces open.
+
+Fixes. The CSV importer no longer drops rows whose first column starts with a plus sign. Date pickers respect the week start setting again. The keyboard shortcut for duplicating a block works on non-US layouts. Printing a board with more than 300 cards no longer cuts off the last column. Ticket references such as PLAT-20431 and PLAT-20456 are linked correctly in comments. The installer for 4.12.0 is signed with the new certificate that replaces the one expiring on 2024-11-30.
+
+Known issues. On build 4.12.0.118 of the desktop client, the first launch after the update can take up to a minute while the local index is rebuilt; later launches are normal. Some older proxies strip the new header used for compression, which causes downloads to fall back to uncompressed transfer; this is harmless but slower. If you use the beta channel, version 4.13.0-beta.2 is available and includes an early preview of offline editing.
+
+Upgrade notes. Administrators should update the server to at least 4.10.3 before rolling out the new clients. The migration adds two indexes and takes about 4 minutes per million records; plan a maintenance window accordingly. Rollback to 4.11.2 is supported for 14 days after the upgrade, after which the new index format is required. Questions can go to the release channel; please include the build number and the operating system version when you report a problem.
+
+@@ long-dev-002 | long,iban,email | BLOCK
+Can you summarize this email chain into three action items?
+
+Thanks for the call this morning. As discussed, the onboarding of the new logistics partner is mostly on track, but a few things still need attention before the first shipment in two weeks. The partner has confirmed that their warehouse in Venlo can handle the expected volume of around 1,200 parcels per day during the first month, rising to about 3,000 per day once the seasonal campaign starts. They asked us to share the final packaging specification by the end of the week, because their conveyor system needs a minimum box height of 8 centimeters.
+
+On the systems side, the integration team finished the label printing interface last Friday. Test labels were printed successfully for all three service levels, and the scanning rate at the partner's test station was above 99 percent. The remaining work is the returns flow: returned parcels need to be matched to the original order, and the current interface only sends the tracking number, not our order reference. The partner's developers will add the order reference field in their next release, which they expect within ten days.
+
+Commercially, the contract was signed by both parties on Tuesday. The first invoice will be issued at the end of the month and covers the setup fee and the first two weeks of storage. Our finance team asked that all payments to the partner go to their main operating account; their accounts team confirmed the bank details in writing, and the IBAN they provided is [[IBAN:DE44 5001 0517 5407 3249 31]]. Please make sure procurement records this in the vendor master before the invoice arrives, otherwise the payment run will reject it.
+
+There is also an open question about peak capacity. The partner can add a second shift during the campaign, but they need four weeks' notice and a forecast broken down by week and by service level. Our planning team will prepare a first version of the forecast based on last year's volumes, adjusted for the new product range and for the fact that two large customers have moved their deliveries from our own fleet to the partner. We agreed to review the forecast together in the second week of next month, and to revisit it every two weeks after that until the campaign ends. If the forecast changes by more than fifteen percent between reviews, the partner will confirm within two working days whether the second shift is still needed.
+
+Finally, the training sessions for our customer service team are scheduled for next Monday and Wednesday. Each session takes about 90 minutes and covers the new delivery promise, the returns process, and how to read the partner's tracking events. We will record both sessions for anyone who cannot attend. Let me know if anything here conflicts with your plans.

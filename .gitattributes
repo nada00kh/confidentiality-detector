@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Hashed files (sha256 in manifests, run_info.json and the frozen-system fingerprint): keep bytes exact,
+# never convert line endings on checkout
+data/** -text
+configs/** -text

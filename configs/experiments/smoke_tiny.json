@@ -1,0 +1,10 @@
+{
+  "name": "smoke_tiny",
+  "description": "CPU smoke test of the training pipeline only (random tiny model; metrics meaningless).",
+  "model_name": "hf-internal-testing/tiny-random-BertForTokenClassification",
+  "label_policy": "v2",
+  "augment": "format_A",
+  "epochs": 1,
+  "batch_size": 8,
+  "fp16": false
+}

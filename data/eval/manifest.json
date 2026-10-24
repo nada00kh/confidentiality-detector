@@ -1,0 +1,49 @@
+{
+  "label_policy": "v2",
+  "seed": 13,
+  "split_manifests": {
+    "train": 34802,
+    "validation": 4350,
+    "test": 4349
+  },
+  "challenge_sha256": "c19cd914a2485025a60a3baf35cccb9292233e7dfcccfe3216479173c800a0b5",
+  "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+  "sets": {
+    "validation": {
+      "n_docs": 4350,
+      "sha256": "4bfd816bb77e96e14b6c5536e64036320a92e178658afb311804347ace7ff4f9"
+    },
+    "test": {
+      "n_docs": 4349,
+      "sha256": "ecf8e8bef620aba6bc8d3fa1f9db2b34dba040c77414541c74ba9e1a4b1e1612"
+    },
+    "test_unseen_context": {
+      "n_docs": 1466,
+      "sha256": "a0451d5c7d6550f17bfc12291d3fd725a1451d090e07a5c59e63434e25dfc79f"
+    },
+    "test_unseen_value": {
+      "n_docs": 1933,
+      "sha256": "31b4998a1d75c7c1ddecdb28f9b23265936c06f8a3a47869ad66efe181b76ffa"
+    },
+    "test_novel_template": {
+      "n_docs": 869,
+      "sha256": "e9762ceeeaa1e147332cafc7299b8d2d09096f0995b2eedf55475f5c20688a8a"
+    },
+    "test_familiar_template": {
+      "n_docs": 159,
+      "sha256": "7f75f11a18a462ed0f7f8b7b8bad9646813819c41ba59e821da31ea73cdfaf96"
+    },
+    "test_format_shift": {
+      "n_docs": 3062,
+      "sha256": "223e4043e8da2d03dd7788c786687aba40b1378cbaa2767fe531cccb6e52ee45"
+    },
+    "test_long": {
+      "n_docs": 73,
+      "sha256": "32e1f67bd927ae010d1c57dc7bfa8438e0715759e36ec3a811ad771e11ec328a"
+    },
+    "challenge_v1": {
+      "n_docs": 154,
+      "sha256": "96e5698aafb65bd23cee715d0d1696b3055afc047f6fb37240d5f5d743966a14"
+    }
+  }
+}

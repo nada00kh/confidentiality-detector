@@ -1,0 +1,17 @@
+# Extra packages installed on top of the Google Colab image (which already provides torch,
+# transformers, numpy, scikit-learn, safetensors).
+#
+# MUST be installed with PEP 517 builds:
+#     python -m pip install --use-pep517 -r requirements-colab.txt
+# (scripts/colab_round1.py:install_dependencies does exactly this and verifies the imports.)
+#
+# Why: seqeval 1.2.2 is published only as an sdist whose setup.py declares
+# setup_requires=["setuptools_scm"]. When pip < 26 finds both setuptools and wheel installed
+# (as on Colab) it uses the legacy `setup.py egg_info` path, where setuptools' deprecated
+# fetch_build_eggs downloads the newest setuptools_scm (10.x) without its new dependency
+# `vcs_versioning` -> ModuleNotFoundError -> "metadata-generation-failed", and pip aborts the
+# whole install, so phonenumbers is not installed either. Reproduced locally with
+# pip 24.2 + setuptools 84.2.1 + wheel 0.48.0; --use-pep517 fixes it (isolated build env).
+seqeval==1.2.2          # same version the original notebook metric used
+phonenumbers==9.0.40    # version the local test suite passed with (rules detector)
+pytest>=8.0             # runs the unit tests on Colab before any GPU work

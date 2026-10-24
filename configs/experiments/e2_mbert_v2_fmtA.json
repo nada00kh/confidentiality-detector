@@ -1,0 +1,14 @@
+{
+  "name": "e2_mbert_v2_fmtA",
+  "description": "E1 + one variable: half of the target-bearing training docs get a copy with values re-rendered in format family A (Luhn-valid grouped cards, realistic phones, lowercase usernames/emails, human-style passwords, new names). Family B (test_format_shift) is never used in training.",
+  "model_name": "google-bert/bert-base-multilingual-cased",
+  "label_policy": "v2",
+  "augment": "format_A",
+  "augment_fraction": 0.5,
+  "learning_rate": 2e-5,
+  "epochs": 2,
+  "batch_size": 16,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.1,
+  "seed": 42
+}

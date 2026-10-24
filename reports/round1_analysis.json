@@ -1,0 +1,1859 @@
+{
+  "significance": {
+    "challenge_v1": {
+      "mbert_original vs e1_mbert_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 9,
+          "only_second_correct": 0,
+          "p_value": 0.00390625
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 0,
+          "only_second_correct": 17,
+          "p_value": 1.52587890625e-05
+        }
+      },
+      "e1_mbert_v2 vs e2_mbert_v2_fmtA": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 1,
+          "only_second_correct": 12,
+          "p_value": 0.00341796875
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 1,
+          "only_second_correct": 3,
+          "p_value": 0.625
+        }
+      },
+      "e2_mbert_v2_fmtA vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 0,
+          "only_second_correct": 5,
+          "p_value": 0.0625
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 1,
+          "only_second_correct": 0,
+          "p_value": 1.0
+        }
+      },
+      "mbert_original vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 1,
+          "only_second_correct": 8,
+          "p_value": 0.0390625
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 0,
+          "only_second_correct": 18,
+          "p_value": 7.62939453125e-06
+        }
+      },
+      "presidio vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 1,
+          "only_second_correct": 19,
+          "p_value": 4.00543212890625e-05
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 8,
+          "only_second_correct": 4,
+          "p_value": 0.3876953125
+        }
+      }
+    },
+    "test_format_shift": {
+      "mbert_original vs e1_mbert_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 236,
+          "only_second_correct": 44,
+          "p_value": 6.335564729992673e-33
+        }
+      },
+      "e1_mbert_v2 vs e2_mbert_v2_fmtA": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 13,
+          "only_second_correct": 248,
+          "p_value": 1.7600192024673032e-57
+        }
+      },
+      "e2_mbert_v2_fmtA vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 0,
+          "only_second_correct": 17,
+          "p_value": 1.52587890625e-05
+        }
+      },
+      "mbert_original vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 59,
+          "only_second_correct": 119,
+          "p_value": 8.109583796601088e-06
+        }
+      },
+      "presidio vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 16,
+          "only_second_correct": 615,
+          "p_value": 5.742305576033852e-159
+        }
+      }
+    },
+    "test": {
+      "mbert_original vs e1_mbert_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 4,
+          "only_second_correct": 0,
+          "p_value": 0.125
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 0,
+          "only_second_correct": 766,
+          "p_value": 5.152919015677707e-231
+        }
+      },
+      "e1_mbert_v2 vs e2_mbert_v2_fmtA": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 0,
+          "only_second_correct": 1,
+          "p_value": 1.0
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 3,
+          "only_second_correct": 2,
+          "p_value": 1.0
+        }
+      },
+      "e2_mbert_v2_fmtA vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 0,
+          "only_second_correct": 0,
+          "p_value": 1.0
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 2,
+          "only_second_correct": 0,
+          "p_value": 0.5
+        }
+      },
+      "mbert_original vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 3,
+          "only_second_correct": 0,
+          "p_value": 0.25
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 0,
+          "only_second_correct": 763,
+          "p_value": 4.1223352125421653e-230
+        }
+      },
+      "presidio vs e2_mbert_v2_fmtA+rules_v2": {
+        "BLOCK_docs (false ALLOW)": {
+          "only_first_correct": 1,
+          "only_second_correct": 660,
+          "p_value": 1.3837602510867718e-196
+        },
+        "ALLOW_docs (false BLOCK)": {
+          "only_first_correct": 9,
+          "only_second_correct": 158,
+          "p_value": 2.5326891962067818e-36
+        }
+      }
+    }
+  },
+  "bootstrap": {
+    "challenge_v1": {
+      "mbert_original": {
+        "FAR": 0.09782608695652174,
+        "FAR_ci95": [
+          0.043478260869565216,
+          0.16304347826086957
+        ],
+        "FBR": 0.48333333333333334,
+        "FBR_ci95": [
+          0.35,
+          0.6166666666666667
+        ]
+      },
+      "e1_mbert_v2": {
+        "FAR": 0.1956521739130435,
+        "FAR_ci95": [
+          0.11956521739130435,
+          0.2826086956521739
+        ],
+        "FBR": 0.2,
+        "FBR_ci95": [
+          0.1,
+          0.31666666666666665
+        ]
+      },
+      "e2_mbert_v2_fmtA": {
+        "FAR": 0.07608695652173914,
+        "FAR_ci95": [
+          0.03260869565217391,
+          0.13043478260869565
+        ],
+        "FBR": 0.16666666666666666,
+        "FBR_ci95": [
+          0.08333333333333333,
+          0.26666666666666666
+        ]
+      },
+      "e2_mbert_v2_fmtA+rules_v2": {
+        "FAR": 0.021739130434782608,
+        "FAR_ci95": [
+          0.0,
+          0.05434782608695652
+        ],
+        "FBR": 0.18333333333333332,
+        "FBR_ci95": [
+          0.08333333333333333,
+          0.2833333333333333
+        ]
+      },
+      "rules_v2": {
+        "FAR": 0.2826086956521739,
+        "FAR_ci95": [
+          0.18478260869565216,
+          0.3804347826086957
+        ],
+        "FBR": 0.016666666666666666,
+        "FBR_ci95": [
+          0.0,
+          0.05
+        ]
+      },
+      "presidio": {
+        "FAR": 0.21739130434782608,
+        "FAR_ci95": [
+          0.14130434782608695,
+          0.30434782608695654
+        ],
+        "FBR": 0.11666666666666667,
+        "FBR_ci95": [
+          0.05,
+          0.2
+        ]
+      }
+    },
+    "test_format_shift": {
+      "mbert_original": {
+        "FAR": 0.041802743305029394,
+        "FAR_ci95": [
+          0.034617896799477466,
+          0.04931417374265186
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      },
+      "e1_mbert_v2": {
+        "FAR": 0.10450685826257348,
+        "FAR_ci95": [
+          0.09340300457217506,
+          0.11528412802090138
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      },
+      "e2_mbert_v2_fmtA": {
+        "FAR": 0.02775963422599608,
+        "FAR_ci95": [
+          0.022207707380796866,
+          0.03363814500326584
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      },
+      "e2_mbert_v2_fmtA+rules_v2": {
+        "FAR": 0.022207707380796866,
+        "FAR_ci95": [
+          0.016982364467668192,
+          0.02775963422599608
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      },
+      "rules_v2": {
+        "FAR": 0.4706074461136512,
+        "FAR_ci95": [
+          0.45362508164598303,
+          0.4879163945133899
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      },
+      "presidio": {
+        "FAR": 0.2178314826910516,
+        "FAR_ci95": [
+          0.20313520574787722,
+          0.23285434356629653
+        ],
+        "FBR": null,
+        "FBR_ci95": null
+      }
+    },
+    "test": {
+      "mbert_original": {
+        "FAR": 0.0,
+        "FAR_ci95": [
+          0.0,
+          0.0
+        ],
+        "FBR": 0.7275280898876404,
+        "FBR_ci95": [
+          0.699438202247191,
+          0.7528089887640449
+        ]
+      },
+      "e1_mbert_v2": {
+        "FAR": 0.0013063357282821686,
+        "FAR_ci95": [
+          0.00032658393207054214,
+          0.002612671456564337
+        ],
+        "FBR": 0.010299625468164793,
+        "FBR_ci95": [
+          0.0046816479400749065,
+          0.016853932584269662
+        ]
+      },
+      "e2_mbert_v2_fmtA": {
+        "FAR": 0.0009797517962116264,
+        "FAR_ci95": [
+          0.0,
+          0.0022860875244937948
+        ],
+        "FBR": 0.011235955056179775,
+        "FBR_ci95": [
+          0.0056179775280898875,
+          0.017790262172284643
+        ]
+      },
+      "e2_mbert_v2_fmtA+rules_v2": {
+        "FAR": 0.0009797517962116264,
+        "FAR_ci95": [
+          0.0,
+          0.0022860875244937948
+        ],
+        "FBR": 0.013108614232209739,
+        "FBR_ci95": [
+          0.006554307116104869,
+          0.020599250936329586
+        ]
+      },
+      "rules_v2": {
+        "FAR": 0.5444154147615937,
+        "FAR_ci95": [
+          0.5264532984977139,
+          0.562050947093403
+        ],
+        "FBR": 0.0018726591760299626,
+        "FBR_ci95": [
+          0.0,
+          0.0046816479400749065
+        ]
+      },
+      "presidio": {
+        "FAR": 0.2161985630306989,
+        "FAR_ci95": [
+          0.20182887001959504,
+          0.2302416721097322
+        ],
+        "FBR": 0.15262172284644196,
+        "FBR_ci95": [
+          0.13108614232209737,
+          0.1750936329588015
+        ]
+      }
+    }
+  },
+  "operating_point": {
+    "e2_mbert_v2_fmtA": {
+      "validation": {
+        "None": {
+          "entity_p": 0.9830791727595571,
+          "entity_r": 0.9876180482686254,
+          "entity_f1": 0.9853433835845896,
+          "caught": 0.9979013641133263,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.009532062391681109,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 15,
+            "spurious": 17
+          }
+        },
+        "0.5": {
+          "entity_p": 0.9828738512949039,
+          "entity_r": 0.9876180482686254,
+          "entity_f1": 0.985240238668481,
+          "caught": 0.9979013641133263,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.009532062391681109,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 16,
+            "spurious": 17
+          }
+        },
+        "0.4": {
+          "entity_p": 0.9816475495307612,
+          "entity_r": 0.9878279118572928,
+          "entity_f1": 0.9847280334728034,
+          "caught": 0.9981112277019937,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.011265164644714038,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 20,
+            "spurious": 19
+          }
+        },
+        "0.3": {
+          "entity_p": 0.9806290356175796,
+          "entity_r": 0.9880377754459602,
+          "entity_f1": 0.9843194647710642,
+          "caught": 0.998321091290661,
+          "FAR": 0.001322314049586777,
+          "FBR": 0.012998266897746967,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 20,
+            "spurious": 24
+          }
+        },
+        "0.2": {
+          "entity_p": 0.9796257796257797,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9842297650130549,
+          "caught": 0.9989506820566632,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.01386481802426343,
+          "fp_breakdown": {
+            "boundary": 24,
+            "type_confusion": 24,
+            "hard_negative": 24,
+            "spurious": 26
+          }
+        },
+        "0.15": {
+          "entity_p": 0.9788117989198172,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9838187702265372,
+          "caught": 0.9989506820566632,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.01386481802426343,
+          "fp_breakdown": {
+            "boundary": 24,
+            "type_confusion": 24,
+            "hard_negative": 29,
+            "spurious": 25
+          }
+        },
+        "0.1": {
+          "entity_p": 0.978202200539755,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9835107493216447,
+          "caught": 0.9991605456453305,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.014731369150779897,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 29,
+            "spurious": 27
+          }
+        },
+        "0.05": {
+          "entity_p": 0.9773905828666252,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9831003546839141,
+          "caught": 0.9991605456453305,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.016464471403812825,
+          "fp_breakdown": {
+            "boundary": 25,
+            "type_confusion": 24,
+            "hard_negative": 32,
+            "spurious": 28
+          }
+        }
+      },
+      "chosen_threshold": 0.05,
+      "held_out_at_chosen": {
+        "test": {
+          "entity_p": 0.9758504829903402,
+          "entity_r": 0.9870433305012745,
+          "entity_f1": 0.9814149947201689,
+          "caught": 0.9989379779099405,
+          "FAR": 0.00032658393207054214,
+          "FBR": 0.019662921348314606,
+          "fp_breakdown": {
+            "boundary": 35,
+            "type_confusion": 25,
+            "spurious": 14,
+            "hard_negative": 41
+          }
+        },
+        "test_format_shift": {
+          "entity_p": 0.5842115347767771,
+          "entity_r": 0.6476210705182668,
+          "entity_f1": 0.6142842752090258,
+          "caught": 0.9700509770603228,
+          "FAR": 0.014043109079033311,
+          "FBR": null,
+          "fp_breakdown": {
+            "type_confusion": 1581,
+            "boundary": 554,
+            "hard_negative": 26,
+            "spurious": 9
+          }
+        },
+        "test_long": {
+          "entity_p": 0.638095238095238,
+          "entity_r": 0.9710144927536232,
+          "entity_f1": 0.7701149425287357,
+          "caught": 1.0,
+          "FAR": 0.0,
+          "FBR": 0.25,
+          "fp_breakdown": {
+            "type_confusion": 2,
+            "boundary": 1,
+            "hard_negative": 31,
+            "spurious": 4
+          }
+        },
+        "challenge_v1": {
+          "entity_p": 0.6558139534883721,
+          "entity_r": 0.7305699481865285,
+          "entity_f1": 0.6911764705882353,
+          "caught": 0.8808290155440415,
+          "FAR": 0.05434782608695652,
+          "FBR": 0.23333333333333334,
+          "fp_breakdown": {
+            "type_confusion": 22,
+            "boundary": 15,
+            "spurious": 26,
+            "hard_negative": 11
+          }
+        }
+      },
+      "held_out_at_argmax": {
+        "test": {
+          "entity_p": 0.981391414675407,
+          "entity_r": 0.985768903993203,
+          "entity_f1": 0.9835752887570203,
+          "caught": 0.9976635514018691,
+          "FAR": 0.0009797517962116264,
+          "FBR": 0.011235955056179775,
+          "fp_breakdown": {
+            "boundary": 32,
+            "type_confusion": 25,
+            "hard_negative": 24,
+            "spurious": 7
+          }
+        },
+        "test_format_shift": {
+          "entity_p": 0.5865944210315072,
+          "entity_r": 0.6208581138487681,
+          "entity_f1": 0.6032401196986896,
+          "caught": 0.9473237043330501,
+          "FAR": 0.02775963422599608,
+          "FBR": null,
+          "fp_breakdown": {
+            "type_confusion": 1487,
+            "boundary": 558,
+            "hard_negative": 14,
+            "spurious": 1
+          }
+        },
+        "test_long": {
+          "entity_p": 0.7613636363636364,
+          "entity_r": 0.9710144927536232,
+          "entity_f1": 0.8535031847133757,
+          "caught": 1.0,
+          "FAR": 0.0,
+          "FBR": 0.14285714285714285,
+          "fp_breakdown": {
+            "type_confusion": 2,
+            "boundary": 1,
+            "hard_negative": 17,
+            "spurious": 1
+          }
+        },
+        "challenge_v1": {
+          "entity_p": 0.7354497354497355,
+          "entity_r": 0.7202072538860104,
+          "entity_f1": 0.7277486910994764,
+          "caught": 0.8497409326424871,
+          "FAR": 0.07608695652173914,
+          "FBR": 0.16666666666666666,
+          "fp_breakdown": {
+            "type_confusion": 17,
+            "boundary": 12,
+            "spurious": 13,
+            "hard_negative": 8
+          }
+        }
+      }
+    },
+    "e2_mbert_v2_fmtA+rules_v2": {
+      "validation": {
+        "None": {
+          "entity_p": 0.9820534223706177,
+          "entity_r": 0.9876180482686254,
+          "entity_f1": 0.9848278748561264,
+          "caught": 0.9979013641133263,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.011265164644714038,
+          "fp_breakdown": {
+            "hard_negative": 19,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 19
+          }
+        },
+        "0.5": {
+          "entity_p": 0.9818485291049447,
+          "entity_r": 0.9876180482686254,
+          "entity_f1": 0.9847248378321825,
+          "caught": 0.9979013641133263,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.011265164644714038,
+          "fp_breakdown": {
+            "hard_negative": 20,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 19
+          }
+        },
+        "0.4": {
+          "entity_p": 0.980625,
+          "entity_r": 0.9878279118572928,
+          "entity_f1": 0.9842132775744903,
+          "caught": 0.9981112277019937,
+          "FAR": 0.001652892561983471,
+          "FBR": 0.012998266897746967,
+          "fp_breakdown": {
+            "hard_negative": 24,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 21
+          }
+        },
+        "0.3": {
+          "entity_p": 0.9796088223054515,
+          "entity_r": 0.9880377754459602,
+          "entity_f1": 0.9838052450109707,
+          "caught": 0.998321091290661,
+          "FAR": 0.001322314049586777,
+          "FBR": 0.014731369150779897,
+          "fp_breakdown": {
+            "hard_negative": 24,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 26
+          }
+        },
+        "0.2": {
+          "entity_p": 0.9786085150571132,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9837160751565762,
+          "caught": 0.9989506820566632,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.01559792027729636,
+          "fp_breakdown": {
+            "hard_negative": 28,
+            "type_confusion": 24,
+            "boundary": 23,
+            "spurious": 28
+          }
+        },
+        "0.15": {
+          "entity_p": 0.9777962232828388,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9833055091819699,
+          "caught": 0.9989506820566632,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.01559792027729636,
+          "fp_breakdown": {
+            "hard_negative": 33,
+            "type_confusion": 24,
+            "boundary": 23,
+            "spurious": 27
+          }
+        },
+        "0.1": {
+          "entity_p": 0.9771878888428038,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9829978095337437,
+          "caught": 0.9991605456453305,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.016464471403812825,
+          "fp_breakdown": {
+            "hard_negative": 33,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 29
+          }
+        },
+        "0.05": {
+          "entity_p": 0.9763779527559056,
+          "entity_r": 0.9888772298006296,
+          "entity_f1": 0.9825878427692629,
+          "caught": 0.9991605456453305,
+          "FAR": 0.0009917355371900827,
+          "FBR": 0.018197573656845753,
+          "fp_breakdown": {
+            "hard_negative": 36,
+            "type_confusion": 24,
+            "boundary": 24,
+            "spurious": 30
+          }
+        }
+      },
+      "chosen_threshold": 0.05,
+      "held_out_at_chosen": {
+        "test": {
+          "entity_p": 0.9734031413612565,
+          "entity_r": 0.9872557349192863,
+          "entity_f1": 0.9802805019508595,
+          "caught": 0.9989379779099405,
+          "FAR": 0.00032658393207054214,
+          "FBR": 0.02153558052434457,
+          "fp_breakdown": {
+            "spurious": 21,
+            "boundary": 34,
+            "type_confusion": 24,
+            "hard_negative": 48
+          }
+        },
+        "test_format_shift": {
+          "entity_p": 0.758216453841323,
+          "entity_r": 0.7693288020390824,
+          "entity_f1": 0.763732208750659,
+          "caught": 0.9781223449447749,
+          "FAR": 0.011430437622468974,
+          "FBR": null,
+          "fp_breakdown": {
+            "type_confusion": 847,
+            "boundary": 261,
+            "hard_negative": 31,
+            "spurious": 16
+          }
+        },
+        "test_long": {
+          "entity_p": 0.6261682242990654,
+          "entity_r": 0.9710144927536232,
+          "entity_f1": 0.7613636363636365,
+          "caught": 1.0,
+          "FAR": 0.0,
+          "FBR": 0.25,
+          "fp_breakdown": {
+            "type_confusion": 2,
+            "boundary": 1,
+            "hard_negative": 33,
+            "spurious": 4
+          }
+        },
+        "challenge_v1": {
+          "entity_p": 0.7162162162162162,
+          "entity_r": 0.8238341968911918,
+          "entity_f1": 0.7662650602409639,
+          "caught": 0.9378238341968912,
+          "FAR": 0.0,
+          "FBR": 0.25,
+          "fp_breakdown": {
+            "type_confusion": 15,
+            "boundary": 10,
+            "spurious": 26,
+            "hard_negative": 12
+          }
+        }
+      },
+      "held_out_at_argmax": {
+        "test": {
+          "entity_p": 0.9791227330240405,
+          "entity_r": 0.9861937128292269,
+          "entity_f1": 0.9826455026455027,
+          "caught": 0.9976635514018691,
+          "FAR": 0.0009797517962116264,
+          "FBR": 0.013108614232209739,
+          "fp_breakdown": {
+            "boundary": 30,
+            "type_confusion": 24,
+            "hard_negative": 31,
+            "spurious": 14
+          }
+        },
+        "test_format_shift": {
+          "entity_p": 0.7583243823845328,
+          "entity_r": 0.7497875955819882,
+          "entity_f1": 0.7540318274057459,
+          "caught": 0.9613423959218351,
+          "FAR": 0.022207707380796866,
+          "FBR": null,
+          "fp_breakdown": {
+            "type_confusion": 798,
+            "boundary": 300,
+            "spurious": 8,
+            "hard_negative": 19
+          }
+        },
+        "test_long": {
+          "entity_p": 0.7444444444444445,
+          "entity_r": 0.9710144927536232,
+          "entity_f1": 0.8427672955974843,
+          "caught": 1.0,
+          "FAR": 0.0,
+          "FBR": 0.14285714285714285,
+          "fp_breakdown": {
+            "type_confusion": 2,
+            "boundary": 1,
+            "hard_negative": 19,
+            "spurious": 1
+          }
+        },
+        "challenge_v1": {
+          "entity_p": 0.7969543147208121,
+          "entity_r": 0.8134715025906736,
+          "entity_f1": 0.805128205128205,
+          "caught": 0.9067357512953368,
+          "FAR": 0.021739130434782608,
+          "FBR": 0.18333333333333332,
+          "fp_breakdown": {
+            "type_confusion": 11,
+            "boundary": 7,
+            "spurious": 13,
+            "hard_negative": 9
+          }
+        }
+      }
+    }
+  },
+  "challenge_failures": {
+    "e2_mbert_v2_fmtA+rules_v2": [
+      {
+        "doc_id": "chat-002",
+        "tags": [
+          "block",
+          "chat",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-008",
+        "tags": [
+          "block",
+          "chat",
+          "password",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "PASSWORD",
+            "Aaaaaaa#9999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-018",
+        "tags": [
+          "block",
+          "chat",
+          "ip",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-030",
+        "tags": [
+          "block",
+          "chat",
+          "code",
+          "password"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-031",
+        "tags": [
+          "block",
+          "chat",
+          "lowercase",
+          "name",
+          "nocue"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaaaa"
+          ]
+        ],
+        "false_positive": [
+          [
+            "USERNAME",
+            "aaa",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "chat-033",
+        "tags": [
+          "block",
+          "chat",
+          "cvv",
+          "nocue"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "CREDITCARDCVV",
+            "999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "mail-007",
+        "tags": [
+          "block",
+          "email",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-008",
+        "tags": [
+          "block",
+          "code",
+          "multi",
+          "sql"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "Aaaaaaaa"
+          ],
+          [
+            "LASTNAME",
+            "Aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-017",
+        "tags": [
+          "block",
+          "code",
+          "log",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-020",
+        "tags": [
+          "block",
+          "code",
+          "http",
+          "password"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "PASSWORD",
+            "Aaaaaa!9999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "form-009",
+        "tags": [
+          "block",
+          "form",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaa"
+          ],
+          [
+            "LASTNAME",
+            "aaaaa"
+          ],
+          [
+            "FIRSTNAME",
+            "aa"
+          ],
+          [
+            "LASTNAME",
+            "aa"
+          ],
+          [
+            "FIRSTNAME",
+            "aaaaa"
+          ],
+          [
+            "LASTNAME",
+            "aaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "neg-001",
+        "tags": [
+          "allow",
+          "hardneg",
+          "version"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "IPV4",
+            "9.9.9.9",
+            "VERSION"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-002",
+        "tags": [
+          "allow",
+          "hardneg",
+          "order"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDNUMBER",
+            "999-9999999-9999999",
+            "ORDERID"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-004",
+        "tags": [
+          "allow",
+          "hardneg",
+          "uuid"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDCVV",
+            "999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-007",
+        "tags": [
+          "allow",
+          "hardneg",
+          "math"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "PHONENUMBER",
+            "9999 + 9999 - 9999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-015",
+        "tags": [
+          "allow",
+          "hardneg",
+          "tracking"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "IBAN",
+            "9A999AA99999999999",
+            "TRACKING"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-020",
+        "tags": [
+          "allow",
+          "hardneg",
+          "phone-like"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "ACCOUNTNUMBER",
+            "9999999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-027",
+        "tags": [
+          "allow",
+          "hardneg",
+          "publicname"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "FIRSTNAME",
+            "Aaaaaa Aaaaa",
+            "PUBLICNAME"
+          ],
+          [
+            "FIRSTNAME",
+            "Aaaaaa\u00e9",
+            "PUBLICNAME"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-037",
+        "tags": [
+          "allow",
+          "hardneg",
+          "pin"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDCVV",
+            "9999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-040",
+        "tags": [
+          "allow",
+          "hardneg",
+          "publicname"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "FIRSTNAME",
+            "Aaaaa Aaaaa",
+            "PUBLICNAME"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-044",
+        "tags": [
+          "allow",
+          "hardneg",
+          "phone-like"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "SSN",
+            "999 9999 9999",
+            "MEETINGID"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-045",
+        "tags": [
+          "allow",
+          "hardneg",
+          "version"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "IPV4",
+            "99.",
+            "VERSION"
+          ]
+        ]
+      },
+      {
+        "doc_id": "long-002",
+        "tags": [
+          "block",
+          "code",
+          "ip",
+          "log",
+          "long",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaa_aaaaaa"
+          ]
+        ],
+        "false_positive": []
+      }
+    ],
+    "e2_mbert_v2_fmtA": [
+      {
+        "doc_id": "chat-002",
+        "tags": [
+          "block",
+          "chat",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-008",
+        "tags": [
+          "block",
+          "chat",
+          "password",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "PASSWORD",
+            "Aaaaaaa#9999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-011",
+        "tags": [
+          "account",
+          "block",
+          "chat"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "ACCOUNTNUMBER",
+            "9999-999999-99"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-018",
+        "tags": [
+          "block",
+          "chat",
+          "ip",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-027",
+        "tags": [
+          "block",
+          "caps",
+          "chat",
+          "email"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "EMAIL",
+            "AAAAAAA@AAAAAAAAAAAAAAAA.AAA"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-030",
+        "tags": [
+          "block",
+          "chat",
+          "code",
+          "password"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-031",
+        "tags": [
+          "block",
+          "chat",
+          "lowercase",
+          "name",
+          "nocue"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaaaa"
+          ]
+        ],
+        "false_positive": [
+          [
+            "USERNAME",
+            "aaa",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "chat-033",
+        "tags": [
+          "block",
+          "chat",
+          "cvv",
+          "nocue"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "CREDITCARDCVV",
+            "999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "chat-040",
+        "tags": [
+          "block",
+          "chat",
+          "password"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "PASSWORD",
+            "aaaaaaa-aaaaa-aaaaaaa-aaaaaa-99"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "mail-007",
+        "tags": [
+          "block",
+          "email",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-002",
+        "tags": [
+          "block",
+          "code",
+          "env",
+          "password"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "PASSWORD",
+            "A9aA-99aa-AAa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-003",
+        "tags": [
+          "block",
+          "code",
+          "connstring"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaa_aaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-005",
+        "tags": [
+          "block",
+          "code",
+          "curl"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaa"
+          ]
+        ],
+        "false_positive": [
+          [
+            "CREDITCARDCVV",
+            "999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "code-008",
+        "tags": [
+          "block",
+          "code",
+          "multi",
+          "sql"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "Aaaaaaaa"
+          ],
+          [
+            "LASTNAME",
+            "Aaaaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-014",
+        "tags": [
+          "block",
+          "code",
+          "config",
+          "ip"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "IPV4",
+            "99.9.9.99"
+          ],
+          [
+            "IPV4",
+            "99.9.9.99"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-017",
+        "tags": [
+          "block",
+          "code",
+          "log",
+          "username"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaaaaa"
+          ],
+          [
+            "USERNAME",
+            "aaaaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "code-019",
+        "tags": [
+          "block",
+          "code",
+          "ldap",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaa-aaaa-aaaa"
+          ]
+        ],
+        "false_positive": [
+          [
+            "USERNAME",
+            "a",
+            null
+          ],
+          [
+            "CREDITCARDCVV",
+            "99",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "code-020",
+        "tags": [
+          "block",
+          "code",
+          "http",
+          "password"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "PASSWORD",
+            "Aaaaaa!9999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "form-005",
+        "tags": [
+          "block",
+          "card",
+          "form"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "CREDITCARDCVV",
+            "9999"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "form-009",
+        "tags": [
+          "block",
+          "form",
+          "lowercase",
+          "name"
+        ],
+        "decision_error": "false_ALLOW",
+        "missed": [
+          [
+            "FIRSTNAME",
+            "aaa"
+          ],
+          [
+            "LASTNAME",
+            "aaaaa"
+          ],
+          [
+            "FIRSTNAME",
+            "aa"
+          ],
+          [
+            "LASTNAME",
+            "aa"
+          ],
+          [
+            "FIRSTNAME",
+            "aaaaa"
+          ],
+          [
+            "LASTNAME",
+            "aaaaa"
+          ]
+        ],
+        "false_positive": []
+      },
+      {
+        "doc_id": "neg-002",
+        "tags": [
+          "allow",
+          "hardneg",
+          "order"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDNUMBER",
+            "999-9999999-9999999",
+            "ORDERID"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-004",
+        "tags": [
+          "allow",
+          "hardneg",
+          "uuid"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDCVV",
+            "999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-007",
+        "tags": [
+          "allow",
+          "hardneg",
+          "math"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "PHONENUMBER",
+            "9999 + 9999 - 9999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-015",
+        "tags": [
+          "allow",
+          "hardneg",
+          "tracking"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "IBAN",
+            "9A999AA99999999999",
+            "TRACKING"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-020",
+        "tags": [
+          "allow",
+          "hardneg",
+          "phone-like"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "ACCOUNTNUMBER",
+            "9999999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-027",
+        "tags": [
+          "allow",
+          "hardneg",
+          "publicname"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "FIRSTNAME",
+            "Aaaaaa Aaaaa",
+            "PUBLICNAME"
+          ],
+          [
+            "FIRSTNAME",
+            "Aaaaaa\u00e9",
+            "PUBLICNAME"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-037",
+        "tags": [
+          "allow",
+          "hardneg",
+          "pin"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "CREDITCARDCVV",
+            "9999",
+            null
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-040",
+        "tags": [
+          "allow",
+          "hardneg",
+          "publicname"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "FIRSTNAME",
+            "Aaaaa Aaaaa",
+            "PUBLICNAME"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-044",
+        "tags": [
+          "allow",
+          "hardneg",
+          "phone-like"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "SSN",
+            "999 9999 9999",
+            "MEETINGID"
+          ]
+        ]
+      },
+      {
+        "doc_id": "neg-045",
+        "tags": [
+          "allow",
+          "hardneg",
+          "version"
+        ],
+        "decision_error": "false_BLOCK",
+        "missed": [],
+        "false_positive": [
+          [
+            "IPV4",
+            "99.",
+            "VERSION"
+          ]
+        ]
+      },
+      {
+        "doc_id": "long-002",
+        "tags": [
+          "block",
+          "code",
+          "ip",
+          "log",
+          "long",
+          "username"
+        ],
+        "decision_error": "entity_miss_only",
+        "missed": [
+          [
+            "USERNAME",
+            "aaaa_aaaaaa"
+          ]
+        ],
+        "false_positive": []
+      }
+    ]
+  }
+}

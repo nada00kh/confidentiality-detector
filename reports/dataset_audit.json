@@ -1,0 +1,462 @@
+{
+  "n_records": {
+    "train": 34802,
+    "validation": 4350,
+    "test": 4349
+  },
+  "cross_split_duplicates": {
+    "train-validation": {
+      "normalised_text": 0,
+      "placeholder_template": 0
+    },
+    "train-test": {
+      "normalised_text": 0,
+      "placeholder_template": 0
+    },
+    "validation-test": {
+      "normalised_text": 0,
+      "placeholder_template": 0
+    }
+  },
+  "near_duplicate_templates_vs_train": {
+    "validation": {
+      "median_max_cosine": 0.18768717765080714,
+      "share_ge_0.5": 0.007126436781609196,
+      "share_ge_0.7": 0.001379310344827586,
+      "share_ge_0.8": 0.0004597701149425287,
+      "share_ge_0.9": 0.0004597701149425287
+    },
+    "test": {
+      "median_max_cosine": 0.18768799146316678,
+      "share_ge_0.5": 0.008047827086686594,
+      "share_ge_0.7": 0.0018395033340997931,
+      "share_ge_0.8": 0.0006898137502874224,
+      "share_ge_0.9": 0.0004598758335249483
+    }
+  },
+  "validation_reuse_from_train": {
+    "PASSWORD": {
+      "n": 246,
+      "value_seen_in_train": 0.16666666666666666,
+      "left2_context_seen_in_train": 0.5528455284552846
+    },
+    "USERNAME": {
+      "n": 325,
+      "value_seen_in_train": 0.20615384615384616,
+      "left2_context_seen_in_train": 0.6
+    },
+    "EMAIL": {
+      "n": 441,
+      "value_seen_in_train": 0.25170068027210885,
+      "left2_context_seen_in_train": 0.6893424036281179
+    },
+    "PHONENUMBER": {
+      "n": 262,
+      "value_seen_in_train": 0.10305343511450382,
+      "left2_context_seen_in_train": 0.6603053435114504
+    },
+    "FIRSTNAME": {
+      "n": 1319,
+      "value_seen_in_train": 0.959059893858984,
+      "left2_context_seen_in_train": 0.7573919636087946
+    },
+    "LASTNAME": {
+      "n": 498,
+      "value_seen_in_train": 0.9759036144578314,
+      "left2_context_seen_in_train": 0.3895582329317269
+    },
+    "SSN": {
+      "n": 207,
+      "value_seen_in_train": 0.07246376811594203,
+      "left2_context_seen_in_train": 0.5700483091787439
+    },
+    "CREDITCARDNUMBER": {
+      "n": 268,
+      "value_seen_in_train": 0.1455223880597015,
+      "left2_context_seen_in_train": 0.6977611940298507
+    },
+    "CREDITCARDCVV": {
+      "n": 93,
+      "value_seen_in_train": 0.5806451612903226,
+      "left2_context_seen_in_train": 0.3978494623655914
+    },
+    "IBAN": {
+      "n": 187,
+      "value_seen_in_train": 0.13368983957219252,
+      "left2_context_seen_in_train": 0.6042780748663101
+    },
+    "ACCOUNTNUMBER": {
+      "n": 301,
+      "value_seen_in_train": 0.21926910299003322,
+      "left2_context_seen_in_train": 0.7873754152823921
+    },
+    "STREET": {
+      "n": 264,
+      "value_seen_in_train": 0.32954545454545453,
+      "left2_context_seen_in_train": 0.3409090909090909
+    },
+    "IPV4": {
+      "n": 256,
+      "value_seen_in_train": 0.16796875,
+      "left2_context_seen_in_train": 0.69921875
+    }
+  },
+  "format": {
+    "ACCOUNTNUMBER": {
+      "n": 2831,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99+",
+          2831
+        ]
+      ]
+    },
+    "CREDITCARDCVV": {
+      "n": 869,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99+",
+          869
+        ]
+      ]
+    },
+    "CREDITCARDNUMBER": {
+      "n": 2574,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99+",
+          2574
+        ]
+      ]
+    },
+    "EMAIL": {
+      "n": 4092,
+      "distinct_shapes": 63,
+      "top_shapes": [
+        [
+          "Aaa+99@aa+.aa+",
+          1161
+        ],
+        [
+          "Aaa+_Aaa+@aa+.aa+",
+          611
+        ],
+        [
+          "Aaa+.Aaa+99@aa+.aa+",
+          586
+        ],
+        [
+          "Aaa+.Aaa+@aa+.aa+",
+          540
+        ],
+        [
+          "Aaa+_Aaa+99@aa+.aa+",
+          531
+        ]
+      ]
+    },
+    "FIRSTNAME": {
+      "n": 13323,
+      "distinct_shapes": 3,
+      "top_shapes": [
+        [
+          "Aaa+",
+          12885
+        ],
+        [
+          "Aaa",
+          426
+        ],
+        [
+          "Aa",
+          12
+        ]
+      ]
+    },
+    "IBAN": {
+      "n": 1973,
+      "distinct_shapes": 342,
+      "top_shapes": [
+        [
+          "AA99+",
+          982
+        ],
+        [
+          "AA99AA+99+",
+          177
+        ],
+        [
+          "AA99+A99+",
+          85
+        ],
+        [
+          "AA99+A99+A99+",
+          31
+        ],
+        [
+          "AA99AA+99+AA+",
+          30
+        ]
+      ]
+    },
+    "IP": {
+      "n": 1985,
+      "distinct_shapes": 1005,
+      "top_shapes": [
+        [
+          "99+.99+.99+.99+",
+          143
+        ],
+        [
+          "99+.99.99+.99+",
+          94
+        ],
+        [
+          "99.99+.99+.99+",
+          78
+        ],
+        [
+          "99+.99+.99+.99",
+          66
+        ],
+        [
+          "99+.99+.99.99+",
+          62
+        ]
+      ]
+    },
+    "IPV4": {
+      "n": 2720,
+      "distinct_shapes": 64,
+      "top_shapes": [
+        [
+          "99+.99+.99+.99+",
+          386
+        ],
+        [
+          "99+.99+.99.99+",
+          248
+        ],
+        [
+          "99+.99+.99+.99",
+          220
+        ],
+        [
+          "99+.99.99+.99+",
+          217
+        ],
+        [
+          "99.99+.99+.99+",
+          206
+        ]
+      ]
+    },
+    "LASTNAME": {
+      "n": 4817,
+      "distinct_shapes": 12,
+      "top_shapes": [
+        [
+          "Aaa+",
+          4394
+        ],
+        [
+          "Aaa+-Aaa+",
+          210
+        ],
+        [
+          "AaAaa+",
+          55
+        ],
+        [
+          "A'Aaa+",
+          54
+        ],
+        [
+          "Aaa",
+          44
+        ]
+      ]
+    },
+    "MASKEDNUMBER": {
+      "n": 2131,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99+",
+          2131
+        ]
+      ]
+    },
+    "PASSWORD": {
+      "n": 2622,
+      "distinct_shapes": 2337,
+      "top_shapes": [
+        [
+          "AaaA9AAaaAaA",
+          3
+        ],
+        [
+          "aa+AaAaA99+",
+          3
+        ],
+        [
+          "9aAaAaAA+a",
+          3
+        ],
+        [
+          "9aAA+aAaAaAa",
+          3
+        ],
+        [
+          "AA+aa+99Aa",
+          3
+        ]
+      ]
+    },
+    "PHONEIMEI": {
+      "n": 1875,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99-99+-99+-9",
+          1875
+        ]
+      ]
+    },
+    "PHONENUMBER": {
+      "n": 2425,
+      "distinct_shapes": 206,
+      "top_shapes": [
+        [
+          "99+-99+",
+          189
+        ],
+        [
+          "99+ 99+",
+          164
+        ],
+        [
+          "99+.99+",
+          163
+        ],
+        [
+          "99+ 99+.99+",
+          68
+        ],
+        [
+          "99+.99+-99+",
+          68
+        ]
+      ]
+    },
+    "PIN": {
+      "n": 738,
+      "distinct_shapes": 1,
+      "top_shapes": [
+        [
+          "99+",
+          738
+        ]
+      ]
+    },
+    "SSN": {
+      "n": 2045,
+      "distinct_shapes": 4,
+      "top_shapes": [
+        [
+          "99+",
+          564
+        ],
+        [
+          "99+-99-99+",
+          524
+        ],
+        [
+          "99+ 99 99+",
+          480
+        ],
+        [
+          "99+.99+.99+",
+          477
+        ]
+      ]
+    },
+    "STREET": {
+      "n": 2799,
+      "distinct_shapes": 25,
+      "top_shapes": [
+        [
+          "Aaa+ Aaa+",
+          2296
+        ],
+        [
+          "A Aaa+ Aaa+",
+          150
+        ],
+        [
+          "Aaa Aaa+",
+          119
+        ],
+        [
+          "Aaa+ Aaa",
+          62
+        ],
+        [
+          "A 9aa Aaa+",
+          38
+        ]
+      ]
+    },
+    "USERNAME": {
+      "n": 3056,
+      "distinct_shapes": 57,
+      "top_shapes": [
+        [
+          "Aaa+99",
+          918
+        ],
+        [
+          "Aaa+.Aaa+99",
+          427
+        ],
+        [
+          "Aaa+_Aaa+",
+          412
+        ],
+        [
+          "Aaa+.Aaa+",
+          398
+        ],
+        [
+          "Aaa+_Aaa+99",
+          393
+        ]
+      ]
+    }
+  },
+  "validator_pass_rates": {
+    "CREDITCARDNUMBER_luhn": 0.10334110334110334,
+    "CREDITCARDNUMBER_with_separators": 0.0,
+    "IBAN_mod97": 1.0,
+    "SSN_9_digits": 0.49095354523227386,
+    "IP_label_with_ipv4_value": 0.47858942065491183,
+    "MASKEDNUMBER_16_digits": 1.0
+  },
+  "label_policy_validation": {
+    "v1_original": {
+      "ignored_token_share": 0.3095100518192198,
+      "docs_without_target": 1360
+    },
+    "v2": {
+      "ignored_token_share": 0.009859981787000356,
+      "docs_without_target": 1325
+    }
+  },
+  "validation_entity_counts": {
+    "non_target": 9172,
+    "target": 4667
+  }
+}

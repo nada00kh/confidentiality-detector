@@ -1,0 +1,596 @@
+# Challenge set v1. See README.md for markup and annotation guidelines. Evaluation only.
+
+# ---------------------------------------------------------------- chat-style LLM prompts
+@@ chat-001 | chat,email,nocue
+can you rewrite this so it sounds less angry? "hi team, I've asked three times now. please loop in [[EMAIL:marisol.ferreira@tailwindlogistics.com]] before friday"
+
+@@ chat-002 | chat,name,lowercase
+summarize this thread for me: [[FIRSTNAME:priya]] said the vendor missed the deadline again and [[FIRSTNAME:tomasz]] wants to escalate
+
+@@ chat-003 | chat,password
+My wifi password is [[PASSWORD:Blu3Heron!88]] and it keeps disconnecting on my laptop but not my phone, any ideas?
+
+@@ chat-004 | chat,phone,name
+Draft a polite text to my landlord [[FIRSTNAME:Gareth]] [[LASTNAME:Okafor]] asking about the boiler. His number is [[PHONENUMBER:(415) 555-0147]].
+
+@@ chat-005 | chat,card,cvv
+why does checkout keep failing? I'm typing [[CREDITCARDNUMBER:4111 1111 1111 1111]] exp 09/27 cvc [[CREDITCARDCVV:737]]
+
+@@ chat-006 | chat,ssn
+I need to fill out the W-4 for my new job. My SSN is [[SSN:521-47-8830]], which box does it go in?
+
+@@ chat-007 | chat,iban,name
+Translate to German: "Please transfer the deposit to [[FIRSTNAME:Lukas]] [[LASTNAME:Brenner]], IBAN [[IBAN:DE89 3704 0044 0532 0130 00]]."
+
+@@ chat-008 | chat,username,password
+I can't log into the staging dashboard. tried user [[USERNAME:k.villanueva]] with [[PASSWORD:Staging#2024]] and it says invalid credentials
+
+@@ chat-009 | chat,ip
+our office printer at [[IPV4:192.168.14.37]] stopped responding after the firmware update. how do I reset it?
+
+@@ chat-010 | chat,street,name
+Write a short reference letter for my neighbor [[FIRSTNAME:Hannelore]] [[LASTNAME:Struthers]] who has lived at 48 [[STREET:Birchwood Crescent]] for ten years.
+
+@@ chat-011 | chat,account
+Explain this bank letter to me in plain English. It says account [[ACCOUNTNUMBER:0042-118876-03]] has been flagged for a dormant balance.
+
+@@ chat-012 | chat,email,phone,name,signature
+Make this signature look more professional:
+[[FIRSTNAME:Dev]] [[LASTNAME:Ramaswamy]] | Ops lead
+[[PHONENUMBER:+1 312 555 0182]] | [[EMAIL:dev.r@quillandpine.co]]
+
+@@ chat-013 | chat,name,nocue
+is it rude to cc [[FIRSTNAME:Siobhan]] on the reply when [[FIRSTNAME:Kwame]] didn't include her originally?
+
+@@ chat-014 | chat,password,nocue
+help me pick a stronger replacement for [[PASSWORD:fluffy2019]], I've used it everywhere since college
+
+@@ chat-015 | chat,phone,nocue
+my mom keeps getting scam calls on [[PHONENUMBER:617-555-0139]], how do I block them on an iphone
+
+@@ chat-016 | chat,card,nocue
+does [[CREDITCARDNUMBER:5500-0000-0000-0004]] look like a valid mastercard number format?
+
+@@ chat-017 | chat,name,email
+Tell [[FIRSTNAME:Ines]] (her address is [[EMAIL:ines.carvalho@meridianhealth.org]]) that the board meeting moved to 3pm.
+
+@@ chat-018 | chat,ip,username
+explain this auth log line: Accepted publickey for [[USERNAME:deploybot]] from [[IPV4:10.20.3.144]] port 52114 ssh2
+
+@@ chat-019 | chat,iban,nocue
+[[IBAN:GB82 WEST 1234 5698 7654 32]] is this a UK or Irish account? the invoice doesn't say
+
+@@ chat-020 | chat,ssn,nocue
+Can you check if [[SSN:618 22 4097]] is formatted correctly for the HR portal? It keeps rejecting it.
+
+@@ chat-021 | chat,name,diverse
+Write a congratulations message for [[FIRSTNAME:Oluwaseun]] [[LASTNAME:Adebayo-Clarke]] on her promotion to principal engineer.
+
+@@ chat-022 | chat,name,diverse
+How do I pronounce my new manager's name, [[FIRSTNAME:Ngozi]] [[LASTNAME:Eze]]? I don't want to get it wrong on the first call.
+
+@@ chat-023 | chat,name,diverse,name_order
+Reply to [[LASTNAME:Zhang]] [[FIRSTNAME:Wei]] and say we'll ship the samples on Monday.
+
+@@ chat-024 | chat,name,diverse,apostrophe
+Proofread my note to Mr. [[LASTNAME:O'Sullivan]] about the late fee.
+
+@@ chat-025 | chat,account,nocue
+the transfer from [[ACCOUNTNUMBER:30061785224]] to my savings bounced twice, what does code R01 mean?
+
+@@ chat-026 | chat,username
+my github handle is [[USERNAME:mira-kowal]] — can you write a short bio for my profile README?
+
+@@ chat-027 | chat,email,caps
+FORWARD THIS TO [[EMAIL:BILLING@HARBORVIEWDENTAL.COM]] AND TELL THEM I ALREADY PAID
+
+@@ chat-028 | chat,phone,intl
+Is [[PHONENUMBER:+44 20 7946 0958]] a London landline or a mobile?
+
+@@ chat-029 | chat,street,nocue
+Directions please: from [[STREET:Wrenfield Ridge Road]] to the airport, avoiding tolls.
+
+@@ chat-030 | chat,password,code
+why does `mysql -u [[USERNAME:reporting]] -p[[PASSWORD:Rp0rt!ng-77]] -h db.internal` give me access denied
+
+@@ chat-031 | chat,name,lowercase,nocue
+ugh [[FIRSTNAME:becky]] from accounting did it again. help me write a calm slack message
+
+@@ chat-032 | chat,ssn,name
+Fix the formatting of this table row: [[FIRSTNAME:Jerome]] | [[LASTNAME:Whitfield]] | [[SSN:402-61-7759]] | full-time
+
+@@ chat-033 | chat,cvv,nocue
+the 3 digits on the back are [[CREDITCARDCVV:204]], do I put them in the "security code" box?
+
+@@ chat-034 | chat,email,name
+Add [[FIRSTNAME:Rafael]] [[LASTNAME:Montoya]] <[[EMAIL:rmontoya@brightlane.io]]> to the meeting invite text.
+
+@@ chat-035 | chat,ip,nocue
+ping to [[IPV4:172.16.40.2]] times out but [[IPV4:172.16.40.1]] works fine. firewall?
+
+@@ chat-036 | chat,multi
+Please clean up this CRM note: called [[FIRSTNAME:Adaeze]] [[LASTNAME:Nwankwo]] at [[PHONENUMBER:212.555.0164]], she confirmed her new address 7 [[STREET:Larch Avenue]] and wants statements at [[EMAIL:adaeze.n@fastmail.net]].
+
+@@ chat-037 | chat,username,nocue
+rename all files owned by [[USERNAME:jbautista]] to start with the date, bash please
+
+@@ chat-038 | chat,name
+Write a toast for my brother [[FIRSTNAME:Callum]]'s wedding. His fiancée is [[FIRSTNAME:Aiyana]].
+
+@@ chat-039 | chat,card
+Payment keeps failing with card ending in 4242? Full number is [[CREDITCARDNUMBER:4242424242424242]].
+
+@@ chat-040 | chat,password
+Rate the strength of this passphrase: [[PASSWORD:correct-horse-battery-staple-41]]
+
+# ---------------------------------------------------------------- e-mails, letters, tickets
+@@ mail-001 | email,signature,multi
+Hi all,
+
+Attaching the Q3 vendor list. Any questions, reach me directly.
+
+Best,
+[[FIRSTNAME:Marguerite]] [[LASTNAME:Delacroix-Hume]]
+Procurement Manager
+Direct: [[PHONENUMBER:+1 (646) 555-0123]]
+[[EMAIL:m.delacroixhume@ardentsupply.com]]
+
+@@ mail-002 | email,ticket,username
+Ticket #48213 — User [[USERNAME:tpellegrini]] reports that MFA prompts loop endlessly on the VPN client. Please advise.
+
+@@ mail-003 | email,name,multi
+Please welcome [[FIRSTNAME:Mary]] [[~MIDDLENAME:Ellen]] [[LASTNAME:Hartigan]] to the claims team; she starts Monday and will sit next to [[FIRSTNAME:Osvaldo]].
+
+@@ mail-004 | email,account,name
+Dear Mr. [[LASTNAME:Halvorsen]], we have applied the refund to account no. [[ACCOUNTNUMBER:5560 2214 9083]]. Please allow 3-5 business days.
+
+@@ mail-005 | email,street,multi
+Please update the shipping address on order 7781-AQ to [[FIRSTNAME:Celeste]] [[LASTNAME:Ambrose]], 1520 [[STREET:Old Quarry Road]], Unit 4, Burlington VT 05401.
+
+@@ mail-006 | email,password,ticket
+Per your request I have reset the shared kiosk account. Temporary password: [[PASSWORD:Kx7-pLm2-Qz]] — it must be changed at first login.
+
+@@ mail-007 | email,name,lowercase
+hey [[FIRSTNAME:jonas]], quick one: can you send me the deck before 4? thx, [[FIRSTNAME:ren]]
+
+@@ mail-008 | email,iban,name
+Invoice 2024-118 is now due. Remit to: Kestrel Design Studio, IBAN [[IBAN:NL91ABNA0417164300]], reference INV-2024-118. Contact: [[FIRSTNAME:Femke]] [[LASTNAME:de Wit]].
+
+@@ mail-009 | email,ssn,name,form
+New hire paperwork for [[FIRSTNAME:Darnell]] [[LASTNAME:Pruitt]]: SSN [[SSN:233-90-1458]], start date 11/04, badge photo attached.
+
+@@ mail-010 | email,phone,nocue
+Running late, if anything comes up call me on [[PHONENUMBER:07700 900461]] instead.
+
+@@ mail-011 | email,ip,ticket
+INC-55190: suspicious login burst from [[IPV4:203.0.113.77]] against the HR portal between 02:10 and 02:14 UTC. Account locked.
+
+@@ mail-012 | email,name,multi
+Thank you [[FIRSTNAME:Halima]] and [[FIRSTNAME:Björn]] for covering the night shift. [[FIRSTNAME:Teodora]] will take over on Thursday.
+
+@@ mail-013 | email,cvv,card,form
+Card on file: Visa [[CREDITCARDNUMBER:4012 8888 8888 1881]], expiry 03/26, CVV [[CREDITCARDCVV:019]]. Please charge the deposit.
+
+@@ mail-014 | email,username,password,nocue
+Here are the creds for the trial account: [[USERNAME:acme_trial_07]] / [[PASSWORD:Trial!2O24x]]
+
+@@ mail-015 | email,name
+Can you check with Dr. [[LASTNAME:Achterberg]] whether the lab results are back?
+
+@@ mail-016 | email,street,name
+The package was delivered to 902 [[STREET:Sycamore Lane]] but [[FIRSTNAME:Wendell]] says he never received it.
+
+@@ mail-017 | email,account
+Your loan account [[ACCOUNTNUMBER:771093388]] is two payments behind. Please contact us to avoid further fees.
+
+@@ mail-018 | email,email,nocue
+Please stop emailing [[EMAIL:rhosking@gmail.com]], I left the company in March.
+
+@@ mail-019 | email,phone,name
+Message from reception: [[FIRSTNAME:Agnieszka]] [[LASTNAME:Wrobel]] called, wants a callback at [[PHONENUMBER:+48 22 555 01 87]].
+
+@@ mail-020 | email,name,iban,account
+Payroll change request — employee [[FIRSTNAME:Faisal]] [[LASTNAME:Qureshi]] — new IBAN [[IBAN:FR14 2004 1010 0505 0001 3M02 606]], old account [[ACCOUNTNUMBER:000123456789]].
+
+# ---------------------------------------------------------------- code, config, logs
+@@ code-001 | code,password,username,config
+```yaml
+database:
+  host: db-prod-2.internal
+  user: [[USERNAME:svc_orders]]
+  password: "[[PASSWORD:gT9#vQ2!mW]]"
+```
+why does the connection pool exhaust after an hour?
+
+@@ code-002 | code,password,env
+.env file:
+DB_HOST=[[IPV4:10.0.4.12]]
+DB_USER=[[USERNAME:analytics_ro]]
+DB_PASSWORD=[[PASSWORD:Q7uX-33kd-PLm]]
+can you convert this to a docker-compose environment block?
+
+@@ code-003 | code,connstring
+postgres://[[USERNAME:app_admin]]:[[PASSWORD:s3cr3tPa55]]@[[IPV4:10.0.12.8]]:5432/billing — the migration tool says "role does not exist"
+
+@@ code-004 | code,log,ip,username
+2024-06-11 14:02:51 WARN auth: failed login for user=[[USERNAME:hkarlsson]] src=[[IPV4:185.220.101.4]] attempts=7
+
+@@ code-005 | code,curl
+curl -u [[USERNAME:jenkins]]:[[PASSWORD:11fa6c0e9be]] https://ci.internal/job/build/lastBuild/api/json returns 403, why
+
+@@ code-006 | code,json,multi
+Parse this into a TypeScript interface:
+{"customer": {"first": "[[FIRSTNAME:Ewa]]", "last": "[[LASTNAME:Szymańska]]", "email": "[[EMAIL:ewa.szymanska@poczta.pl]]", "phone": "[[PHONENUMBER:+48 600 555 012]]"}}
+
+@@ code-007 | code,ssh,ip
+ssh [[USERNAME:ubuntu]]@[[IPV4:34.201.18.77]] hangs at "debug1: expecting SSH2_MSG_KEX_ECDH_REPLY", how to fix
+
+@@ code-008 | code,sql,multi
+INSERT INTO patients (first_name, last_name, ssn) VALUES ('[[FIRSTNAME:Lorraine]]', '[[LASTNAME:Abernathy]]', '[[SSN:350-12-6604]]'); -- fails with a constraint error
+
+@@ code-009 | code,python,password
+```python
+conn = psycopg2.connect(host="[[IPV4:10.1.1.5]]", user="[[USERNAME:etl]]", password="[[PASSWORD:Etl_pr0d_2023]]", dbname="dw")
+```
+refactor this to read from environment variables
+
+@@ code-010 | code,log,email
+[ERROR] SMTP 550 rejected recipient <[[EMAIL:kaito.mori@shinsei-trading.jp]]>: mailbox unavailable
+
+@@ code-011 | code,csv,multi
+fix the date column in this csv:
+name,surname,card,joined
+[[FIRSTNAME:Imani]],[[LASTNAME:Brooks]],[[CREDITCARDNUMBER:6011111111111117]],2023-13-01
+
+@@ code-012 | code,log,ip
+nginx access log: [[IPV4:66.249.70.12]] - - [12/Mar/2024:10:44:01 +0000] "GET /admin HTTP/1.1" 401 512
+
+@@ code-013 | code,secret
+export AWS_SECRET_ACCESS_KEY=[[~SECRET:wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY]]
+why does the cli still say credentials not found?
+
+@@ code-014 | code,config,ip
+upstream backend { server [[IPV4:10.8.0.21]]:8080; server [[IPV4:10.8.0.22]]:8080; } — how do I add health checks?
+
+@@ code-015 | code,password,docker
+docker run -e POSTGRES_PASSWORD=[[PASSWORD:hunter2hunter2]] -p 5432:5432 postgres:16 — container exits immediately
+
+@@ code-016 | code,git,email,name
+git log shows "Author: [[FIRSTNAME:Sunniva]] [[LASTNAME:Haugen]] <[[EMAIL:sunniva@haugen.dev]]>" on commits I made, how do I fix my git config?
+
+@@ code-017 | code,username,log
+Jun 03 09:12:44 bastion sudo: [[USERNAME:rtanaka]] : TTY=pts/0 ; PWD=/home/[[USERNAME:rtanaka]] ; USER=[[~AMBIG:root]] ; COMMAND=/bin/systemctl restart api
+
+@@ code-018 | code,python,iban
+assert validate_iban("[[IBAN:DE89370400440532013000]]") — this test fails on python 3.12, why?
+
+@@ code-019 | code,ldap,username
+ldapsearch -x -D "uid=[[USERNAME:svc-ldap-sync]],ou=services,dc=corp,dc=local" -W returns invalid credentials (49)
+
+@@ code-020 | code,http,password
+POST /login {"username": "[[USERNAME:m.ortega]]", "password": "[[PASSWORD:Ortega!1987]]"} → 500. stack trace below
+
+# ---------------------------------------------------------------- forms and structured text
+@@ form-001 | form,multi
+First name: [[FIRSTNAME:Rosalind]]
+Last name: [[LASTNAME:Achebe]]
+Phone: [[PHONENUMBER:555-0119]]
+Street: 33 [[STREET:Harbor View Terrace]]
+Check this form for typos.
+
+@@ form-002 | form,table,multi
+| Name | Email | Role |
+|---|---|---|
+| [[FIRSTNAME:Kenji]] [[LASTNAME:Watanabe]] | [[EMAIL:k.watanabe@orbitaldyn.com]] | Lead |
+| [[FIRSTNAME:Ana]] [[LASTNAME:Lucía]] | [[EMAIL:ana.lucia@orbitaldyn.com]] | QA |
+Turn this into a bulleted list.
+
+@@ form-003 | form,finance,multi
+Beneficiary: [[FIRSTNAME:Nomvula]] [[LASTNAME:Mokoena]]
+Account number: [[ACCOUNTNUMBER:62004417302]]
+Routing: [[!ROUTING:021000021]]
+Amount: $2,450.00
+
+@@ form-004 | form,ssn,phone
+SSN: [[SSN:144-56-2310]]   DOB: 04/19/1986   Mobile: [[PHONENUMBER:(503) 555-0175]]
+
+@@ form-005 | form,card
+Cardholder: [[FIRSTNAME:Viktor]] [[LASTNAME:Halloran]] / Number: [[CREDITCARDNUMBER:3782 822463 10005]] / CVV: [[CREDITCARDCVV:4410]]
+
+@@ form-006 | form,username,email
+Username: [[USERNAME:quietfox_92]]
+Recovery email: [[EMAIL:quietfox92@protonmail.com]]
+
+@@ form-007 | form,ip,config
+Allowed IPs: [[IPV4:198.51.100.23]], [[IPV4:198.51.100.24]]; Gateway: [[~AMBIG:255.255.255.0]] mask
+
+@@ form-008 | form,street
+Billing address: 1107 [[STREET:Calle Mayor]], Apt 2B, Madrid
+
+@@ form-009 | form,name,lowercase
+attendees: [[FIRSTNAME:sam]] [[LASTNAME:okoro]], [[FIRSTNAME:li]] [[LASTNAME:na]], [[FIRSTNAME:pedro]] [[LASTNAME:alves]]
+
+@@ form-010 | form,account,iban
+Bank details — Account holder: Northgate Bakery Ltd, IBAN: [[IBAN:GB33BUKB20201555555555]], Acct: [[ACCOUNTNUMBER:55555555]], Sort code: [[!SORTCODE:20-20-15]]
+
+# ---------------------------------------------------------------- hard negatives (ALLOW)
+@@ neg-001 | hardneg,version
+Upgrade from [[!VERSION:1.2.3.4]] to 1.2.4 broke the plugin loader. Rollback steps?
+
+@@ neg-002 | hardneg,order
+Order [[!ORDERID:112-4471983-5520193]] still says "preparing for shipment" after 9 days. Draft a complaint.
+
+@@ neg-003 | hardneg,password-word
+I forgot my password and the reset email never arrives. What should I check?
+
+@@ neg-004 | hardneg,uuid
+Request id [[!UUID:3f2c9a1e-7b4d-4c2a-9e8f-1a2b3c4d5e6f]] failed with a 504. What does a gateway timeout usually mean?
+
+@@ neg-005 | hardneg,isbn
+Is ISBN [[!ISBN:978-0-306-40615-7]] the 2nd edition or the 3rd?
+
+@@ neg-006 | hardneg,ipv6
+Our host only has [[!IPV6:2001:db8:85a3::8a2e:370:7334]] assigned, why can't it reach IPv4-only APIs?
+
+@@ neg-007 | hardneg,math
+Compute 4111 * 1111 + 1111 - 1111 and explain the steps.
+
+@@ neg-008 | hardneg,date
+The contract runs from 2024-03-01 to 2026-02-28. How many business days is that?
+
+@@ neg-009 | hardneg,hash
+git checkout [[!HASH:9fceb02d0ae598e95dc970b74767f19372d61af8]] gives "detached HEAD", what does that mean?
+
+@@ neg-010 | hardneg,price
+Our plan costs $1,299.00 per seat per year; with 245 seats what's the total including 8.25% tax?
+
+@@ neg-011 | hardneg,publicname
+Summarize the main ideas of [[!PUBLICNAME:Adam Smith]]'s The Wealth of Nations in five bullets.
+
+@@ neg-012 | hardneg,publicname
+Who would win in a debate, [[!PUBLICNAME:Sherlock Holmes]] or [[!PUBLICNAME:Hercule Poirot]]?
+
+@@ neg-013 | hardneg,mac
+The device MAC is [[!MAC:00:1A:2B:3C:4D:5E]] but DHCP keeps assigning a new lease. Why?
+
+@@ neg-014 | hardneg,imei
+How do I find the IMEI on an Android phone? Mine shows [[!IMEI:35-209900-176148-1]] in settings but the carrier says it's wrong.
+
+@@ neg-015 | hardneg,tracking
+Tracking number [[!TRACKING:1Z999AA10123456784]] hasn't updated since Tuesday.
+
+@@ neg-016 | hardneg,username-word
+What are good rules for choosing a username for a work account?
+
+@@ neg-017 | hardneg,placeholder
+Write a bash script that reads DB_USER and DB_PASSWORD from the environment and fails if either is empty.
+
+@@ neg-018 | hardneg,placeholder
+In the README, replace <your-email> and <your-password> with instructions on using a secrets manager.
+
+@@ neg-019 | hardneg,zip
+Which county is ZIP code [[!ZIP:30309]] in?
+
+@@ neg-020 | hardneg,phone-like
+Error code 0x80070005 appears when installing update KB5034441. How do I fix it?
+
+@@ neg-021 | hardneg,pin
+the door code was changed to [[!PIN:4471]] — write a sign reminding people to keep it private
+
+@@ neg-022 | hardneg,localhost
+my flask app runs on [[~AMBIG:127.0.0.1]]:5000 but I can't open it from my phone
+
+@@ neg-023 | hardneg,account-word
+The account number field should accept 8 to 12 digits. Write a regex for it.
+
+@@ neg-024 | hardneg,cardnumber-word
+How does the Luhn algorithm validate a credit card number? Explain with pseudocode.
+
+@@ neg-025 | hardneg,email-word
+Write a professional email declining a meeting invitation due to a scheduling conflict.
+
+@@ neg-026 | hardneg,street-generic
+What are the zoning rules for opening a café on a residential street?
+
+@@ neg-027 | hardneg,publicname
+Compare [[!PUBLICNAME:Taylor Swift]]'s marketing strategy with [[!PUBLICNAME:Beyoncé]]'s surprise album release.
+
+@@ neg-028 | hardneg,invoice
+Invoice INV-2024-00871 for 14 units was billed twice. Draft an email asking for a credit note.
+
+@@ neg-029 | hardneg,coordinates
+What's at coordinates 48.8584, 2.2945? I saw them in an old photo.
+
+@@ neg-030 | hardneg,ipv4-in-version
+Is Python [[!VERSION:3.12.1]] compatible with numpy 1.26?
+
+@@ neg-031 | hardneg,cidr
+Explain what a /22 subnet means and how many hosts it holds.
+
+@@ neg-032 | hardneg,ssn-word
+Why do US employers need a social security number for payroll, and what's the alternative for contractors?
+
+@@ neg-033 | hardneg,company
+Compare Salesforce and HubSpot for a 20-person sales team.
+
+@@ neg-034 | hardneg,product-code
+Part number [[!PARTNO:AX-4471-9921-B]] is out of stock. Suggest equivalent parts.
+
+@@ neg-035 | hardneg,time
+Schedule a sync between 09:30 and 10:15 every second Tuesday; give me the cron expression.
+
+@@ neg-036 | hardneg,bitcoin
+Is it safe to post my bitcoin address [[!BTC:bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq]] publicly to receive donations?
+
+@@ neg-037 | hardneg,pin
+What's a good 4-digit PIN policy for employee lockers? We currently allow anything except 1234.
+
+@@ neg-038 | hardneg,phone-like
+Our support line hours are 8am-6pm. Write an out-of-office auto reply.
+
+@@ neg-039 | hardneg,cvv-like
+The recipe needs 350 grams of flour and 125 ml of milk at 180 degrees. Convert to cups and Fahrenheit.
+
+@@ neg-040 | hardneg,publicname
+What did [[!PUBLICNAME:Marie Curie]] discover, and why was it important?
+
+@@ neg-041 | hardneg,ticket
+JIRA ticket PLAT-20431 blocks the release. Summarize it for the standup.
+
+@@ neg-042 | hardneg,stock
+How did AAPL and MSFT perform in Q2, and what drove the difference?
+
+@@ neg-043 | hardneg,serial
+Serial number [[!SERIAL:C02XK1ZJJGH5]] — how do I check if this MacBook is still under warranty?
+
+@@ neg-044 | hardneg,phone-like
+The meeting ID is [[!MEETINGID:845 2210 3397]], can you write a calendar invite text?
+
+@@ neg-045 | hardneg,version
+Kubernetes [[!VERSION:1.29.4]] node pools fail to join the cluster after upgrade.
+
+# ---------------------------------------------------------------- clean prompts (ALLOW)
+@@ clean-001 | clean
+Explain the difference between a mutex and a semaphore with a simple example.
+
+@@ clean-002 | clean
+Write a haiku about Monday mornings.
+
+@@ clean-003 | clean
+Summarize the pros and cons of remote work for a small engineering team.
+
+@@ clean-004 | clean
+What's the best way to structure a React project with many shared components?
+
+@@ clean-005 | clean
+Translate "the meeting has been postponed until further notice" into Spanish and French.
+
+@@ clean-006 | clean
+Give me a 5-day itinerary for Lisbon on a moderate budget.
+
+@@ clean-007 | clean
+Refactor this function to avoid the nested loops: for i in range(n): for j in range(n): if a[i] == b[j]: count += 1
+
+@@ clean-008 | clean
+Draft a project kickoff agenda for a 45-minute meeting.
+
+@@ clean-009 | clean
+What are common causes of memory leaks in long-running Node.js services?
+
+@@ clean-010 | clean
+Rewrite this paragraph to be more concise: our team has been working very hard over the course of the last several months in order to deliver the new features.
+
+@@ clean-011 | clean
+Explain gradient boosting to a product manager in three sentences.
+
+@@ clean-012 | clean
+List five interview questions for a junior data analyst role.
+
+@@ clean-013 | clean
+How do I center a div horizontally and vertically with CSS grid?
+
+@@ clean-014 | clean
+Our quarterly revenue grew 12% while churn dropped from 4.1% to 3.6%. Write a one-paragraph summary for the board.
+
+@@ clean-015 | clean
+Write unit tests for a function that merges two sorted lists.
+
+# ---------------------------------------------------------------- long documents (> 512 subword tokens)
+@@ long-001 | long,multi,name,phone
+Meeting notes — Facilities planning, second floor renovation
+
+Attendees reviewed the revised floor plan for the second floor. The main changes since the last draft are the relocation of the quiet rooms to the north side, which gets less direct sunlight in the afternoon, and the addition of two small phone booths near the elevator lobby. The architect explained that the load-bearing column near the old kitchenette cannot be moved, so the new kitchenette will wrap around it with a counter on two sides. Several people asked about storage; the current plan adds a row of lockers along the east wall, though the number of lockers is still being decided based on the hybrid attendance numbers from the last two quarters.
+
+On the budget side, the contractor's estimate came in roughly eight percent above the original allowance. Most of the overage is due to electrical work: the existing circuits on the floor are older than expected and will need to be replaced to support the additional monitors and the new kitchen appliances. The group discussed whether to phase the electrical work over two weekends to avoid disruption, but that would add mobilization costs. A decision was deferred until the contractor provides a phased quote. There was general agreement that the furniture order should be placed early because lead times for the sit-stand desks are currently around ten weeks.
+
+Accessibility was raised as a priority. The new layout must keep at least one accessible route between every workspace and the restrooms, and the phone booths need to accommodate a wheelchair. The architect will update the drawings to show turning circles and will confirm door widths. The team also asked for better signage, including tactile signs for the meeting rooms. Lighting in the open area will be switched to tunable LED panels, which should help with glare complaints that have come up in the last two employee surveys.
+
+The move schedule was discussed at length. Teams currently on the second floor will relocate temporarily to the training rooms on the ground floor for about six weeks. IT will need to set up temporary network drops and a shared printer there. Facilities will coordinate with team leads to make sure no one is moved during their busiest reporting periods. Parking will not be affected, but the loading dock will be busy on several mornings, so deliveries for other departments may need to be rescheduled.
+
+Communication plan: a short announcement will go out next week, followed by a more detailed FAQ once the schedule is final. Questions should be routed through the facilities inbox rather than to individual team members, so that answers stay consistent. The group agreed to meet again in two weeks to review the phased electrical quote and the updated drawings.
+
+Action items: the architect updates drawings; facilities gets the phased quote; IT plans temporary network drops. For anything urgent during the move, the on-site coordinator is [[FIRSTNAME:Rosalind]] [[LASTNAME:Achterberg]], mobile [[PHONENUMBER:(917) 555-0108]].
+
+@@ long-002 | long,code,log,ip,username
+Can you help me figure out why our nightly sync job is slow? Here is the full log from last night, sorry it's long.
+
+[01:00:00] INFO  scheduler: starting job nightly-sync (run 2291)
+[01:00:01] INFO  config: loaded 14 sources, 3 sinks, batch size 500, retries 3
+[01:00:01] INFO  source[crm]: opening connection pool (size 8)
+[01:00:02] INFO  source[crm]: pool ready in 812 ms
+[01:00:02] INFO  source[billing]: opening connection pool (size 8)
+[01:00:04] INFO  source[billing]: pool ready in 1934 ms
+[01:00:04] INFO  source[support]: opening connection pool (size 4)
+[01:00:05] INFO  source[support]: pool ready in 640 ms
+[01:00:05] INFO  extract[crm.accounts]: 18234 rows in 41 batches
+[01:00:39] INFO  extract[crm.contacts]: 52901 rows in 106 batches
+[01:02:11] WARN  extract[crm.contacts]: batch 77 retried (timeout after 30000 ms)
+[01:02:45] INFO  extract[crm.activities]: 240112 rows in 481 batches
+[01:09:30] INFO  extract[billing.invoices]: 88120 rows in 177 batches
+[01:12:02] WARN  extract[billing.invoices]: batch 140 retried (deadlock detected)
+[01:12:40] INFO  extract[billing.payments]: 73004 rows in 147 batches
+[01:15:58] INFO  extract[support.tickets]: 30556 rows in 62 batches
+[01:17:01] INFO  transform: dedupe contacts, 1204 duplicates merged
+[01:17:44] INFO  transform: currency normalisation, 6 currencies
+[01:18:20] INFO  transform: join activities to accounts, 2.1% orphaned
+[01:19:02] WARN  transform: 312 activities reference deleted accounts
+[01:19:40] INFO  load[warehouse]: staging tables truncated
+[01:20:15] INFO  load[warehouse]: copying 18234 accounts
+[01:20:51] INFO  load[warehouse]: copying 51697 contacts
+[01:23:30] INFO  load[warehouse]: copying 239800 activities
+[01:31:12] INFO  load[warehouse]: copying 88120 invoices
+[01:34:47] INFO  load[warehouse]: copying 73004 payments
+[01:37:03] INFO  load[warehouse]: copying 30556 tickets
+[01:38:10] INFO  load[warehouse]: swap staging -> live
+[01:38:12] INFO  load[search]: reindexing contacts
+[01:52:40] WARN  load[search]: reindex slow, 4 shards relocating
+[02:05:19] INFO  load[search]: reindex complete
+[02:05:20] INFO  load[export]: opening sftp session as [[USERNAME:sync_export]] to [[IPV4:10.44.7.19]]
+[02:05:23] INFO  load[export]: uploaded 6 files, 412 MB
+[02:05:24] INFO  scheduler: job nightly-sync finished in 65m24s (previous run 38m02s)
+
+The previous run took 38 minutes and this one took 65. I think the search reindex is the culprit, but the activities extract also looks slower than usual. What would you check first, and is there a way to run the reindex in parallel with the warehouse load so they don't block each other? We're on a fairly small cluster with three data nodes, and the activities table has grown about 15% this quarter. Also, would increasing the batch size from 500 to 2000 help or just make the retries more expensive when a batch times out?
+
+@@ long-003 | long,clean
+Please edit the following draft blog post for clarity and tone. Keep it under the same length.
+
+Why we moved our build system
+
+For years, our build system grew the way most build systems grow: one script at a time. Someone needed to generate code from a schema, so a script appeared. Someone else needed to bundle assets, so another script appeared, calling the first one. By the time we noticed, a clean build took nearly forty minutes, incremental builds were unreliable, and nobody felt confident changing anything in the build directory. New engineers would spend their first week learning which commands to run in which order, and which errors could be safely ignored.
+
+We considered a few options. The first was to keep the existing scripts and add caching on top. This would have been the cheapest change, but caching a system whose inputs and outputs are not declared tends to produce subtle bugs: stale outputs that look correct until they don't. The second option was to adopt a general-purpose build tool with strong support for declared inputs and outputs. That promised correctness and good caching, but it meant rewriting a lot of build logic and teaching the whole team a new tool. The third option was a middle path: keep our language-specific tools, but put a thin orchestration layer on top that requires every step to declare what it reads and writes.
+
+We chose the third option. The orchestration layer is small, around a thousand lines, and most of it is about hashing inputs and checking whether outputs are up to date. Each build step is still the familiar compiler or bundler command, so engineers didn't have to learn a new language. What changed is that every step now lists its inputs explicitly, and if a step reads a file it didn't declare, the build fails in continuous integration. That one rule caught dozens of hidden dependencies in the first month.
+
+The results have been encouraging. Clean builds now take about eleven minutes on a developer laptop and six minutes in CI, where the remote cache is warm. Incremental builds after a typical change take under a minute. More importantly, people trust the build again: when it says something is up to date, it is. We've also been able to delete a surprising amount of code, because several scripts existed only to work around ordering problems that the new layer handles automatically.
+
+There were costs. The migration took one engineer most of a quarter, with help from others during the final weeks. Some steps were hard to express with explicit inputs, especially code generators that scan whole directories, and we had to restructure a few of them. We also had to invest in good error messages, because a build that fails with a cryptic hash mismatch is not much better than one that silently produces stale output.
+
+If you are considering a similar move, our advice is to start by measuring. Find out where the time actually goes, and which steps are flaky. Then pick the smallest change that makes dependencies explicit. You can always adopt a bigger tool later, and the work of declaring inputs and outputs will carry over.
+
+@@ long-004 | long,email,multi,nocue
+Can you turn this long email thread into a short summary with action items? Thanks.
+
+From: Facilities
+Subject: Re: Re: Re: Office move logistics
+
+Thanks everyone for the quick replies. To recap where we are: the movers are booked for the second Saturday of next month, starting at 7am. Each team lead should confirm by Wednesday how many crates they need; the default is three per person, but teams with physical equipment may need more. Crates will be delivered the Monday before the move, and labels will be printed centrally so that every crate has a floor, zone, and desk number. Please do not write directly on the crates, since they are rented.
+
+IT has asked that all monitors stay on desks and that docking stations are not unplugged; they will handle disconnection and reconnection themselves on the Friday evening and Sunday morning. Laptops should go home with their owners over the weekend. Anything with sensitive paper records must be packed in the locked grey crates, which will be moved separately and signed for on both ends.
+
+From: Product team lead
+Subject: Re: Re: Office move logistics
+
+Our team will need about twenty extra crates for the device lab. Several test phones and tablets are on charging carts; can the carts be moved as-is, or do we need to empty them first? Also, two people on my team are on leave that week, so I'll pack their desks for them if that's allowed.
+
+From: Facilities
+Subject: Re: Office move logistics
+
+Charging carts can be moved as-is as long as the doors lock. Packing desks for colleagues on leave is fine, but please photograph the desk before packing so they can see what went where. We'll also need a list of anything fragile that isn't in a crate, such as large plants or framed prints, so the movers can wrap them.
+
+From: Finance
+Subject: Office move logistics
+
+Reminder that any furniture or equipment purchases for the new office must go through the standard purchasing process, even if they are small. The new office has a different cost centre code, which will be shared once the lease is finalised. Please hold off on ordering anything for the new space until then, unless it is urgent and pre-approved.
+
+One more thing from my side: the moving company asked for a single point of contact on the day. That will be [[FIRSTNAME:Anouk]] [[LASTNAME:Fagerlund]] from facilities; the movers will email her at [[EMAIL:anouk.fagerlund@brightwater-holdings.com]] with the arrival window the night before.

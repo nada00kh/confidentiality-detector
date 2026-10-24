@@ -1,0 +1,20 @@
+{
+  "name": "r2_e3a_hardneg",
+  "description": "Experiment A: r2_e2_v3 + hard-negative synthetic documents (data/synth/round2/A_train.jsonl). One factor vs parent r2_e2_v3.",
+  "model_name": "google-bert/bert-base-multilingual-cased",
+  "label_policy": "v3",
+  "augment": "format_A",
+  "augment_fraction": 0.5,
+  "learning_rate": 2e-05,
+  "epochs": 2,
+  "batch_size": 16,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.1,
+  "seed": 42,
+  "diagnostic_sets": [
+    "dev_v1"
+  ],
+  "extra_train": [
+    "data/synth/round2/A_train.jsonl"
+  ]
+}

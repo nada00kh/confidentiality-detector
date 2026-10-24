@@ -1,3 +1,5 @@
+> **Superseded.** This file describes the project's original Arabic, regex-based scope and is kept for history only. The current scope (13 English entity categories) and policy are in `docs/POLICY.md`.
+
 # Project Scope — Confidentiality Detector
 
 ## 1. Project Overview

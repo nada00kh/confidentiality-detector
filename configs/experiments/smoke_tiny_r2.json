@@ -1,0 +1,17 @@
+{
+  "name": "smoke_tiny_r2",
+  "description": "CPU smoke test of the round-2 training path (v3 labels, extra data, diagnostics); metrics meaningless.",
+  "model_name": "hf-internal-testing/tiny-random-BertForTokenClassification",
+  "label_policy": "v3",
+  "augment": "format_A",
+  "epochs": 1,
+  "batch_size": 8,
+  "fp16": false,
+  "extra_train": [
+    "data/synth/round2/A_train.jsonl",
+    "data/synth/round2/B_train.jsonl"
+  ],
+  "diagnostic_sets": [
+    "dev_v1"
+  ]
+}

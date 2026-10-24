@@ -1,0 +1,934 @@
+{
+  "archive": {
+    "n_files": 111,
+    "bad_files": [],
+    "complete": true,
+    "smoke": false,
+    "stages": {
+      "R0": "ok",
+      "R1": "ok",
+      "R2": "ok",
+      "R3": "ok",
+      "R4": "ok"
+    },
+    "bundle_version": "round2-r1",
+    "bundle_files": 85,
+    "bundle_files_differing_from_shipped_zip": [],
+    "repo_files_changed_since_the_run": [
+      "src/confidentiality_detector/alignment.py",
+      "src/confidentiality_detector/challenge.py",
+      "src/confidentiality_detector/detectors/transformer.py",
+      "src/confidentiality_detector/pipeline.py",
+      "src/confidentiality_detector/policy.py",
+      "scripts/build_eval_sets.py",
+      "scripts/challenge_v2.py",
+      "scripts/train.py",
+      "configs/inference/policy.json",
+      "tests/test_alignment.py",
+      "tests/test_challenge_v2.py",
+      "tests/test_pipeline.py",
+      "data/challenge/README.md",
+      "data/eval_v3/manifest.json"
+    ]
+  },
+  "runs": {
+    "R0": {
+      "model_dir": "e2_mbert_v2_fmtA",
+      "max_length": "512",
+      "overlap": "64",
+      "sets": {
+        "validation": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4350,
+            "n_docs": 4350,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4349,
+            "n_docs": 4349,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_context": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1460,
+            "n_docs": 1460,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_value": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1931,
+            "n_docs": 1931,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_novel_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 869,
+            "n_docs": 869,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_familiar_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 159,
+            "n_docs": 159,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_format_shift": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 3055,
+            "n_docs": 3055,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_long": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 73,
+            "n_docs": 73,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1_policy": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "dev_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 135,
+            "n_docs": 135,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_A_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 960,
+            "n_docs": 960,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_B_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 776,
+            "n_docs": 776,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        }
+      }
+    },
+    "R1": {
+      "model_dir": "r2_e2_v3",
+      "max_length": "512",
+      "overlap": "64",
+      "sets": {
+        "validation": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4350,
+            "n_docs": 4350,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4349,
+            "n_docs": 4349,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_context": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1460,
+            "n_docs": 1460,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_value": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1931,
+            "n_docs": 1931,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_novel_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 869,
+            "n_docs": 869,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_familiar_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 159,
+            "n_docs": 159,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_format_shift": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 3055,
+            "n_docs": 3055,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_long": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 73,
+            "n_docs": 73,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1_policy": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "dev_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 135,
+            "n_docs": 135,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_A_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 960,
+            "n_docs": 960,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_B_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 776,
+            "n_docs": 776,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        }
+      },
+      "training": {
+        "config": {
+          "model_name": "google-bert/bert-base-multilingual-cased",
+          "label_policy": "v3",
+          "augment": "format_A",
+          "augment_fraction": 0.5,
+          "learning_rate": 2e-05,
+          "epochs": 2,
+          "batch_size": 16,
+          "weight_decay": 0.01,
+          "warmup_ratio": 0.1,
+          "max_length": 512,
+          "window_overlap": 32,
+          "fp16": true,
+          "seed": 42,
+          "selection_metric": "entity_f1",
+          "extra_train": [],
+          "diagnostic_sets": [
+            "dev_v1"
+          ],
+          "name": "r2_e2_v3",
+          "description": "Round-2 baseline: the E2 recipe unchanged except the v3 annotation policy (CVV labels without contextual evidence are ignored). Parent: e2_mbert_v2_fmtA."
+        },
+        "best_checkpoint": "epoch-2",
+        "reload_ok": true,
+        "n_train_docs": 46998,
+        "n_windows": 47002,
+        "n_augmented": 12196,
+        "eval_manifest_matches_local": true,
+        "extra_train_matches_local": {},
+        "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+        "split_manifest_sha256": {
+          "train": "0270f148c21b281644936433148f674e3593c240d8296fd65d1297eba187c93f",
+          "validation": "eec2e796f626c6adf2722a6bcda6cca0573ec7188db7ae2dec8572bebb6c4aca"
+        }
+      }
+    },
+    "R2": {
+      "model_dir": "r2_e3a_hardneg",
+      "max_length": "512",
+      "overlap": "64",
+      "sets": {
+        "validation": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4350,
+            "n_docs": 4350,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4349,
+            "n_docs": 4349,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_context": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1460,
+            "n_docs": 1460,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_value": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1931,
+            "n_docs": 1931,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_novel_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 869,
+            "n_docs": 869,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_familiar_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 159,
+            "n_docs": 159,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_format_shift": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 3055,
+            "n_docs": 3055,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_long": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 73,
+            "n_docs": 73,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1_policy": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "dev_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 135,
+            "n_docs": 135,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_A_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 960,
+            "n_docs": 960,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_B_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 776,
+            "n_docs": 776,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        }
+      },
+      "training": {
+        "config": {
+          "model_name": "google-bert/bert-base-multilingual-cased",
+          "label_policy": "v3",
+          "augment": "format_A",
+          "augment_fraction": 0.5,
+          "learning_rate": 2e-05,
+          "epochs": 2,
+          "batch_size": 16,
+          "weight_decay": 0.01,
+          "warmup_ratio": 0.1,
+          "max_length": 512,
+          "window_overlap": 32,
+          "fp16": true,
+          "seed": 42,
+          "selection_metric": "entity_f1",
+          "extra_train": [
+            "data/synth/round2/A_train.jsonl"
+          ],
+          "diagnostic_sets": [
+            "dev_v1"
+          ],
+          "name": "r2_e3a_hardneg",
+          "description": "Experiment A: r2_e2_v3 + hard-negative synthetic documents (data/synth/round2/A_train.jsonl). One factor vs parent r2_e2_v3."
+        },
+        "best_checkpoint": "epoch-2",
+        "reload_ok": true,
+        "n_train_docs": 50171,
+        "n_windows": 50175,
+        "n_augmented": 12196,
+        "eval_manifest_matches_local": true,
+        "extra_train_matches_local": {
+          "data/synth/round2/A_train.jsonl": true
+        },
+        "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+        "split_manifest_sha256": {
+          "train": "0270f148c21b281644936433148f674e3593c240d8296fd65d1297eba187c93f",
+          "validation": "eec2e796f626c6adf2722a6bcda6cca0573ec7188db7ae2dec8572bebb6c4aca"
+        }
+      }
+    },
+    "R3": {
+      "model_dir": "r2_e3b_positive",
+      "max_length": "512",
+      "overlap": "64",
+      "sets": {
+        "validation": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4350,
+            "n_docs": 4350,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4349,
+            "n_docs": 4349,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_context": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1460,
+            "n_docs": 1460,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_value": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1931,
+            "n_docs": 1931,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_novel_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 869,
+            "n_docs": 869,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_familiar_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 159,
+            "n_docs": 159,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_format_shift": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 3055,
+            "n_docs": 3055,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_long": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 73,
+            "n_docs": 73,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1_policy": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "dev_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 135,
+            "n_docs": 135,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_A_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 960,
+            "n_docs": 960,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_B_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 776,
+            "n_docs": 776,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        }
+      },
+      "training": {
+        "config": {
+          "model_name": "google-bert/bert-base-multilingual-cased",
+          "label_policy": "v3",
+          "augment": "format_A",
+          "augment_fraction": 0.5,
+          "learning_rate": 2e-05,
+          "epochs": 2,
+          "batch_size": 16,
+          "weight_decay": 0.01,
+          "warmup_ratio": 0.1,
+          "max_length": 512,
+          "window_overlap": 32,
+          "fp16": true,
+          "seed": 42,
+          "selection_metric": "entity_f1",
+          "extra_train": [
+            "data/synth/round2/B_train.jsonl"
+          ],
+          "diagnostic_sets": [
+            "dev_v1"
+          ],
+          "name": "r2_e3b_positive",
+          "description": "Experiment B: r2_e2_v3 + difficult-positive synthetic documents (data/synth/round2/B_train.jsonl). One factor vs parent r2_e2_v3."
+        },
+        "best_checkpoint": "epoch-2",
+        "reload_ok": true,
+        "n_train_docs": 49685,
+        "n_windows": 49689,
+        "n_augmented": 12196,
+        "eval_manifest_matches_local": true,
+        "extra_train_matches_local": {
+          "data/synth/round2/B_train.jsonl": true
+        },
+        "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+        "split_manifest_sha256": {
+          "train": "0270f148c21b281644936433148f674e3593c240d8296fd65d1297eba187c93f",
+          "validation": "eec2e796f626c6adf2722a6bcda6cca0573ec7188db7ae2dec8572bebb6c4aca"
+        }
+      }
+    },
+    "R4": {
+      "model_dir": "r2_e4_combined",
+      "max_length": "512",
+      "overlap": "64",
+      "sets": {
+        "validation": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4350,
+            "n_docs": 4350,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 4349,
+            "n_docs": 4349,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_context": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1460,
+            "n_docs": 1460,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_unseen_value": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 1931,
+            "n_docs": 1931,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_novel_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 869,
+            "n_docs": 869,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_familiar_template": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 159,
+            "n_docs": 159,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_format_shift": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 3055,
+            "n_docs": 3055,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "test_long": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 73,
+            "n_docs": 73,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "challenge_v1_policy": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 154,
+            "n_docs": 154,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "dev_v1": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 135,
+            "n_docs": 135,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_A_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 960,
+            "n_docs": 960,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        },
+        "synth_B_heldout": {
+          "provenance": "ok",
+          "coverage": {
+            "n_rows": 776,
+            "n_docs": 776,
+            "missing": 0,
+            "duplicate_rows": 0
+          },
+          "metric_diffs": []
+        }
+      },
+      "training": {
+        "config": {
+          "model_name": "google-bert/bert-base-multilingual-cased",
+          "label_policy": "v3",
+          "augment": "format_A",
+          "augment_fraction": 0.5,
+          "learning_rate": 2e-05,
+          "epochs": 2,
+          "batch_size": 16,
+          "weight_decay": 0.01,
+          "warmup_ratio": 0.1,
+          "max_length": 512,
+          "window_overlap": 32,
+          "fp16": true,
+          "seed": 42,
+          "selection_metric": "entity_f1",
+          "extra_train": [
+            "data/synth/round2/A_train.jsonl",
+            "data/synth/round2/B_train.jsonl"
+          ],
+          "diagnostic_sets": [
+            "dev_v1"
+          ],
+          "name": "r2_e4_combined",
+          "description": "Combination of A and B on top of r2_e2_v3. Only adopted if A and B are each non-inferior on their own (docs/METHODOLOGY.md section 6)."
+        },
+        "best_checkpoint": "epoch-2",
+        "reload_ok": true,
+        "n_train_docs": 52858,
+        "n_windows": 52862,
+        "n_augmented": 12196,
+        "eval_manifest_matches_local": true,
+        "extra_train_matches_local": {
+          "data/synth/round2/A_train.jsonl": true,
+          "data/synth/round2/B_train.jsonl": true
+        },
+        "raw_sha256": "1a7aac12051b87390a18fe8ece2010cfa8c1631e0b69c46e6ed5a995b374a7f8",
+        "split_manifest_sha256": {
+          "train": "0270f148c21b281644936433148f674e3593c240d8296fd65d1297eba187c93f",
+          "validation": "eec2e796f626c6adf2722a6bcda6cca0573ec7188db7ae2dec8572bebb6c4aca"
+        }
+      }
+    }
+  },
+  "one_factor": {
+    "R2 vs R1": {
+      "extra_train": [
+        [],
+        [
+          "data/synth/round2/A_train.jsonl"
+        ]
+      ]
+    },
+    "R3 vs R1": {
+      "extra_train": [
+        [],
+        [
+          "data/synth/round2/B_train.jsonl"
+        ]
+      ]
+    },
+    "R4 vs R1": {
+      "extra_train": [
+        [],
+        [
+          "data/synth/round2/A_train.jsonl",
+          "data/synth/round2/B_train.jsonl"
+        ]
+      ]
+    },
+    "R1 vs E2 (round 1)": "see round-1 summary; checked in the report"
+  },
+  "same_raw_data_and_split": true,
+  "r0_equals_round1_e2": {
+    "validation": {
+      "n_common": 4350,
+      "n_differ": 0
+    },
+    "test": {
+      "n_common": 4349,
+      "n_differ": 0
+    },
+    "test_novel_template": {
+      "n_common": 869,
+      "n_differ": 0
+    },
+    "test_familiar_template": {
+      "n_common": 159,
+      "n_differ": 0
+    },
+    "challenge_v1": {
+      "n_common": 154,
+      "n_differ": 0
+    },
+    "challenge_v1_policy": {
+      "n_common": 154,
+      "n_differ": 0
+    }
+  }
+}

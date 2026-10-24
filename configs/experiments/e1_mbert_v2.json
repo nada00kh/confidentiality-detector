@@ -1,0 +1,13 @@
+{
+  "name": "e1_mbert_v2",
+  "description": "Same model, data split and hyperparameters as checkpoint-4352; only change: v2 label policy (non-target entities supervised as O, IP->IPV4, MIDDLENAME/MASKEDNUMBER ignored).",
+  "model_name": "google-bert/bert-base-multilingual-cased",
+  "label_policy": "v2",
+  "augment": "none",
+  "learning_rate": 2e-5,
+  "epochs": 2,
+  "batch_size": 16,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.1,
+  "seed": 42
+}

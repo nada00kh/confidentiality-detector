@@ -1,0 +1,228 @@
+{
+  "generator": "round2-v1",
+  "seed": 2026,
+  "per_family": 160,
+  "name_pool": {
+    "first": 61,
+    "last": 49,
+    "removed_as_held_out": 2
+  },
+  "family_split": {
+    "neg.bank-ref.chat": "train",
+    "neg.company.chat": "train",
+    "neg.companyid.form": "train",
+    "neg.error.chat": "train",
+    "neg.error.log": "heldout",
+    "neg.ids.chat": "train",
+    "neg.invoice.email": "train",
+    "neg.math.chat": "train",
+    "neg.meeting.chat": "heldout",
+    "neg.meeting.invite": "train",
+    "mix.meeting-name.chat": "train",
+    "neg.order.chat": "heldout",
+    "neg.order.json": "train",
+    "mix.order-email.email": "train",
+    "neg.pin.policy": "train",
+    "neg.product.chat": "train",
+    "neg.short.chat": "train",
+    "neg.ticket.chat": "heldout",
+    "neg.ticket.csv": "train",
+    "neg.tracking.chat": "heldout",
+    "neg.tracking.email": "train",
+    "neg.tracking.log": "train",
+    "neg.travel.chat": "train",
+    "neg.version.chat": "heldout",
+    "neg.version.notes": "train",
+    "mix.version-ip.log": "train",
+    "pos.bank.chat": "heldout",
+    "pos.bank.form": "train",
+    "pos.contact.chat": "train",
+    "pos.cvv.chat": "train",
+    "pos.cvv.form": "heldout",
+    "pos.cvv.json": "train",
+    "pos.name-header.email": "train",
+    "pos.name-lower.chat": "train",
+    "pos.name-struct.csv": "heldout",
+    "pos.name-struct.json": "train",
+    "pos.name-struct.sql": "train",
+    "pos.password.chat": "train",
+    "pos.password.connstring": "train",
+    "pos.password.env": "train",
+    "pos.password.json": "heldout",
+    "pos.password.sql": "train",
+    "pos.password.yaml": "train",
+    "pos.ssn.form": "train",
+    "pos.username.chat": "train",
+    "pos.username.cli": "heldout",
+    "pos.username.log": "train",
+    "pos.username.path": "train"
+  },
+  "buckets": {
+    "A_train": {
+      "generated": 3200,
+      "after_dedup": 3173,
+      "dropped_contamination": 0,
+      "dropped_value_clash": 0,
+      "kept": 3173,
+      "max_sim_to_dev_or_challenge": {
+        "median": 0.035020052358621004,
+        "p99": 0.1676531464148608,
+        "max": 0.2022793758875565
+      },
+      "docs_with_targets": 480,
+      "target_labels": {
+        "FIRSTNAME": 160,
+        "LASTNAME": 76,
+        "EMAIL": 160,
+        "IPV4": 160
+      },
+      "negative_types": {
+        "MEETINGID": 244,
+        "TICKET": 482,
+        "ORDERID": 406,
+        "TRACKING": 543,
+        "INVOICE": 235,
+        "VERSION": 640,
+        "SHORTNUM": 799,
+        "BIC": 100,
+        "ROUTING": 107,
+        "PRODUCT": 142,
+        "COMPANY": 120,
+        "COMPANYID": 238,
+        "ERRORCODE": 199,
+        "UUID": 125,
+        "HASH": 35,
+        "MATH": 116,
+        "SKU": 265,
+        "PINCODE": 160,
+        "SERIAL": 46,
+        "BOOKING": 160
+      },
+      "families": 20,
+      "distinct_templates": 61
+    },
+    "A_heldout": {
+      "generated": 960,
+      "after_dedup": 960,
+      "dropped_contamination": 0,
+      "dropped_value_clash": 0,
+      "kept": 960,
+      "max_sim_to_dev_or_challenge": {
+        "median": 0.03384589286828704,
+        "p99": 0.08670702563970722,
+        "max": 0.09050902327762342
+      },
+      "docs_with_targets": 0,
+      "target_labels": {},
+      "negative_types": {
+        "HASH": 61,
+        "ERRORCODE": 160,
+        "SHORTNUM": 211,
+        "UUID": 48,
+        "MEETINGID": 160,
+        "ORDERID": 187,
+        "TICKET": 205,
+        "TRACKING": 160,
+        "VERSION": 290
+      },
+      "families": 6,
+      "distinct_templates": 23,
+      "max_sim_to_train": {
+        "median": 0.05489982033469602,
+        "p90": 0.10994641058809601
+      }
+    },
+    "B_train": {
+      "generated": 2720,
+      "after_dedup": 2715,
+      "dropped_contamination": 0,
+      "dropped_value_clash": 28,
+      "kept": 2687,
+      "max_sim_to_dev_or_challenge": {
+        "median": 0.040677493246581216,
+        "p99": 0.18004273030114556,
+        "max": 0.19892454561450806
+      },
+      "docs_with_targets": 2687,
+      "target_labels": {
+        "ACCOUNTNUMBER": 74,
+        "IBAN": 86,
+        "STREET": 84,
+        "PHONENUMBER": 47,
+        "EMAIL": 205,
+        "CREDITCARDCVV": 319,
+        "CREDITCARDNUMBER": 159,
+        "FIRSTNAME": 636,
+        "LASTNAME": 531,
+        "PASSWORD": 773,
+        "IPV4": 163,
+        "USERNAME": 1008,
+        "SSN": 160
+      },
+      "negative_types": {
+        "INVOICE": 86,
+        "VERSION": 59,
+        "TICKET": 60,
+        "SHORTNUM": 77
+      },
+      "families": 17,
+      "distinct_templates": 46
+    },
+    "B_heldout": {
+      "generated": 800,
+      "after_dedup": 781,
+      "dropped_contamination": 0,
+      "dropped_value_clash": 5,
+      "kept": 776,
+      "max_sim_to_dev_or_challenge": {
+        "median": 0.055611247905714103,
+        "p99": 0.11097743954569748,
+        "max": 0.1296550602728834
+      },
+      "docs_with_targets": 776,
+      "target_labels": {
+        "ACCOUNTNUMBER": 107,
+        "IBAN": 53,
+        "CREDITCARDNUMBER": 160,
+        "CREDITCARDCVV": 160,
+        "FIRSTNAME": 160,
+        "LASTNAME": 160,
+        "PHONENUMBER": 74,
+        "USERNAME": 296,
+        "PASSWORD": 158,
+        "IPV4": 150
+      },
+      "negative_types": {
+        "SHORTNUM": 74
+      },
+      "families": 5,
+      "distinct_templates": 12,
+      "max_sim_to_train": {
+        "median": 0.0726819320806834,
+        "p90": 0.13939780603984483
+      }
+    }
+  },
+  "files": {
+    "A_train": {
+      "n_docs": 3173,
+      "sha256": "460c939f1c3c5e256a7c6da50419f52427129801ca9568c9f33eecdd72c40fa1"
+    },
+    "A_heldout": {
+      "n_docs": 960,
+      "sha256": "f3be0579145cf3a1d9c3c5e003b924bf00a378808aa4537815d8ef67865a96d0"
+    },
+    "B_train": {
+      "n_docs": 2687,
+      "sha256": "98a819c6b4b0d18fae82e44afad0bc9b5467afea092c6a373278e76af91c8536"
+    },
+    "B_heldout": {
+      "n_docs": 776,
+      "sha256": "1fd3aa3e5190b367353772529f8af75e8318c1f4d7dc3d1366bc384a586f1498"
+    }
+  },
+  "dev_sha256": "3ea038b18f2cf84de7d0f52af4725455f27f60ff936c3829c81875f036a1179f",
+  "challenge_sha256": "c19cd914a2485025a60a3baf35cccb9292233e7dfcccfe3216479173c800a0b5",
+  "n_families": 48,
+  "n_templates": 142
+}

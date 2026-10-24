@@ -1,0 +1,16 @@
+{
+  "applies_to": "challenge_v1.txt",
+  "applies_to_sha256": "c19cd914a2485025a60a3baf35cccb9292233e7dfcccfe3216479173c800a0b5",
+  "policy": "final person-name policy (2026-10-23): clearly identifiable person names are FIRSTNAME/LASTNAME targets regardless of public-figure status; no celebrity whitelist",
+  "note": "challenge_v1.txt itself is frozen and unchanged. Its original annotations treated public figures as negatives (!PUBLICNAME), which contradicts the final policy. This overlay produces the derived set 'challenge_v1_policy'. Results are reported for BOTH. challenge_v1 has been inspected after round 1 and is a regression/debugging set only, not an unbiased benchmark.",
+  "changes": {
+    "neg-011": {"to_target": {"Adam Smith": ["FIRSTNAME", "LASTNAME"]}, "reason": "real historical person"},
+    "neg-027": {"to_target": {"Taylor Swift": ["FIRSTNAME", "LASTNAME"]}, "to_ignore": ["Beyoncé"], "reason": "real persons; a mononym has no defined FIRSTNAME/LASTNAME type, so it is ignored at entity level (the document is BLOCK via the other name)"},
+    "neg-040": {"to_target": {"Marie Curie": ["FIRSTNAME", "LASTNAME"]}, "reason": "real historical person"},
+    "neg-012": {"to_ignore": ["Sherlock Holmes", "Hercule Poirot"], "reason": "fictional characters: person-name-shaped but not persons; the policy does not decide them, so the document is ambiguous and excluded from document metrics"}
+  },
+  "unchanged_but_documented": {
+    "code-013": "AWS secret access key, annotated ~SECRET (ignored). API keys are outside the 13-label scope. The document is ambiguous: a detector is neither required nor penalised for blocking it.",
+    "chat-033": "CVV with descriptive cue ('the 3 digits on the back') and a trailing cue ('security code'): sufficient evidence under the v3 CVV rule, so it remains a genuine positive."
+  }
+}

@@ -1,0 +1,2752 @@
+{
+  "policy_version": "1.0",
+  "modes": {
+    "strict": {
+      "name": "strict",
+      "token_threshold": null,
+      "use_rules": true,
+      "description": "Default. Model (argmax decoding) + deterministic rules; any target finding blocks.",
+      "evidence": "Round 1: E2 + rules_v2 argmax, challenge_v1 FAR 0.022 / FBR 0.183 (reports/ROUND1_REPORT.md). Provisional: to be re-selected on dev_v1 in round 2 (docs/METHODOLOGY.md, section 6)."
+    },
+    "maximum": {
+      "name": "maximum",
+      "token_threshold": 0.05,
+      "use_rules": true,
+      "description": "Higher recall at the cost of more false blocks: a token is flagged when P(not O) >= 0.05.",
+      "evidence": "Round 1 validation-only selection rule; held-out effect: challenge_v1 FAR 0.022 -> 0.000, FBR 0.183 -> 0.250. Provisional, as above."
+    }
+  },
+  "sets": {
+    "challenge_v1_final": {
+      "n_docs": 154,
+      "stored_vs_live_rules_identical_docs": 154,
+      "runs": {
+        "R0": {
+          "model": {
+            "FA": 8,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.08421052631578947,
+            "FAR_ci95": [
+              0.04328759724614253,
+              0.1574537909952457
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.7354497354497355,
+            "entity_r": 0.6984924623115578,
+            "entity_f1": 0.7164948453608248,
+            "caught_any_type": 0.8442211055276382,
+            "fully_caught": 0.7684210526315789,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5,
+                "recall": 0.35714285714285715,
+                "f1": 0.41666666666666663,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 0.8666666666666667,
+                "recall": 0.8666666666666667,
+                "f1": 0.8666666666666667,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.5714285714285714,
+                "recall": 1.0,
+                "f1": 0.7272727272727273,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.85,
+                "recall": 0.6938775510204082,
+                "f1": 0.7640449438202247,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9629629629629629,
+                "recall": 0.7027027027027027,
+                "f1": 0.8125,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.25,
+                "recall": 0.5,
+                "f1": 0.3333333333333333,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.75,
+                "recall": 0.5,
+                "f1": 0.6,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.7142857142857143,
+                "f1": 0.7142857142857143,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.8666666666666667,
+                "recall": 0.8125,
+                "f1": 0.8387096774193549,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 17,
+              "boundary": 14,
+              "spurious": 13,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 17,
+              "missed": 31,
+              "boundary": 12
+            },
+            "false_allow_ids": [
+              "chat-011",
+              "chat-027",
+              "chat-033",
+              "chat-040",
+              "code-014",
+              "code-017",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-037",
+              "neg-044",
+              "neg-045"
+            ]
+          },
+          "hybrid": {
+            "FA": 2,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.8040201005025126,
+            "entity_r": 0.8040201005025126,
+            "entity_f1": 0.8040201005025126,
+            "caught_any_type": 0.914572864321608,
+            "fully_caught": 0.8947368421052632,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5714285714285714,
+                "recall": 0.5714285714285714,
+                "f1": 0.5714285714285714,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5833333333333334,
+                "recall": 0.7,
+                "f1": 0.6363636363636365,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.85,
+                "recall": 0.6938775510204082,
+                "f1": 0.7640449438202247,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9629629629629629,
+                "recall": 0.7027027027027027,
+                "f1": 0.8125,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.4,
+                "recall": 1.0,
+                "f1": 0.5714285714285715,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.75,
+                "recall": 0.8571428571428571,
+                "f1": 0.7999999999999999,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1": 0.9696969696969697,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 11,
+              "boundary": 9,
+              "spurious": 13,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 13,
+              "missed": 17,
+              "boundary": 9
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-037",
+              "neg-044",
+              "neg-045"
+            ]
+          },
+          "system_strict": {
+            "FA": 2,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.8040201005025126,
+            "entity_r": 0.8040201005025126,
+            "entity_f1": 0.8040201005025126,
+            "caught_any_type": 0.914572864321608,
+            "fully_caught": 0.8947368421052632,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5714285714285714,
+                "recall": 0.5714285714285714,
+                "f1": 0.5714285714285714,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5833333333333334,
+                "recall": 0.7,
+                "f1": 0.6363636363636365,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.85,
+                "recall": 0.6938775510204082,
+                "f1": 0.7640449438202247,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9629629629629629,
+                "recall": 0.7027027027027027,
+                "f1": 0.8125,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.4,
+                "recall": 1.0,
+                "f1": 0.5714285714285715,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.75,
+                "recall": 0.8571428571428571,
+                "f1": 0.7999999999999999,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1": 0.9696969696969697,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 11,
+              "boundary": 9,
+              "spurious": 13,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 13,
+              "missed": 17,
+              "boundary": 9
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-037",
+              "neg-044",
+              "neg-045"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          },
+          "system_maximum": {
+            "FA": 0,
+            "FB": 11,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.0,
+            "FAR_ci95": [
+              0.0,
+              0.038866226366226365
+            ],
+            "FBR": 0.19298245614035087,
+            "FBR_ci95": [
+              0.11132633377760481,
+              0.3134093733701362
+            ],
+            "entity_p": 0.7318181818181818,
+            "entity_r": 0.8090452261306532,
+            "entity_f1": 0.7684964200477327,
+            "caught_any_type": 0.9396984924623115,
+            "fully_caught": 0.9157894736842105,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.4375,
+                "recall": 0.5,
+                "f1": 0.4666666666666667,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.4375,
+                "recall": 0.7,
+                "f1": 0.5384615384615384,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8571428571428571,
+                "recall": 0.7346938775510204,
+                "f1": 0.7912087912087913,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.896551724137931,
+                "recall": 0.7027027027027027,
+                "f1": 0.787878787878788,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.3076923076923077,
+                "recall": 1.0,
+                "f1": 0.47058823529411764,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.8571428571428571,
+                "f1": 0.75,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.7777777777777778,
+                "recall": 1.0,
+                "f1": 0.8750000000000001,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1": 0.9696969696969697,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 15,
+              "boundary": 12,
+              "spurious": 26,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 16,
+              "missed": 12,
+              "boundary": 10
+            },
+            "false_allow_ids": [],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-037",
+              "neg-044",
+              "neg-045",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          }
+        },
+        "R1": {
+          "model": {
+            "FA": 8,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.08421052631578947,
+            "FAR_ci95": [
+              0.04328759724614253,
+              0.1574537909952457
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.743455497382199,
+            "entity_r": 0.7135678391959799,
+            "entity_f1": 0.7282051282051282,
+            "caught_any_type": 0.8442211055276382,
+            "fully_caught": 0.7684210526315789,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.47619047619047616,
+                "recall": 0.5,
+                "f1": 0.4878048780487805,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 0.9285714285714286,
+                "recall": 0.8666666666666667,
+                "f1": 0.896551724137931,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.5,
+                "recall": 0.9166666666666666,
+                "f1": 0.6470588235294118,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.9024390243902439,
+                "recall": 0.7551020408163265,
+                "f1": 0.8222222222222222,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9285714285714286,
+                "recall": 0.7027027027027027,
+                "f1": 0.7999999999999999,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.6666666666666666,
+                "recall": 0.5,
+                "f1": 0.5714285714285715,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.6,
+                "recall": 0.5,
+                "f1": 0.5454545454545454,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.7142857142857143,
+                "f1": 0.7142857142857143,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9230769230769231,
+                "recall": 0.75,
+                "f1": 0.8275862068965517,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 21,
+              "spurious": 13,
+              "boundary": 9,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 18,
+              "missed": 31,
+              "boundary": 8
+            },
+            "false_allow_ids": [
+              "chat-027",
+              "chat-033",
+              "chat-040",
+              "code-014",
+              "code-017",
+              "code-019",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "hybrid": {
+            "FA": 2,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.8059701492537313,
+            "entity_r": 0.8140703517587939,
+            "entity_f1": 0.8099999999999999,
+            "caught_any_type": 0.9095477386934674,
+            "fully_caught": 0.8736842105263158,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5,
+                "recall": 0.5714285714285714,
+                "f1": 0.5333333333333333,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5769230769230769,
+                "recall": 0.75,
+                "f1": 0.6521739130434783,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.6875,
+                "recall": 0.9166666666666666,
+                "f1": 0.7857142857142857,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.9024390243902439,
+                "recall": 0.7551020408163265,
+                "f1": 0.8222222222222222,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9285714285714286,
+                "recall": 0.7027027027027027,
+                "f1": 0.7999999999999999,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.888888888888889,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.7142857142857143,
+                "f1": 0.7142857142857143,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 13,
+              "spurious": 13,
+              "boundary": 7,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 13,
+              "missed": 18,
+              "boundary": 6
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "system_strict": {
+            "FA": 2,
+            "FB": 9,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.15789473684210525,
+            "FBR_ci95": [
+              0.08535699749316844,
+              0.2736342190428858
+            ],
+            "entity_p": 0.8059701492537313,
+            "entity_r": 0.8140703517587939,
+            "entity_f1": 0.8099999999999999,
+            "caught_any_type": 0.9095477386934674,
+            "fully_caught": 0.8736842105263158,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5,
+                "recall": 0.5714285714285714,
+                "f1": 0.5333333333333333,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5769230769230769,
+                "recall": 0.75,
+                "f1": 0.6521739130434783,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.6875,
+                "recall": 0.9166666666666666,
+                "f1": 0.7857142857142857,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.9024390243902439,
+                "recall": 0.7551020408163265,
+                "f1": 0.8222222222222222,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9285714285714286,
+                "recall": 0.7027027027027027,
+                "f1": 0.7999999999999999,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.888888888888889,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.7142857142857143,
+                "f1": 0.7142857142857143,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 13,
+              "spurious": 13,
+              "boundary": 7,
+              "hard_negative": 6
+            },
+            "fn_breakdown": {
+              "type_confusion": 13,
+              "missed": 18,
+              "boundary": 6
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          },
+          "system_maximum": {
+            "FA": 1,
+            "FB": 11,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.010526315789473684,
+            "FAR_ci95": [
+              0.0018605283639709959,
+              0.05724009323665061
+            ],
+            "FBR": 0.19298245614035087,
+            "FBR_ci95": [
+              0.11132633377760481,
+              0.3134093733701362
+            ],
+            "entity_p": 0.7677725118483413,
+            "entity_r": 0.8140703517587939,
+            "entity_f1": 0.7902439024390244,
+            "caught_any_type": 0.9296482412060302,
+            "fully_caught": 0.9052631578947369,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.6,
+                "recall": 0.6428571428571429,
+                "f1": 0.6206896551724138,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5161290322580645,
+                "recall": 0.8,
+                "f1": 0.6274509803921569,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.888888888888889,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.813953488372093,
+                "recall": 0.7142857142857143,
+                "f1": 0.7608695652173914,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.896551724137931,
+                "recall": 0.7027027027027027,
+                "f1": 0.787878787878788,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.42857142857142855,
+                "recall": 0.75,
+                "f1": 0.5454545454545454,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.7142857142857143,
+                "f1": 0.7142857142857143,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.7777777777777778,
+                "recall": 1.0,
+                "f1": 0.8750000000000001,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1": 0.9696969696969697,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 14,
+              "spurious": 21,
+              "boundary": 7,
+              "hard_negative": 7
+            },
+            "fn_breakdown": {
+              "type_confusion": 16,
+              "missed": 14,
+              "boundary": 7
+            },
+            "false_allow_ids": [
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-037",
+              "neg-044",
+              "neg-045",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          }
+        },
+        "R2": {
+          "model": {
+            "FA": 17,
+            "FB": 2,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.17894736842105263,
+            "FAR_ci95": [
+              0.1148347978557353,
+              0.2680161474952101
+            ],
+            "FBR": 0.03508771929824561,
+            "FBR_ci95": [
+              0.009675461353255768,
+              0.11921003804189491
+            ],
+            "entity_p": 0.8,
+            "entity_r": 0.6432160804020101,
+            "entity_f1": 0.7130919220055711,
+            "caught_any_type": 0.7437185929648241,
+            "fully_caught": 0.6210526315789474,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.4166666666666667,
+                "recall": 0.35714285714285715,
+                "f1": 0.3846153846153846,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5,
+                "recall": 0.4,
+                "f1": 0.4444444444444445,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 0.9285714285714286,
+                "recall": 0.8666666666666667,
+                "f1": 0.896551724137931,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.625,
+                "recall": 0.8333333333333334,
+                "f1": 0.7142857142857143,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.875,
+                "recall": 0.7142857142857143,
+                "f1": 0.7865168539325842,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9166666666666666,
+                "recall": 0.5945945945945946,
+                "f1": 0.7213114754098361,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 0.5,
+                "f1": 0.6666666666666666,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 1.0,
+                "recall": 0.25,
+                "f1": 0.4,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 0.5,
+                "f1": 0.6666666666666666,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.5714285714285714,
+                "f1": 0.6153846153846153,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 0.6875,
+                "f1": 0.8148148148148148,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 9,
+              "boundary": 14,
+              "spurious": 7,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "type_confusion": 9,
+              "missed": 51,
+              "boundary": 11
+            },
+            "false_allow_ids": [
+              "chat-005",
+              "chat-014",
+              "chat-016",
+              "chat-019",
+              "chat-025",
+              "chat-027",
+              "chat-031",
+              "chat-033",
+              "chat-040",
+              "mail-007",
+              "code-005",
+              "code-014",
+              "code-015",
+              "code-017",
+              "code-019",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-020"
+            ]
+          },
+          "hybrid": {
+            "FA": 6,
+            "FB": 2,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.06315789473684211,
+            "FAR_ci95": [
+              0.029264489538080835,
+              0.13100810823451697
+            ],
+            "FBR": 0.03508771929824561,
+            "FBR_ci95": [
+              0.009675461353255768,
+              0.11921003804189491
+            ],
+            "entity_p": 0.8360655737704918,
+            "entity_r": 0.7688442211055276,
+            "entity_f1": 0.8010471204188482,
+            "caught_any_type": 0.864321608040201,
+            "fully_caught": 0.8105263157894737,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5294117647058824,
+                "recall": 0.6428571428571429,
+                "f1": 0.5806451612903226,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6190476190476191,
+                "recall": 0.65,
+                "f1": 0.6341463414634146,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.8333333333333334,
+                "f1": 0.7692307692307692,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.875,
+                "recall": 0.7142857142857143,
+                "f1": 0.7865168539325842,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9166666666666666,
+                "recall": 0.5945945945945946,
+                "f1": 0.7213114754098361,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.5714285714285714,
+                "f1": 0.6153846153846153,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 8,
+              "boundary": 13,
+              "spurious": 7,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "type_confusion": 9,
+              "missed": 27,
+              "boundary": 10
+            },
+            "false_allow_ids": [
+              "chat-014",
+              "chat-025",
+              "chat-031",
+              "mail-007",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-020"
+            ]
+          },
+          "system_strict": {
+            "FA": 6,
+            "FB": 2,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.06315789473684211,
+            "FAR_ci95": [
+              0.029264489538080835,
+              0.13100810823451697
+            ],
+            "FBR": 0.03508771929824561,
+            "FBR_ci95": [
+              0.009675461353255768,
+              0.11921003804189491
+            ],
+            "entity_p": 0.8360655737704918,
+            "entity_r": 0.7688442211055276,
+            "entity_f1": 0.8010471204188482,
+            "caught_any_type": 0.864321608040201,
+            "fully_caught": 0.8105263157894737,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5294117647058824,
+                "recall": 0.6428571428571429,
+                "f1": 0.5806451612903226,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6190476190476191,
+                "recall": 0.65,
+                "f1": 0.6341463414634146,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.8333333333333334,
+                "f1": 0.7692307692307692,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.875,
+                "recall": 0.7142857142857143,
+                "f1": 0.7865168539325842,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9166666666666666,
+                "recall": 0.5945945945945946,
+                "f1": 0.7213114754098361,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.5714285714285714,
+                "f1": 0.6153846153846153,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 8,
+              "boundary": 13,
+              "spurious": 7,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "type_confusion": 9,
+              "missed": 27,
+              "boundary": 10
+            },
+            "false_allow_ids": [
+              "chat-014",
+              "chat-025",
+              "chat-031",
+              "mail-007",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-020"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          },
+          "system_maximum": {
+            "FA": 5,
+            "FB": 5,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.05263157894736842,
+            "FAR_ci95": [
+              0.022687778480124224,
+              0.11735042405807834
+            ],
+            "FBR": 0.08771929824561403,
+            "FBR_ci95": [
+              0.038051110766638294,
+              0.18945112454604246
+            ],
+            "entity_p": 0.8238341968911918,
+            "entity_r": 0.7989949748743719,
+            "entity_f1": 0.8112244897959184,
+            "caught_any_type": 0.8994974874371859,
+            "fully_caught": 0.8736842105263158,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5,
+                "recall": 0.6428571428571429,
+                "f1": 0.5625000000000001,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6363636363636364,
+                "recall": 0.7,
+                "f1": 0.6666666666666666,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7333333333333333,
+                "recall": 0.9166666666666666,
+                "f1": 0.8148148148148148,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8536585365853658,
+                "recall": 0.7142857142857143,
+                "f1": 0.7777777777777778,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9285714285714286,
+                "recall": 0.7027027027027027,
+                "f1": 0.7999999999999999,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.5714285714285714,
+                "f1": 0.6153846153846153,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 8,
+              "boundary": 11,
+              "spurious": 12,
+              "hard_negative": 3
+            },
+            "fn_breakdown": {
+              "type_confusion": 10,
+              "missed": 20,
+              "boundary": 10
+            },
+            "false_allow_ids": [
+              "chat-025",
+              "chat-031",
+              "mail-007",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-004",
+              "neg-020",
+              "neg-024",
+              "neg-044"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          }
+        },
+        "R3": {
+          "model": {
+            "FA": 4,
+            "FB": 7,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.042105263157894736,
+            "FAR_ci95": [
+              0.016493505976432808,
+              0.10331030132737451
+            ],
+            "FBR": 0.12280701754385964,
+            "FBR_ci95": [
+              0.060779830035075005,
+              0.2324668958892925
+            ],
+            "entity_p": 0.7777777777777778,
+            "entity_r": 0.8090452261306532,
+            "entity_f1": 0.7931034482758621,
+            "caught_any_type": 0.914572864321608,
+            "fully_caught": 0.8631578947368421,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5555555555555556,
+                "recall": 0.7142857142857143,
+                "f1": 0.6250000000000001,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6428571428571429,
+                "recall": 0.9,
+                "f1": 0.75,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 0.9285714285714286,
+                "recall": 0.8666666666666667,
+                "f1": 0.896551724137931,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7333333333333333,
+                "recall": 0.9166666666666666,
+                "f1": 0.8148148148148148,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8478260869565217,
+                "recall": 0.7959183673469388,
+                "f1": 0.8210526315789473,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9310344827586207,
+                "recall": 0.7297297297297297,
+                "f1": 0.8181818181818181,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.7142857142857143,
+                "recall": 0.8333333333333334,
+                "f1": 0.7692307692307692,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.75,
+                "recall": 0.75,
+                "f1": 0.75,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8333333333333334,
+                "recall": 0.8333333333333334,
+                "f1": 0.8333333333333334,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.5,
+                "recall": 0.7142857142857143,
+                "f1": 0.588235294117647,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 0.75,
+                "f1": 0.8571428571428571,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 12,
+              "boundary": 12,
+              "spurious": 18,
+              "hard_negative": 4
+            },
+            "fn_breakdown": {
+              "missed": 17,
+              "boundary": 9,
+              "type_confusion": 12
+            },
+            "false_allow_ids": [
+              "chat-027",
+              "chat-031",
+              "code-014",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "hybrid": {
+            "FA": 2,
+            "FB": 7,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.12280701754385964,
+            "FBR_ci95": [
+              0.060779830035075005,
+              0.2324668958892925
+            ],
+            "entity_p": 0.8028169014084507,
+            "entity_r": 0.8592964824120602,
+            "entity_f1": 0.8300970873786407,
+            "caught_any_type": 0.949748743718593,
+            "fully_caught": 0.9263157894736842,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5555555555555556,
+                "recall": 0.7142857142857143,
+                "f1": 0.6250000000000001,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6551724137931034,
+                "recall": 0.95,
+                "f1": 0.7755102040816326,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7333333333333333,
+                "recall": 0.9166666666666666,
+                "f1": 0.8148148148148148,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8478260869565217,
+                "recall": 0.7959183673469388,
+                "f1": 0.8210526315789473,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9310344827586207,
+                "recall": 0.7297297297297297,
+                "f1": 0.8181818181818181,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.888888888888889,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.5,
+                "recall": 0.7142857142857143,
+                "f1": 0.588235294117647,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 10,
+              "boundary": 10,
+              "spurious": 18,
+              "hard_negative": 4
+            },
+            "fn_breakdown": {
+              "missed": 10,
+              "type_confusion": 11,
+              "boundary": 7
+            },
+            "false_allow_ids": [
+              "chat-031",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "system_strict": {
+            "FA": 2,
+            "FB": 7,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.12280701754385964,
+            "FBR_ci95": [
+              0.060779830035075005,
+              0.2324668958892925
+            ],
+            "entity_p": 0.8028169014084507,
+            "entity_r": 0.8592964824120602,
+            "entity_f1": 0.8300970873786407,
+            "caught_any_type": 0.949748743718593,
+            "fully_caught": 0.9263157894736842,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5555555555555556,
+                "recall": 0.7142857142857143,
+                "f1": 0.6250000000000001,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.6551724137931034,
+                "recall": 0.95,
+                "f1": 0.7755102040816326,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.7333333333333333,
+                "recall": 0.9166666666666666,
+                "f1": 0.8148148148148148,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8478260869565217,
+                "recall": 0.7959183673469388,
+                "f1": 0.8210526315789473,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9310344827586207,
+                "recall": 0.7297297297297297,
+                "f1": 0.8181818181818181,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.888888888888889,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.5,
+                "recall": 0.7142857142857143,
+                "f1": 0.588235294117647,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 10,
+              "boundary": 10,
+              "spurious": 18,
+              "hard_negative": 4
+            },
+            "fn_breakdown": {
+              "missed": 10,
+              "type_confusion": 11,
+              "boundary": 7
+            },
+            "false_allow_ids": [
+              "chat-031",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-044",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          },
+          "system_maximum": {
+            "FA": 0,
+            "FB": 11,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.0,
+            "FAR_ci95": [
+              0.0,
+              0.038866226366226365
+            ],
+            "FBR": 0.19298245614035087,
+            "FBR_ci95": [
+              0.11132633377760481,
+              0.3134093733701362
+            ],
+            "entity_p": 0.7543103448275862,
+            "entity_r": 0.8793969849246231,
+            "entity_f1": 0.8120649651972158,
+            "caught_any_type": 0.9798994974874372,
+            "fully_caught": 0.968421052631579,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.6470588235294118,
+                "recall": 0.7857142857142857,
+                "f1": 0.7096774193548386,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.48717948717948717,
+                "recall": 0.95,
+                "f1": 0.6440677966101694,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8163265306122449,
+                "recall": 0.8163265306122449,
+                "f1": 0.8163265306122449,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.9032258064516129,
+                "recall": 0.7567567567567568,
+                "f1": 0.823529411764706,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.5,
+                "recall": 1.0,
+                "f1": 0.6666666666666666,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.5,
+                "recall": 0.7142857142857143,
+                "f1": 0.588235294117647,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1": 0.9696969696969697,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 12,
+              "boundary": 8,
+              "spurious": 32,
+              "hard_negative": 5
+            },
+            "fn_breakdown": {
+              "type_confusion": 14,
+              "missed": 4,
+              "boundary": 6
+            },
+            "false_allow_ids": [],
+            "false_block_ids": [
+              "code-013",
+              "neg-001",
+              "neg-002",
+              "neg-004",
+              "neg-007",
+              "neg-015",
+              "neg-020",
+              "neg-024",
+              "neg-037",
+              "neg-044",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          }
+        },
+        "R4": {
+          "model": {
+            "FA": 6,
+            "FB": 4,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.06315789473684211,
+            "FAR_ci95": [
+              0.029264489538080835,
+              0.13100810823451697
+            ],
+            "FBR": 0.07017543859649122,
+            "FBR_ci95": [
+              0.02762597299465902,
+              0.1670040170121784
+            ],
+            "entity_p": 0.7821782178217822,
+            "entity_r": 0.7939698492462312,
+            "entity_f1": 0.7880299251870324,
+            "caught_any_type": 0.8894472361809045,
+            "fully_caught": 0.8421052631578947,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5714285714285714,
+                "recall": 0.5714285714285714,
+                "f1": 0.5714285714285714,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5161290322580645,
+                "recall": 0.8,
+                "f1": 0.6274509803921569,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 0.9285714285714286,
+                "recall": 0.8666666666666667,
+                "f1": 0.896551724137931,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.8333333333333334,
+                "recall": 0.8333333333333334,
+                "f1": 0.8333333333333334,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8913043478260869,
+                "recall": 0.8367346938775511,
+                "f1": 0.8631578947368421,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.8529411764705882,
+                "recall": 0.7837837837837838,
+                "f1": 0.8169014084507041,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 0.6666666666666666,
+                "recall": 0.6666666666666666,
+                "f1": 0.6666666666666666,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.5,
+                "recall": 0.75,
+                "f1": 0.6,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 0.8333333333333334,
+                "recall": 0.8333333333333334,
+                "f1": 0.8333333333333334,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 0.8571428571428571,
+                "f1": 0.8571428571428571,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 0.9090909090909091,
+                "recall": 0.625,
+                "f1": 0.7407407407407406,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 9,
+              "boundary": 12,
+              "spurious": 21,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "missed": 22,
+              "type_confusion": 8,
+              "boundary": 11
+            },
+            "false_allow_ids": [
+              "chat-027",
+              "chat-033",
+              "chat-040",
+              "code-014",
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-004",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "hybrid": {
+            "FA": 2,
+            "FB": 4,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.07017543859649122,
+            "FBR_ci95": [
+              0.02762597299465902,
+              0.1670040170121784
+            ],
+            "entity_p": 0.8199052132701422,
+            "entity_r": 0.8693467336683417,
+            "entity_f1": 0.8439024390243902,
+            "caught_any_type": 0.9396984924623115,
+            "fully_caught": 0.9368421052631579,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.6,
+                "recall": 0.6428571428571429,
+                "f1": 0.6206896551724138,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.53125,
+                "recall": 0.85,
+                "f1": 0.6538461538461537,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.9166666666666666,
+                "recall": 0.9166666666666666,
+                "f1": 0.9166666666666666,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8913043478260869,
+                "recall": 0.8367346938775511,
+                "f1": 0.8631578947368421,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.8529411764705882,
+                "recall": 0.7837837837837838,
+                "f1": 0.8169014084507041,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.5714285714285714,
+                "recall": 1.0,
+                "f1": 0.7272727272727273,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 0.8571428571428571,
+                "f1": 0.8571428571428571,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 9,
+              "boundary": 6,
+              "spurious": 21,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "missed": 12,
+              "type_confusion": 8,
+              "boundary": 6
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-004",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ]
+          },
+          "system_strict": {
+            "FA": 2,
+            "FB": 4,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.021052631578947368,
+            "FAR_ci95": [
+              0.0057923854515239195,
+              0.07354263138349293
+            ],
+            "FBR": 0.07017543859649122,
+            "FBR_ci95": [
+              0.02762597299465902,
+              0.1670040170121784
+            ],
+            "entity_p": 0.8199052132701422,
+            "entity_r": 0.8693467336683417,
+            "entity_f1": 0.8439024390243902,
+            "caught_any_type": 0.9396984924623115,
+            "fully_caught": 0.9368421052631579,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.6,
+                "recall": 0.6428571428571429,
+                "f1": 0.6206896551724138,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.53125,
+                "recall": 0.85,
+                "f1": 0.6538461538461537,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.9166666666666666,
+                "recall": 0.9166666666666666,
+                "f1": 0.9166666666666666,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.8913043478260869,
+                "recall": 0.8367346938775511,
+                "f1": 0.8631578947368421,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.8529411764705882,
+                "recall": 0.7837837837837838,
+                "f1": 0.8169014084507041,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.5714285714285714,
+                "recall": 1.0,
+                "f1": 0.7272727272727273,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.8571428571428571,
+                "recall": 0.8571428571428571,
+                "f1": 0.8571428571428571,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 9,
+              "boundary": 6,
+              "spurious": 21,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "missed": 12,
+              "type_confusion": 8,
+              "boundary": 6
+            },
+            "false_allow_ids": [
+              "form-009",
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "neg-004",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          },
+          "system_maximum": {
+            "FA": 1,
+            "FB": 6,
+            "n_block": 95,
+            "n_allow": 57,
+            "n_ambiguous": 2,
+            "FAR": 0.010526315789473684,
+            "FAR_ci95": [
+              0.0018605283639709959,
+              0.05724009323665061
+            ],
+            "FBR": 0.10526315789473684,
+            "FBR_ci95": [
+              0.04914398953912691,
+              0.21123049107939723
+            ],
+            "entity_p": 0.7608695652173914,
+            "entity_r": 0.8793969849246231,
+            "entity_f1": 0.8158508158508159,
+            "caught_any_type": 0.964824120603015,
+            "fully_caught": 0.9473684210526315,
+            "per_class": {
+              "PASSWORD": {
+                "precision": 0.5625,
+                "recall": 0.6428571428571429,
+                "f1": 0.6000000000000001,
+                "support": 14
+              },
+              "USERNAME": {
+                "precision": 0.5,
+                "recall": 0.85,
+                "f1": 0.6296296296296295,
+                "support": 20
+              },
+              "EMAIL": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 15
+              },
+              "PHONENUMBER": {
+                "precision": 0.9166666666666666,
+                "recall": 0.9166666666666666,
+                "f1": 0.9166666666666666,
+                "support": 12
+              },
+              "FIRSTNAME": {
+                "precision": 0.7777777777777778,
+                "recall": 0.8571428571428571,
+                "f1": 0.8155339805825242,
+                "support": 49
+              },
+              "LASTNAME": {
+                "precision": 0.7692307692307693,
+                "recall": 0.8108108108108109,
+                "f1": 0.7894736842105263,
+                "support": 37
+              },
+              "SSN": {
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.923076923076923,
+                "support": 6
+              },
+              "CREDITCARDNUMBER": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "CREDITCARDCVV": {
+                "precision": 0.4444444444444444,
+                "recall": 1.0,
+                "f1": 0.6153846153846153,
+                "support": 4
+              },
+              "IBAN": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 6
+              },
+              "ACCOUNTNUMBER": {
+                "precision": 0.75,
+                "recall": 0.8571428571428571,
+                "f1": 0.7999999999999999,
+                "support": 7
+              },
+              "STREET": {
+                "precision": 0.875,
+                "recall": 1.0,
+                "f1": 0.9333333333333333,
+                "support": 7
+              },
+              "IPV4": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 16
+              }
+            },
+            "fp_breakdown": {
+              "type_confusion": 11,
+              "boundary": 9,
+              "spurious": 33,
+              "hard_negative": 2
+            },
+            "fn_breakdown": {
+              "missed": 7,
+              "type_confusion": 8,
+              "boundary": 9
+            },
+            "false_allow_ids": [
+              "neg-011"
+            ],
+            "false_block_ids": [
+              "code-013",
+              "neg-004",
+              "neg-020",
+              "neg-024",
+              "neg-044",
+              "clean-009"
+            ],
+            "reasons": [
+              "NO_SENSITIVE_ENTITIES",
+              "SENSITIVE_ENTITIES"
+            ]
+          }
+        }
+      },
+      "paired_system_strict": {
+        "R0 vs R1": {
+          "false_allow": {
+            "only_R0": 0,
+            "only_R1": 0,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R0": 2,
+            "only_R1": 2,
+            "p": 1.0
+          }
+        },
+        "R0 vs R2": {
+          "false_allow": {
+            "only_R0": 0,
+            "only_R2": 4,
+            "p": 0.125
+          },
+          "false_block": {
+            "only_R0": 7,
+            "only_R2": 0,
+            "p": 0.015625
+          }
+        },
+        "R0 vs R3": {
+          "false_allow": {
+            "only_R0": 1,
+            "only_R3": 1,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R0": 3,
+            "only_R3": 1,
+            "p": 0.625
+          }
+        },
+        "R0 vs R4": {
+          "false_allow": {
+            "only_R0": 0,
+            "only_R4": 0,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R0": 7,
+            "only_R4": 2,
+            "p": 0.1796875
+          }
+        },
+        "R1 vs R2": {
+          "false_allow": {
+            "only_R1": 0,
+            "only_R2": 4,
+            "p": 0.125
+          },
+          "false_block": {
+            "only_R1": 7,
+            "only_R2": 0,
+            "p": 0.015625
+          }
+        },
+        "R1 vs R3": {
+          "false_allow": {
+            "only_R1": 1,
+            "only_R3": 1,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R1": 2,
+            "only_R3": 0,
+            "p": 0.5
+          }
+        },
+        "R1 vs R4": {
+          "false_allow": {
+            "only_R1": 0,
+            "only_R4": 0,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R1": 5,
+            "only_R4": 0,
+            "p": 0.0625
+          }
+        },
+        "R2 vs R3": {
+          "false_allow": {
+            "only_R2": 4,
+            "only_R3": 0,
+            "p": 0.125
+          },
+          "false_block": {
+            "only_R2": 1,
+            "only_R3": 6,
+            "p": 0.125
+          }
+        },
+        "R2 vs R4": {
+          "false_allow": {
+            "only_R2": 4,
+            "only_R4": 0,
+            "p": 0.125
+          },
+          "false_block": {
+            "only_R2": 2,
+            "only_R4": 4,
+            "p": 0.6875
+          }
+        },
+        "R3 vs R4": {
+          "false_allow": {
+            "only_R3": 1,
+            "only_R4": 1,
+            "p": 1.0
+          },
+          "false_block": {
+            "only_R3": 4,
+            "only_R4": 1,
+            "p": 0.375
+          }
+        }
+      }
+    }
+  }
+}

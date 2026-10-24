@@ -1,0 +1,20 @@
+{
+  "name": "r2_e3b_positive",
+  "description": "Experiment B: r2_e2_v3 + difficult-positive synthetic documents (data/synth/round2/B_train.jsonl). One factor vs parent r2_e2_v3.",
+  "model_name": "google-bert/bert-base-multilingual-cased",
+  "label_policy": "v3",
+  "augment": "format_A",
+  "augment_fraction": 0.5,
+  "learning_rate": 2e-05,
+  "epochs": 2,
+  "batch_size": 16,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.1,
+  "seed": 42,
+  "diagnostic_sets": [
+    "dev_v1"
+  ],
+  "extra_train": [
+    "data/synth/round2/B_train.jsonl"
+  ]
+}
