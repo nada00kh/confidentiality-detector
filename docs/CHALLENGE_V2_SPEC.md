@@ -79,20 +79,24 @@ Mark harmless look-alikes with `[[!TYPE:value]]` (for example `!TRACKING`, `!VER
 ## 4. Workflow and safeguards
 
 1. Write the file **outside the repository** (or in `data/challenge_v2/`, which is git-ignored and refused by the bundle builder).
-2. Validate: `python scripts/challenge_v2.py validate path/to/challenge_v2.txt`. It prints counts, errors and warnings, with case ids only. Fix all errors. Review every warning: CVV without evidence, failed checksums, missing coverage tags.
+2. Validate: `python scripts/challenge_v2.py validate path/to/challenge_v2.txt`. It prints counts, then every error and warning, with line numbers and case ids only. Fix all errors, including the format errors listed in `docs/CASE_FORMAT.md` (byte-order mark, malformed header, comment lines between cases). Review every warning: CVV without evidence, failed checksums, missing coverage tags. Check that the reported number of cases equals the number written.
 3. Seal: `python scripts/challenge_v2.py seal path/to/challenge_v2.txt`. This records the file's sha256 in `reports/challenge_v2/SEAL.json`. Any later edit breaks the seal, and evaluation refuses to run.
 4. Optional: `python scripts/challenge_v2.py contamination path/to/challenge_v2.txt` reports, as aggregates only, how similar the cases are to the training data.
 5. Evaluate the system the developers hand over. They freeze it first. `configs/inference/frozen_system.json` records the sha256 of every checkpoint file (weights, config, tokenizer), of the policy file and of the inference code including the rules, plus the inference windows, the runtime library versions and the git commit. Freezing itself refuses uncommitted code, a checkpoint that does not reproduce its archived predictions, and a system whose decisions differ from the documented results. Evaluation refuses any system that differs from the frozen record.
 
    ```
    python scripts/challenge_v2.py evaluate path/to/challenge_v2.txt --model-dir <checkpoint> --mode strict
+   python scripts/challenge_v2.py evaluate path/to/challenge_v2.txt --model-dir <checkpoint> --mode maximum
    ```
+
+   `--mode` is required (`strict` is the pre-declared primary result, `maximum` the secondary one).
 
    * The result file `reports/challenge_v2/result_<model>_<mode>.json` contains aggregates only:
      * document False ALLOW and False BLOCK rates with confidence intervals;
-     * per-category entity metrics, with false positives broken down by look-alike type;
+     * per-category entity metrics, with false positives broken down by error type;
+     * `lookalike_fp_by_type`: for each `!TYPE`, the annotated and hit spans, the false positives and the labels predicted on them, and the ALLOW cases containing it that were blocked;
      * per-tag and per-length error counts.
-   * Every evaluation is appended to `reports/challenge_v2/LEDGER.jsonl`, with the system fingerprints and a fingerprint of the predictions (ids, positions and labels hashed; no text), so a re-run can be checked for identical output.
+   * Every evaluation is appended to `reports/challenge_v2/LEDGER.jsonl`, with the system fingerprints, the evaluator's own code (git commit and sha256 of the parser, metrics and `challenge_v2.py`) and a fingerprint of the predictions (ids, positions and labels hashed; no text), so a re-run can be checked for identical output.
    * Add `--case-details <your own path>` to get per-case outcomes for yourself: case id, tags, decisions, missed or extra categories, never text. Share them with the developers only if you accept that `challenge_v2` then stops being an independent test.
 6. Send the developers `SEAL.json`, `LEDGER.jsonl` and the `result_*.json` files, and nothing else.
 

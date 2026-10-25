@@ -4,7 +4,7 @@ Plain UTF-8 text. One file holds many cases. Parsed by `src/confidentiality_dete
 
 ```
 # lines before the first case are a free-form preamble
-# a line like "# ======" or "# ------" between cases is a section separator
+# a line like "# ======" or "# ------" between cases is a section separator (only blank lines may follow it)
 
 @@ <case-id> | <tag>,<tag>,... | <BLOCK|ALLOW|AMBIGUOUS>
 The case text, over as many lines as needed, with inline annotations:
@@ -29,7 +29,31 @@ The case text, over as many lines as needed, with inline annotations:
 * `ALLOW` and `AMBIGUOUS` require none: any target entity means BLOCK under the policy.
 * Use `AMBIGUOUS` for a case whose correct decision is genuinely unclear, and explain why in a `~` annotation type or in a tag.
 
-The text of a case runs from the line after its header to the line before the next header or separator. Leading and trailing blank lines are removed. A blank line inside a case is kept.
+**Lines.** The file is UTF-8 without a byte-order mark; LF and CRLF line endings are both fine.
+* The text of a case runs from the line after its header to the line before the next header. Leading and trailing blank lines are removed. A blank line inside a case is kept.
+* A separator line (`#` followed by three or more `-` or `=`) is dropped. It does not end a case: any line after it, up to the next header, is text of the case above.
+* A line starting with `# ` directly after a header is dropped. After a blank line it is case text.
+* A line starting with `@@` that is not a valid header is case text. A unified-diff hunk header (`@@ -1,2 +1,2 @@`) is always case text.
+* Unicode line separators (U+2028, form feed, NEL) inside a line are kept verbatim.
+
+**Strict parsing (challenge_v2).** These rules let a slip pass silently: a lost first case, a merged case, a dropped line. Every `challenge_v2.py` command therefore parses with `read_case_file(path, strict=True)` and lists every problem at once, by line number and case id, never with text:
+
+| Error (validation fails) | What the lenient parser does |
+|---|---|
+| byte-order mark at the start of the file, or bytes that are not UTF-8 | BOM: the first header is not recognised and the first case is lost |
+| malformed header: `@@` followed by something id-like that does not match the grammar (lowercase decision, spaces in the tags, extra field, leading whitespace, …) | the line and its whole case join the previous case |
+| a `# ` line directly after a header | the line, with any annotation on it, is dropped |
+| a separator line followed by text before the next header | the separator is dropped and the text (often a comment between cases) joins the case above |
+| a separator line with annotation markup | the line and its annotation are dropped |
+| per-case errors (unknown label, leftover markup, inconsistent decision, overlapping targets) and duplicate ids | stops at the first one |
+
+| Warning (review it) | Why |
+|---|---|
+| `#` comment lines that end a case after a blank line | case text, but possibly meant as a comment about the next case |
+| annotation markup before the first header | the preamble is ignored: is the first header missing? |
+| empty case text | usually a slip |
+
+The frozen development files (`dev_v1`, `challenge_v1`) pass the strict checks and parse identically in both modes (tests/test_challenge_v2.py).
 
 Example:
 

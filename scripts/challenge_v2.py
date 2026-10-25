@@ -9,7 +9,7 @@ written only to the author's own folder, and only when --case-details is passed.
   python scripts/challenge_v2.py contamination <file>    # similarity to all training data (aggregates)
   python scripts/challenge_v2.py freeze --model-dir <ckpt> --verify-pred-dir <dir> --evidence <json>   # developers
   python scripts/challenge_v2.py verify-frozen --model-dir <ckpt>       # re-check the frozen system (no challenge data)
-  python scripts/challenge_v2.py evaluate  <file> --model-dir <ckpt> [--mode strict]
+  python scripts/challenge_v2.py evaluate  <file> --model-dir <ckpt> --mode strict|maximum
 
 Freezing refuses uncommitted changes to tracked files, a checkpoint that does not reproduce its
 archived predictions, and a live system whose BLOCK/ALLOW decisions differ from the documented
@@ -19,8 +19,13 @@ inference windows, the runtime library versions and the git commit.
 
 Safeguards: evaluation refuses unsealed or modified files, and refuses a system that does not
 match configs/inference/frozen_system.json; every evaluation is appended to reports/challenge_v2/LEDGER.jsonl (system fingerprints, mode,
-time, a fingerprint of the predictions) so repeated evaluation is visible; the Colab bundle
+time, a fingerprint of the predictions, the evaluator's own code) so repeated evaluation is visible; the Colab bundle
 builder refuses to package anything named challenge_v2; data/challenge_v2/ is git-ignored.
+
+Every command parses the case file strictly (confidentiality_detector.challenge.read_case_file):
+a byte-order mark, a malformed header, a '# ' line after a header or a separator followed by text
+is an error instead of a silently lost or merged case. The parser, the metrics and this script are
+not part of the frozen identity, so evaluation-tooling fixes do not touch the frozen system.
 """
 
 from __future__ import annotations
@@ -41,7 +46,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from confidentiality_detector.challenge import load_challenge  # noqa: E402
+from confidentiality_detector.challenge import load_challenge, read_case_file  # noqa: E402
 from confidentiality_detector.documents import Span, file_sha256, load_documents  # noqa: E402
 from confidentiality_detector.labels import TARGET_LABELS, cvv_has_evidence  # noqa: E402
 from confidentiality_detector.metrics import evaluate_by_tag, evaluate_documents, evaluate_entities  # noqa: E402
@@ -55,6 +60,11 @@ INFERENCE_CODE = ("__init__.py", "__main__.py", "alignment.py", "decoding.py", "
 RUNTIME_PACKAGES = ("torch", "transformers", "tokenizers", "safetensors", "numpy", "phonenumbers")
 IDENTITY_KEYS = ("model_sha256", "checkpoint_files_sha256", "policy_sha256", "rules_version", "code_sha256",
                  "max_length", "overlap", "stitching", "runtime")
+# The code that parses and scores the cases. Not part of the frozen identity; recorded with every
+# seal and evaluation so a result can be traced to the evaluator version that produced it.
+EVALUATOR_CODE = ("src/confidentiality_detector/challenge.py", "src/confidentiality_detector/metrics.py",
+                  "scripts/challenge_v2.py")
+MODES = ("strict", "maximum")
 MIN_CASES = {"BLOCK": 100, "ALLOW": 100}
 RECOMMENDED_TAGS = ("enterprise", "lookalike", "structured", "difficult-positive", "unfamiliar-format", "long", "oos-secret")
 # Decision F: API keys, tokens and similar credentials are outside the 13 categories. They must be
@@ -67,18 +77,16 @@ LENGTH_BUCKETS = ((0, 1000, "<=1000 chars"), (1000, 3000, "1001-3000 chars"), (3
 
 def validate(path: Path) -> dict:
     """Parse and check a case file. Errors make the file unusable; warnings need the author's review."""
-    errors, warnings = [], []
-    try:
-        docs = load_challenge(path)
-    except ValueError as exc:
-        return {"ok": False, "errors": [str(exc)], "warnings": [], "n_cases": 0}
     from confidentiality_detector.detectors.rules import iban_valid, luhn_valid
 
-    if not docs:
+    docs, errors, warnings = read_case_file(path, strict=True)
+    if not docs and not errors:
         errors.append("the file contains no cases (expected '@@ <id> | <tags> | <decision>' headers)")
     for d in docs:
         if "expected" not in d.meta:
             errors.append(f"{d.doc_id}: missing document decision (| BLOCK, | ALLOW or | AMBIGUOUS in the header)")
+        if not d.text.strip():
+            warnings.append(f"{d.doc_id}: empty case text")
         cards = [(s.start, s.end) for s in d.spans if s.label == "CREDITCARDNUMBER"]
         for s in d.ignore_spans:
             if s.label in OOS_CREDENTIAL_TYPES:
@@ -115,7 +123,8 @@ def seal(path: Path) -> dict:
         raise SystemExit("cannot seal: validation errors:\n" + "\n".join(report["errors"][:20]))
     STATE.mkdir(parents=True, exist_ok=True)
     record = {"file_name": Path(path).name, "sha256": report["sha256"], "sealed_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-              "n_cases": report["n_cases"], "decisions": report["decisions"], "labels": report["labels"]}
+              "n_cases": report["n_cases"], "decisions": report["decisions"], "labels": report["labels"],
+              "validator": evaluator_identity()}
     (STATE / "SEAL.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
     return record
 
@@ -150,10 +159,48 @@ def score(docs, findings_per_doc: dict[str, list[Span]], decisions: dict[str, bo
                                "false_allow": r["confusion"]["FN_false_allow"], "false_block": r["confusion"]["FP_false_block"]}
     return {"document": document, "entity_micro": entity["micro"], "entity_per_class": entity["per_class"],
             "fn_breakdown": entity["fn_breakdown"], "fp_breakdown": entity["fp_breakdown"],
+            "lookalike_fp_by_type": lookalike_breakdown(docs, findings_per_doc, decisions),
             "block_docs_with_every_entity_caught": all_found / n_block if n_block else None,
             "by_tag": {t: {k: r[k] for k in ("n_docs", "block_docs", "allow_docs", "false_allow", "false_block")}
                        for t, r in by_tag.items()},
             "by_length": by_length}
+
+
+def lookalike_breakdown(docs, findings_per_doc: dict[str, list[Span]], decisions: dict[str, bool]) -> dict:
+    """False positives on look-alikes ([[!TYPE:value]]) per TYPE, without changing any metric.
+
+    A prediction counts when metrics.evaluate_entities counts it as a hard-negative false positive
+    (it overlaps no gold span and lies outside every ~ span) and it overlaps a look-alike of that
+    TYPE; one that overlaps look-alikes of two types counts under both, so the totals over all
+    types equal fp_breakdown["hard_negative"] unless that happens. Per TYPE:
+      annotated / hit       look-alike spans, and those overlapped by such a prediction;
+      false_positives       such predictions, and predicted_as their labels;
+      allow_cases / false_block_cases   gold-ALLOW cases containing the TYPE, and those the system
+                            blocked while such a prediction hit the TYPE (a case can count under
+                            several types; another finding may also have caused the block)."""
+    out: dict[str, dict] = {}
+    for d in docs:
+        allow = d.gold_decision() == "ALLOW"
+        for t in {n.label for n in d.negative_spans}:
+            row = out.setdefault(t, {"annotated": 0, "hit": 0, "false_positives": 0, "predicted_as": Counter(),
+                                     "allow_cases": 0, "false_block_cases": 0})
+            row["allow_cases"] += allow
+        counted = [p for p in findings_per_doc.get(d.doc_id, [])
+                   if not any(g.overlaps(p) for g in d.spans) and not any(i.overlaps(p) for i in d.ignore_spans)]
+        hit_types = set()
+        for p in counted:
+            types = {n.label for n in d.negative_spans if n.overlaps(p)}
+            for t in types:
+                out[t]["false_positives"] += 1
+                out[t]["predicted_as"][p.label] += 1
+            hit_types |= types
+        for n in d.negative_spans:
+            out[n.label]["annotated"] += 1
+            out[n.label]["hit"] += any(p.overlaps(n) for p in counted)
+        if allow and decisions.get(d.doc_id):
+            for t in hit_types:
+                out[t]["false_block_cases"] += 1
+    return {t: {**row, "predicted_as": dict(row["predicted_as"].most_common())} for t, row in sorted(out.items())}
 
 
 def findings_fingerprint(findings_per_doc: dict[str, list[Span]], decisions: dict[str, bool]) -> str:
@@ -198,6 +245,10 @@ def git_state() -> dict:
                 "uncommitted_changes": bool(git("status", "--porcelain", "--untracked-files=no"))}
     except (OSError, subprocess.CalledProcessError):
         return {"commit": None, "uncommitted_changes": None}
+
+
+def evaluator_identity() -> dict:
+    return {"git": git_state(), "code_sha256": {rel: file_sha256(ROOT / rel) for rel in EVALUATOR_CODE}}
 
 
 def behaviour(model_dir: Path, policy_path: Path, sets: list[str], eval_dir: Path) -> dict:
@@ -340,7 +391,7 @@ def main() -> None:
         if name == "evaluate":
             p.add_argument("--model-dir", type=Path, required=True)
             p.add_argument("--policy", type=Path, default=ROOT / "configs/inference/policy.json")
-            p.add_argument("--mode", default=None)
+            p.add_argument("--mode", required=True, choices=MODES, help="pre-declared: strict (primary), then maximum")
             p.add_argument("--case-details", type=Path, default=None,
                            help="author only: write per-case outcomes (ids/labels, no text) to this file")
     args = ap.parse_args()
@@ -356,14 +407,17 @@ def main() -> None:
         r = validate(args.file)
         print(json.dumps({k: v for k, v in r.items() if k not in ("errors", "warnings")}, indent=2))
         print(f"{len(r['errors'])} error(s), {len(r['warnings'])} warning(s)")
-        for line in r["errors"][:50] + r["warnings"][:50]:
-            print("  -", line)  # case ids and categories only
+        for kind in ("errors", "warnings"):
+            if r[kind]:
+                print(f"{kind}:")
+            for line in r[kind]:
+                print("  -", line)  # line numbers, case ids and categories only
         sys.exit(0 if r["ok"] else 1)
     if args.cmd == "seal":
         print(json.dumps(seal(args.file), indent=2))
         return
     record = check_sealed(args.file)
-    docs = load_challenge(args.file)
+    docs = load_challenge(args.file, strict=True)
     if args.cmd == "contamination":
         from contamination import max_similarity_to_training
 
@@ -379,10 +433,12 @@ def main() -> None:
     entry = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "challenge_sha256": record["sha256"],
              **{k: frozen[k] for k in ("model_dir", *IDENTITY_KEYS)}, "git_commit": frozen.get("git", {}).get("commit"),
              "frozen_at": frozen.get("frozen_at"), "mode": mode, "predictions_sha256": findings_fingerprint(findings, decisions),
-             "far": result["document"]["false_allow_rate"], "fbr": result["document"]["false_block_rate"]}
+             "far": result["document"]["false_allow_rate"], "fbr": result["document"]["false_block_rate"],
+             "evaluator": evaluator_identity()}
     STATE.mkdir(parents=True, exist_ok=True)
     ledger = STATE / "LEDGER.jsonl"
-    previous = ledger.read_text(encoding="utf-8").count("\n") if ledger.exists() else 0
+    earlier = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines() if line.strip()] if ledger.exists() else []
+    previous = sum(e.get("challenge_sha256") == record["sha256"] for e in earlier)
     with open(ledger, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry) + "\n")
     out = STATE / f"result_{args.model_dir.name}_{mode}.json"

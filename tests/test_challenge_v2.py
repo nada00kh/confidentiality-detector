@@ -1,6 +1,8 @@
+import codecs
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -9,7 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import challenge_v2 as cv2  # noqa: E402
 
-from confidentiality_detector.challenge import load_challenge  # noqa: E402
+from confidentiality_detector.challenge import CaseFileError, load_challenge, read_case_file  # noqa: E402
 from confidentiality_detector.documents import Span, file_sha256  # noqa: E402
 
 SECRET = "Zq!81kLm"
@@ -207,3 +209,301 @@ def test_predictions_fingerprint_is_stable_and_text_free():
     fp1 = cv2.findings_fingerprint(f, {"a": True, "b": False})
     assert fp1 == cv2.findings_fingerprint({"b": [], "a": [Span(3, 9, "EMAIL")]}, {"b": False, "a": True})
     assert fp1 != cv2.findings_fingerprint(f, {"a": True, "b": True})
+
+
+# --- case-file format: constructs that were lost or merged without an error ----------------
+# Each test also shows what the lenient (historical) parser does, which the frozen development
+# files still use; challenge_v2 is always parsed strictly.
+
+def case_file(tmp_path, text: str, name: str = "c.txt") -> Path:
+    path = tmp_path / name
+    path.write_bytes(text.encode("utf-8"))
+    return path
+
+
+TWO_CASES = "@@ a-1 | enterprise | BLOCK\ncall [[FIRSTNAME:Mira]] today\n\n@@ a-2 | lookalike | ALLOW\norder [[!ORDERID:A-5521]] shipped\n"
+
+
+def test_bom_is_a_validation_error_instead_of_a_lost_first_case(tmp_path, monkeypatch):
+    monkeypatch.setattr(cv2, "STATE", tmp_path / "state")
+    p = tmp_path / "c.txt"
+    p.write_bytes(codecs.BOM_UTF8 + TWO_CASES.encode("utf-8"))
+    assert [d.doc_id for d in load_challenge(p)] == ["a-2"]  # lenient: the first case is silently lost
+    r = cv2.validate(p)
+    assert not r["ok"] and r["n_cases"] == 2 and any("byte-order mark" in e for e in r["errors"])
+    with pytest.raises(CaseFileError, match="byte-order mark"):
+        load_challenge(p, strict=True)
+    with pytest.raises(SystemExit, match="cannot seal"):
+        cv2.seal(p)
+
+
+def test_a_file_that_is_not_utf8_is_a_clear_validation_error(tmp_path):
+    p = tmp_path / "c.txt"
+    p.write_bytes(TWO_CASES.encode("utf-16"))
+    r = cv2.validate(p)
+    assert not r["ok"] and r["n_cases"] == 0 and any("not valid UTF-8 (it looks like UTF-16)" in e for e in r["errors"])
+
+
+@pytest.mark.parametrize("header,reason", [
+    ("@@ a-2 | lookalike | allow", "the decision must be upper case"),
+    ("@@ a-2 | lookalike, structured | ALLOW", "spaces in the tag list"),
+    ("@@ a-2 | lookalike | ALLOW | extra", "more than three"),
+    ("@@ a-2 lookalike ALLOW", "missing '|' separators"),
+    ("  @@ a-2 | lookalike | ALLOW", "whitespace or a byte-order mark before '@@'"),
+    ("@@ a.2 | lookalike | ALLOW", "the case id may contain only"),
+    ("@@ a-2 | lookalike | ALLOW please", "nothing may follow the decision"),
+    ("@@ a-2 | lookalike | DENY", "the decision must be BLOCK, ALLOW or AMBIGUOUS"),
+])
+def test_malformed_header_is_an_error_instead_of_merging_into_the_previous_case(tmp_path, header, reason):
+    p = case_file(tmp_path, TWO_CASES.replace("@@ a-2 | lookalike | ALLOW", header))
+    lenient = load_challenge(p)
+    assert len(lenient) == 1 and lenient[0].text.endswith("shipped")  # lenient: merged into a-1
+    r = cv2.validate(p)
+    assert not r["ok"] and r["n_cases"] == 1
+    assert any(e.startswith("line 4: malformed case header (" + reason) and "join case a-1" in e for e in r["errors"]), r["errors"]
+    assert "Mira" not in json.dumps(r) and "shipped" not in json.dumps(r)
+
+
+def test_malformed_first_header_and_diff_hunks(tmp_path):
+    p = case_file(tmp_path, TWO_CASES.replace("@@ a-1 | enterprise | BLOCK", "@@ a-1 | enterprise | Block"))
+    r = cv2.validate(p)
+    assert any(e.startswith("line 1: malformed case header") and "ignored as preamble" in e for e in r["errors"])
+    # a unified-diff hunk header inside a case is case text, not a header
+    diff = "@@ d-1 | structured | BLOCK\n--- a/.env\n+++ b/.env\n@@ -1,2 +1,2 @@\n-DB_PASSWORD=\n+DB_PASSWORD=[[PASSWORD:Ing3st!Now]]\n"
+    q = case_file(tmp_path, diff, "diff.txt")
+    docs, errors, _ = read_case_file(q, strict=True)
+    assert errors == [] and "@@ -1,2 +1,2 @@" in docs[0].text
+
+
+def test_comment_directly_after_a_header_is_an_error_instead_of_being_dropped(tmp_path):
+    text = "@@ a-1 | structured | BLOCK\n# config for [[USERNAME:svc_ingest]]\npassword: [[PASSWORD:Ing3st!Now]]\n"
+    p = case_file(tmp_path, text)
+    assert [s.label for s in load_challenge(p)[0].spans] == ["PASSWORD"]  # lenient: line and annotation vanish
+    r = cv2.validate(p)
+    assert not r["ok"] and any(e.startswith("case a-1: line 2 starts with '# '") for e in r["errors"])
+    # with a blank line after the header, a leading '#' line is case text
+    q = case_file(tmp_path, text.replace("BLOCK\n", "BLOCK\n\n"), "q.txt")
+    assert cv2.validate(q)["ok"]
+    doc = load_challenge(q, strict=True)[0]
+    assert doc.text.startswith("# config for svc_ingest") and [s.label for s in doc.spans] == ["USERNAME", "PASSWORD"]
+
+
+def test_text_after_a_separator_is_an_error_instead_of_joining_the_previous_case(tmp_path):
+    text = ("@@ a-1 | enterprise | ALLOW\nthe quarterly report is attached\n\n# ===== names =====\n"
+            "# the next cases mention Dana Whitfield\n\n@@ a-2 | enterprise | BLOCK\ncall [[FIRSTNAME:Mira]]\n")
+    p = case_file(tmp_path, text)
+    assert "Dana Whitfield" in load_challenge(p)[0].text  # lenient: the comment becomes text of a-1
+    r = cv2.validate(p)
+    assert not r["ok"] and any(e.startswith("case a-1: separator line 4 is followed by text (line 5)") for e in r["errors"])
+    assert "Dana" not in json.dumps(r)
+    # a separator between cases, followed only by blank lines, is fine and dropped
+    ok = case_file(tmp_path, text.replace("# the next cases mention Dana Whitfield\n", ""), "ok.txt")
+    assert cv2.validate(ok)["ok"]
+    assert load_challenge(ok, strict=True)[0].text == "the quarterly report is attached"
+    # a separator line inside a case (a code banner) and one carrying an annotation
+    banner = case_file(tmp_path, '@@ b-1 | structured | BLOCK\nimport os\n# ==========\nDB_PASSWORD = "[[PASSWORD:x7!Qa]]"\n', "b.txt")
+    assert any(e.startswith("case b-1: separator line 3 is followed by text (line 4)") for e in cv2.validate(banner)["errors"])
+    marked = case_file(tmp_path, "@@ m-1 | enterprise | BLOCK\ncall [[FIRSTNAME:Mira]]\n# --- contact [[EMAIL:mira@example.org]]\n", "m.txt")
+    assert any("separator line 3 contains annotation markup" in e for e in cv2.validate(marked)["errors"])
+
+
+def test_comment_lines_ending_a_case_are_a_warning_and_remain_case_text(tmp_path):
+    text = ("@@ a-1 | structured | BLOCK\nexport PGPASSWORD=[[PASSWORD:Ing3st!Now]]\n\n# remember to unset it\n\n"
+            "@@ a-2 | lookalike | ALLOW\nbuild [[!VERSION:4.12.0]]\n")
+    r = cv2.validate(case_file(tmp_path, text))
+    assert r["ok"] and any(w.startswith("case a-1: ends with '#' comment line(s) after a blank line (from line 4)") for w in r["warnings"])
+    assert load_challenge(case_file(tmp_path, text), strict=True)[0].text.endswith("\n\n# remember to unset it")
+    attached = case_file(tmp_path, text.replace("Now]]\n\n#", "Now]]\n#"), "attached.txt")
+    assert not any("comment line" in w for w in cv2.validate(attached)["warnings"])
+
+
+def test_preamble_markup_and_empty_cases_are_warnings(tmp_path):
+    text = "notes\ncall [[FIRSTNAME:Mira]] today\n\n@@ e-1 | enterprise | ALLOW\n\n@@ e-2 | lookalike | ALLOW\nbuild [[!VERSION:4.12.0]]\n"
+    r = cv2.validate(case_file(tmp_path, text))
+    assert r["ok"] and r["n_cases"] == 2
+    assert any(w.startswith("line 2: annotation markup before the first case header") for w in r["warnings"])
+    assert "e-1: empty case text" in r["warnings"]
+
+
+def test_validation_lists_every_error_at_once_without_text(tmp_path):
+    text = ("@@ d-1 | enterprise | BLOCK\nmail [[EMAILADDRESS:a@b.example]]\n\n"
+            "@@ d-2 | enterprise | ALLOW\nmail [[EMAIL:c@d.example]]\n\n"
+            "@@ d-1 | enterprise | ALLOW\nhello there\n\n"
+            "@@ d-3 | enterprise | BLOCK\npw [[PASSWORD:Xy7!kQ]] and [[PASSWORD:Zz9!\n")
+    p = case_file(tmp_path, text)
+    with pytest.raises(ValueError, match="unknown target label"):
+        load_challenge(p)  # lenient: stops at the first problem
+    r = cv2.validate(p)
+    assert not r["ok"]
+    for expected in ("d-1: unknown target label EMAILADDRESS", "d-2: expected ALLOW but target spans are annotated",
+                     "d-3: unparsed markup remains", "duplicate case ids: d-1 (lines 1, 7)"):
+        assert any(e.startswith(expected) for e in r["errors"]), (expected, r["errors"])
+    blob = json.dumps(r)
+    assert not any(v in blob for v in ("a@b.example", "c@d.example", "hello there", "Xy7!kQ", "Zz9!"))
+
+
+def test_unicode_line_separators_stay_verbatim(tmp_path):
+    p = case_file(tmp_path, "@@ u-1 | unfamiliar-format | BLOCK\nname: [[FIRSTNAME:Mira]]\x0cend\x85!\n")
+    doc = load_challenge(p, strict=True)[0]
+    assert doc.text == "name: Mira\x0cend\x85!" and doc.text[doc.spans[0].start:doc.spans[0].end] == "Mira"
+
+
+@pytest.mark.parametrize("rel", ["data/dev/dev_v1.txt", "data/challenge/challenge_v1.txt"])
+def test_frozen_development_files_pass_the_strict_checks_and_parse_identically(rel):
+    docs, errors, warnings = read_case_file(ROOT / rel, strict=True)
+    assert errors == [] and warnings == []
+    assert [d.to_json() for d in docs] == [d.to_json() for d in load_challenge(ROOT / rel)]
+
+
+def test_validate_cli_exit_codes_and_output_without_text(tmp_path, monkeypatch, capsys):
+    good, bad = case_file(tmp_path, TWO_CASES, "good.txt"), case_file(tmp_path, TWO_CASES.replace("ALLOW", "allow"), "bad.txt")
+    for path, code in ((good, 0), (bad, 1)):
+        monkeypatch.setattr(sys, "argv", ["challenge_v2.py", "validate", str(path)])
+        with pytest.raises(SystemExit) as exc:
+            cv2.main()
+        assert exc.value.code == code
+    out = capsys.readouterr().out
+    assert '"n_cases": 2' in out and "malformed case header" in out and "Mira" not in out and "A-5521" not in out
+
+
+# --- look-alike false positives per TYPE ------------------------------------------------------
+
+LOOKALIKE_CASES = """@@ l-1 | lookalike | ALLOW
+parcel [[!TRACKING:1Z999AA10123456784]] and build [[!VERSION:10.4.2.1]]
+
+@@ l-2 | lookalike | ALLOW
+order [[!ORDERID:A-5521-0098]] for the team
+
+@@ l-3 | oos-secret | BLOCK
+user [[USERNAME:svc_ingest]] key [[!APIKEY:sk_test_4eC39HqLyjWDarjtT1zdp7dc]]
+
+@@ l-4 | lookalike | AMBIGUOUS
+host [[~AMBIG:10.0.0.1]] build [[!VERSION:2.1.0]]
+"""
+
+
+def test_lookalike_false_positives_are_reported_per_type(tmp_path):
+    from confidentiality_detector.metrics import evaluate_documents, evaluate_entities
+
+    docs = load_challenge(case_file(tmp_path, LOOKALIKE_CASES), strict=True)
+    by_id = {d.doc_id: d for d in docs}
+
+    def neg(doc_id, label):
+        return next(n for n in by_id[doc_id].negative_spans if n.label == label)
+
+    user, key = by_id["l-3"].spans[0], neg("l-3", "APIKEY")
+    findings = {
+        "l-1": [Span(neg("l-1", "TRACKING").start, neg("l-1", "TRACKING").end, "ACCOUNTNUMBER"),
+                Span(neg("l-1", "VERSION").start, neg("l-1", "VERSION").end, "IPV4")],
+        "l-2": [],
+        "l-3": [Span(user.start, user.end, "USERNAME"), Span(key.start, key.end, "PASSWORD"),
+                Span(user.start, key.end, "USERNAME")],  # overlaps gold too: a boundary error, not a look-alike FP
+        "l-4": [Span(by_id["l-4"].ignore_spans[0].start, by_id["l-4"].ignore_spans[0].end, "IPV4"),  # inside ~: not counted
+                Span(neg("l-4", "VERSION").start, neg("l-4", "VERSION").end, "IPV4")],
+    }
+    decisions = {"l-1": True, "l-2": False, "l-3": True, "l-4": True}
+    r = cv2.score(docs, findings, decisions)
+    assert r["lookalike_fp_by_type"] == {
+        "APIKEY": {"annotated": 1, "hit": 1, "false_positives": 1, "predicted_as": {"PASSWORD": 1}, "allow_cases": 0, "false_block_cases": 0},
+        "ORDERID": {"annotated": 1, "hit": 0, "false_positives": 0, "predicted_as": {}, "allow_cases": 1, "false_block_cases": 0},
+        "TRACKING": {"annotated": 1, "hit": 1, "false_positives": 1, "predicted_as": {"ACCOUNTNUMBER": 1}, "allow_cases": 1, "false_block_cases": 1},
+        "VERSION": {"annotated": 2, "hit": 2, "false_positives": 2, "predicted_as": {"IPV4": 2}, "allow_cases": 1, "false_block_cases": 1},
+    }
+    # consistent with, and without changing, the entity and document metrics
+    entity = evaluate_entities(docs, findings, max_examples=0)
+    assert r["fp_breakdown"] == entity["fp_breakdown"] == {"hard_negative": 4, "boundary": 1}
+    assert sum(t["false_positives"] for t in r["lookalike_fp_by_type"].values()) == r["fp_breakdown"]["hard_negative"]
+    assert r["entity_micro"] == entity["micro"] and (r["entity_micro"]["tp"], r["entity_micro"]["fp"], r["entity_micro"]["fn"]) == (1, 5, 0)
+    document = evaluate_documents(docs, {k: [Span(0, 1, "BLOCK")] if v else [] for k, v in decisions.items()})
+    assert r["document"]["confusion"] == document["confusion"] == {"TP_block": 1, "FN_false_allow": 0, "FP_false_block": 1, "TN_allow": 1}
+    assert r["document"]["n_ambiguous_excluded"] == 1
+    # one prediction across look-alikes of two types counts once under each
+    both = {"l-1": [Span(neg("l-1", "TRACKING").start, neg("l-1", "VERSION").end, "ACCOUNTNUMBER")]}
+    two = cv2.score(docs, both, decisions)["lookalike_fp_by_type"]
+    assert two["TRACKING"]["false_positives"] == two["VERSION"]["false_positives"] == 1
+
+
+# --- the evaluate command (system replaced by fakes; no model, no hidden data) ---------------
+
+def run_cli(monkeypatch, *argv):
+    monkeypatch.setattr(sys, "argv", ["challenge_v2.py", *map(str, argv)])
+    cv2.main()
+
+
+def test_evaluate_cli_needs_a_seal_and_a_mode_and_writes_results_and_ledger(challenge, monkeypatch, capsys, tmp_path):
+    from confidentiality_detector.policy import PolicyConfig
+
+    frozen = json.loads(cv2.FROZEN.read_text(encoding="utf-8"))
+    monkeypatch.setattr(cv2, "check_frozen", lambda model_dir, policy: frozen)
+
+    def fake_run_detector(docs, model_dir, policy_path, mode):
+        by_id = {d.doc_id: d for d in docs}
+        findings = {d.doc_id: [] for d in docs}
+        pw, trk = by_id["c-001"].spans[0], by_id["c-002"].negative_spans[0]
+        findings["c-001"] = [Span(pw.start, pw.end, "PASSWORD")]
+        findings["c-002"] = [Span(trk.start, trk.end, "ACCOUNTNUMBER")]
+        return findings, {k: bool(v) for k, v in findings.items()}, SimpleNamespace(policy=PolicyConfig.from_json(policy_path))
+
+    monkeypatch.setattr(cv2, "run_detector", fake_run_detector)
+    with pytest.raises(SystemExit, match="not sealed"):
+        run_cli(monkeypatch, "evaluate", challenge, "--model-dir", "ckpt", "--mode", "strict")
+    run_cli(monkeypatch, "seal", challenge)
+    for bad in ([], ["--mode", "Strict"], ["--mode", "max"]):
+        with pytest.raises(SystemExit) as exc:
+            run_cli(monkeypatch, "evaluate", challenge, "--model-dir", "ckpt", *bad)
+        assert exc.value.code == 2  # argparse usage error, before anything runs
+    assert not (cv2.STATE / "LEDGER.jsonl").exists()
+    details = tmp_path / "author_only" / "details.json"
+    details.parent.mkdir()
+    run_cli(monkeypatch, "evaluate", challenge, "--model-dir", "ckpt", "--mode", "strict", "--case-details", details)
+    run_cli(monkeypatch, "evaluate", challenge, "--model-dir", "ckpt", "--mode", "maximum")
+    out = capsys.readouterr().out
+    assert "mode=strict" in out and "mode=maximum" in out and "evaluated 2 times" in out
+
+    seal = json.loads((cv2.STATE / "SEAL.json").read_text(encoding="utf-8"))
+    assert seal["sha256"] == file_sha256(challenge) and seal["n_cases"] == 5
+    assert set(seal["validator"]["code_sha256"]) == set(cv2.EVALUATOR_CODE)
+    ledger = [json.loads(line) for line in (cv2.STATE / "LEDGER.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [e["mode"] for e in ledger] == ["strict", "maximum"]
+    for e in ledger:
+        assert e["challenge_sha256"] == seal["sha256"] and e["git_commit"] == frozen["git"]["commit"]
+        assert all(e[k] == frozen[k] for k in cv2.IDENTITY_KEYS)
+        assert e["evaluator"]["code_sha256"] == seal["validator"]["code_sha256"]
+    assert ledger[0]["predictions_sha256"] == ledger[1]["predictions_sha256"]  # same fake system, same predictions
+    for mode in ("strict", "maximum"):
+        result = json.loads((cv2.STATE / f"result_ckpt_{mode}.json").read_text(encoding="utf-8"))
+        doc = result["document"]
+        assert (doc["n_block_docs"], doc["n_allow_docs"], doc["n_ambiguous_excluded"]) == (2, 2, 1)
+        assert doc["confusion"] == {"TP_block": 1, "FN_false_allow": 1, "FP_false_block": 1, "TN_allow": 1}
+        assert result["lookalike_fp_by_type"]["TRACKING"]["false_block_cases"] == 1
+        assert result["ledger_entry"]["mode"] == mode and "ambiguous" in result["by_tag"]
+    rows = json.loads(details.read_text(encoding="utf-8"))
+    assert [r["id"] for r in rows] == ["c-001", "c-002", "c-003", "c-004", "c-005"]
+    blob = "".join(p.read_text(encoding="utf-8") for p in [*cv2.STATE.iterdir(), details])
+    for text in (SECRET, "4111", "1Z999AA", "tracking number", "Quarterly", "sticky note"):
+        assert text not in blob
+    # the evaluated file must still match the seal
+    challenge.write_text(CASES.replace("monday", "tuesday"), encoding="utf-8")
+    with pytest.raises(SystemExit, match="does not match the sealed"):
+        run_cli(monkeypatch, "evaluate", challenge, "--model-dir", "ckpt", "--mode", "strict")
+
+
+FROZEN_CHECKPOINT = ROOT / "checkpoints/r2_e3b_positive"
+
+
+@pytest.mark.skipif(not (FROZEN_CHECKPOINT / "model.safetensors").exists(), reason="frozen checkpoint not available locally")
+def test_evaluate_end_to_end_with_the_frozen_system_on_a_synthetic_file(challenge, monkeypatch):
+    """The real path: identity check against configs/inference/frozen_system.json, then the frozen
+    checkpoint, rules and policy in both modes. Synthetic cases only; state in a temporary folder."""
+    pytest.importorskip("torch")
+    run_cli(monkeypatch, "seal", challenge)
+    for mode in ("strict", "maximum"):
+        run_cli(monkeypatch, "evaluate", challenge, "--model-dir", FROZEN_CHECKPOINT, "--mode", mode)
+    frozen = json.loads(cv2.FROZEN.read_text(encoding="utf-8"))
+    ledger = [json.loads(line) for line in (cv2.STATE / "LEDGER.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [e["mode"] for e in ledger] == ["strict", "maximum"]
+    assert all(e[k] == frozen[k] for e in ledger for k in cv2.IDENTITY_KEYS)
+    for mode in ("strict", "maximum"):
+        result = json.loads((cv2.STATE / f"result_r2_e3b_positive_{mode}.json").read_text(encoding="utf-8"))
+        assert result["document"]["n_ambiguous_excluded"] == 1 and result["document"]["n_docs"] == 4
+        assert "TRACKING" in result["lookalike_fp_by_type"]
