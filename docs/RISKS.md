@@ -1,8 +1,15 @@
 # What is proven, what is not, and what remains risky
 
-Status after round 1 and round 2 (both executed; round 2 verified and analysed in `reports/history/ROUND2_REPORT.md`).
+Status after round 1, round 2 (verified and analysed in `reports/history/ROUND2_REPORT.md`) and the single independent benchmark `challenge_v2` (2026-10-25, `reports/FINAL_REPORT.md` §5).
 
 ## 1. Proven by executed experiments
+
+* **Independent benchmark (`challenge_v2`, 400 unseen cases by a separate author, evaluated once per mode after the freeze).** R3 + rules v3 in `strict`:
+  * False ALLOW 2/200 (1.0%, 95% CI 0.3–3.6%);
+  * False BLOCK 70/200 (35.0%, 28.7–41.8%);
+  * BLOCK F1 0.846; entity F1 0.677 (precision 0.544, recall 0.898).
+
+  This is the only independent evidence. It agrees with `dev_v1` (False BLOCK 36%, entity F1 0.685) and is far below the synthetic in-distribution scores (entity F1 0.984). `maximum`: False ALLOW 1/200, False BLOCK 78/200, the same entity recall.
 
 * **The original 0.9925 F1 was a measurement artefact.**
   * Reproduced exactly; corrected validation F1 0.643, precision 0.476.
@@ -13,7 +20,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
   * `challenge_v1` FAR 2.2% (95% CI 0–5.4%), FBR 18.3% (8–28%);
   * held-out formats FAR 2.2%;
   * it beats the original model on both error types.
-* **Most realistic false positives are high-confidence.** About two thirds of false-positive spans score ≥ 0.9, so thresholds cannot remove them (`reports/calibration_e2_mbert_v2_fmtA.json`).
+* **Most realistic false positives are high-confidence.** About two thirds of false-positive spans score ≥ 0.9, so thresholds cannot remove them (`reports/evidence/calibration_e2_mbert_v2_fmtA.json`).
 * **Round 2 (verified from the archived predictions; `reports/history/ROUND2_REPORT.md`):**
   * The selected system, R3 (`r2_e3b_positive`) + rules v3 in `strict` mode, leaks less than E2 + rules: `dev_v1` False ALLOW 0/56 vs 5/56 (exact McNemar p = 0.06); held-out formats 45 vs 61 of 3,055 (p = 0.014). False BLOCK is unchanged: 27/75 vs 28/75.
   * Hard negatives alone (R2) cut false blocks sharply, but also suppressed genuine difficult positives: `synth_B_heldout` False ALLOW 0 → 26.
@@ -21,7 +28,7 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
   * Long-document errors have two measured causes; neither is truncation or a merging error (every model input is ≤ 512 tokens, and every token is predicted exactly once).
     * The Round 1/2 stitching predicts the last tokens before each window cut with no right context. Those 4.3% of tokens hold most of the errors that do not occur on the same text in isolation.
     * 99.7% of supervised training tokens sit at window positions 0–127, so positions ≥ 128 are barely fine-tuned.
-* **Pipeline correctness, checked by 125 automated tests:**
+* **Pipeline correctness, checked by the automated test suite (162 tests on 2026-10-25):**
   * alignment reproduces the original tokenised dataset;
   * windowed inference handles entities across window boundaries;
   * policy fails closed;
@@ -33,8 +40,10 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 ## 2. Not proven
 
 * **Real-world performance.** No genuine, governed employee prompts were ever evaluated. Every number comes from synthetic data or from text written by the project engineer. Nothing here is a real-world validation.
-* **Independent generalisation of the current system.** `challenge_v1` and `dev_v1` were written by the same engineer who wrote the rules and the generators, so shared assumptions inflate both. `challenge_v1`'s failures have been studied, so it is now a regression set. Independent evidence will only exist once `challenge_v2` is evaluated.
-* **That R3's advantage holds on independent text.** It rests on `dev_v1` (56 BLOCK cases, 0 vs 5 leaks, p = 0.06) and on synthetic held-out formats. `dev_v1` has now been used for one model selection, so reusing it for further selections would overfit it.
+* **Generalisation beyond one independent author.** `challenge_v1` and `dev_v1` were written by the same engineer who wrote the rules and the generators. `challenge_v2` removes that bias once.
+  * It is still a single author's constructed set: highly regular composition, a 50/50 class balance, small subgroups (look-alike types 4–6 cases each).
+  * It is now used, so it cannot test a changed system.
+* **That R3's advantage holds on independent text.** Only R3 was evaluated on `challenge_v2`. Its advantage over the other candidates rests on `dev_v1` (56 BLOCK cases, 0 vs 5 leaks, p = 0.06) and on synthetic held-out formats. `dev_v1` has now been used for one model selection, so reusing it for further selections would overfit it.
 * **`synth_B_heldout` as evidence for B-trained models.** Its families are held out, but 20% of its target values (235/1,192: names, usernames, CVVs) also occur in `B_train`, because both come from the same generator value pools. It measures generalisation to unseen templates, partly with memorised values.
 * **Whether shorter inference windows would fix long inputs.** The window study (`docs/METHODOLOGY.md` §7) was run. On the selection set no setting changed a decision, so 512 / 64 / first was kept. The report-only `test_long` favours shorter centered windows, but that cannot be used to select. A larger long-document validation set is needed to settle it.
 * **Stability.** One seed per configuration. In-distribution differences of 0.1–0.5 points are within noise.
@@ -43,6 +52,11 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 ## 3. Known weaknesses (measured)
 
 * **False blocks on harmless identifiers: the main remaining weakness of the selected system.** Tracking, order and meeting IDs, versions, SKUs, error codes and arithmetic:
+  * **`challenge_v2` False BLOCK 70/200 (35%):**
+    * 64 of the 70 are among the 110 ALLOW cases tagged `lookalike`;
+    * tracking, serial, order, invoice, routing and meeting numbers are taken for ACCOUNTNUMBER, IBAN or SSN;
+    * four-part version strings are taken for IPV4;
+    * dates, error codes, PINs, SKUs, tickets, BIC, MAC and IPv6 caused none (`reports/FINAL_REPORT.md` §5.5);
   * `dev_v1` False BLOCK 27/75 (36%, 95% CI 26–47%);
   * the held-out hard-negative families 664/960 (69%).
   * 33 of 34 findings come from the model, at high confidence, so no threshold removes them.
@@ -57,7 +71,15 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
   Security tickets and incident notes are where these forms appear.
 * **Long documents.** Tokens before a window cut get no right context, and the model is barely fine-tuned for window positions ≥ 128. The window study (`docs/METHODOLOGY.md` §7) found that neither centered stitching nor shorter windows changed any decision on `validation_long`, so the Round 2 setting (512 / 64 / first) is retained. On the report-only `test_long` (2-window documents of 598–942 tokens), shorter centered windows looked better (False ALLOW 2 → 1, False BLOCK 5 → 3). That set cannot be used to select, and a larger long-document validation set is future work. With the retained setting, R3 has False ALLOW 2/45 and False BLOCK 5/28 on `test_long`. Real enterprise prompts (pasted logs, e-mail threads, reports) are often this long.
 * **Public-figure names are blocked by policy.** This is an intended cost, but it adds user friction (`docs/POLICY.md` §3).
-* **Out-of-scope secrets** (API keys, tokens) are not protected. Under decision F, a detector that calls them PASSWORD is charged a false positive and, on an otherwise clean document, a False BLOCK. R0–R2 do this on `challenge_v1` `code-013`; R3 and R4 do not in `strict` mode. Only one such case exists in the hand-written sets, so this behaviour is essentially unmeasured; `challenge_v2` requires an `oos-secret` tag.
+* **Out-of-scope secrets** (API keys, tokens) are not protected. Under decision F, a detector that calls them PASSWORD is charged a false positive and, on an otherwise clean document, a False BLOCK.
+  * On `challenge_v1` `code-013`, R0–R2 do this, and R3 and R4 do not in `strict` mode.
+  * **On `challenge_v2` R3 does it often:**
+    * API keys are predicted as PASSWORD 19 times;
+    * crypto addresses as PASSWORD, private keys as ACCOUNTNUMBER;
+    * 9 of the 12 ALLOW cases tagged `oos-secret` are blocked.
+
+    That is safe for confidentiality, but it is friction outside the 13 categories.
+* **USERNAME** is the weakest category on `challenge_v2`: recall 0.50, precision 0.19. SSN values are often found with the wrong boundaries or type.
 
 ## 4. Dataset limitations
 
@@ -76,9 +98,21 @@ Status after round 1 and round 2 (both executed; round 2 verified and analysed i
 ## 6. Before considering real deployment
 
 1. ~~Run round 2 and apply the pre-registered selection rule.~~ Done: R3 + rules v3, `strict` recommended (`reports/history/ROUND2_REPORT.md`). The R3 checkpoint is verified locally against every archived prediction, and the CPU inference studies are done (windows unchanged, IPv4 gate rejected). The system was frozen on 2026-10-24 (`configs/inference/frozen_system.json`).
-2. Evaluate once on the independent `challenge_v2`, and report it as is.
+2. ~~Evaluate once on the independent `challenge_v2`, and report it as is.~~ Done on 2026-10-25: `strict` False ALLOW 2/200, False BLOCK 70/200 (`reports/FINAL_REPORT.md` §5). Any change to the system now needs a **new** independent set.
 3. **Evaluate on a governed sample of real prompts**, collected with consent and a privacy review, annotated by two people under `docs/ANNOTATION_GUIDELINES.md`, with inter-annotator agreement measured.
 4. Shadow deployment: log decisions only (no text) without blocking, and measure the block rate and user-reported false blocks.
 5. Repeat training with ≥ 3 seeds for the selected configuration and report the variance.
 6. Integration review: fail-closed handling, latency budget on target hardware, model storage and access control, a monitoring dashboard built on value-free logs.
 7. A product decision on the operating point and on public-figure friction, informed by steps 3–4.
+
+## 7. Reproducibility and licensing
+
+* **The frozen identity is byte-level, and a fresh clone cannot reproduce it.**
+  * `configs/inference/frozen_system.json` hashes the inference code as it was on the freezing computer, with mixed line endings: 11 files LF, `detectors/transformer.py` CRLF.
+  * A clone writes the platform's line endings, so `challenge_v2.py verify-frozen` refuses there, although the code is identical up to line endings (measured on fresh clones, 2026-10-25).
+  * It also requires Python 3.13.0 exactly, and `test_long`, which is not in Git.
+  * On other computers, `scripts/check_frozen_identity.py` checks the detector itself: the checkpoint bytes, policy, rules, windows and code content (`docs/INTEGRATION.md` §1.6).
+  * On the freezing computer, Git operations that rewrite these files (`checkout`, `reset --hard`, `stash`) would break the byte-level identity.
+* **Cross-computer decisions are not measured.** The same detector on another CPU, operating system or GPU is expected to decide identically, but floating-point differences could flip borderline tokens. `docs/INTEGRATION.md` §7 defines a consistency check on synthetic fixtures.
+* **Training-data licence.** The `ai4privacy/pii-masking-200k` dataset card states no licence (checked 2026-10-25), and the intermediate Hub copy that was downloaded is not recorded. Redistributing derived data or the fine-tuned weights beyond the project team is unresolved, so the checkpoint is kept in private storage. The base model, mBERT, is Apache-2.0.
+* **Notebook outputs.** The archived original notebooks are kept unchanged, with their outputs. Those outputs include sample records of the training data, and a local file path of the original computer.

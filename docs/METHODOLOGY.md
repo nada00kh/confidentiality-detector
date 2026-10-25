@@ -53,7 +53,7 @@ Colab orchestration (`scripts/colab_runner.py`) runs every step as a checked sub
 | `synth_A_heldout`, `synth_B_heldout` (held-out generator families) | generalisation to unseen generation patterns | gates and benefit criteria in the Round 2 rule (§6.1–6.2) and the IPv4 gate study (§8); never tuned on |
 | `validation_long` (79 concatenations of validation documents, 598+ tokens) | inference settings for long inputs (window length, §7) | yes, for inference settings only |
 | `challenge_v1` / `challenge_v1_policy` / `challenge_v1_final` | regression and debugging; **not** independent evidence, because its failures were studied. `_policy` = final name policy (overlay v1, as Round 2 evaluated it); `_final` = + decision F (overlay v2) | report only |
-| `challenge_v2` (hidden, independent) | final benchmark of the selected system | evaluated once per selected system; every evaluation is logged |
+| `challenge_v2` (hidden, independent) | final benchmark of the selected system | evaluated once per selected system; every evaluation is logged. **Done 2026-10-25:** sealed, then `strict` (primary) and `maximum` (secondary) once each; results in `reports/FINAL_REPORT.md` §5. Now used: it cannot evaluate a changed system |
 
 Synthetic results and hand-written results are always reported separately and never pooled. No result here is "real-world" validation (see `docs/RISKS.md`).
 

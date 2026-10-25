@@ -7,7 +7,7 @@ Confidentiality Detector inspects an **English** prompt **locally**, before it i
 * **Categories (exactly 13):** PASSWORD, USERNAME, EMAIL, PHONENUMBER, FIRSTNAME, LASTNAME, SSN, CREDITCARDNUMBER, CREDITCARDCVV, IBAN, ACCOUNTNUMBER, STREET, IPV4 (`labels.TARGET_LABELS`; POLICY §2).
 * **Decision:** BLOCK if any of them is found; otherwise ALLOW. False ALLOW (leakage) is the primary concern and False BLOCK (friction) the secondary one (POLICY §1, §5).
 * **Fail closed:** inputs over 100,000 characters, or inspection errors, are blocked, with an explanation that does not claim a detection.
-* **Modes:** `strict` (default) and `maximum` (more recall, more false blocks).
+* **Modes:** `strict` is the product mode. `maximum` (lower token threshold, more false blocks, no measured leakage benefit) is kept for reproducibility and research and is not offered to users (`reports/FINAL_REPORT.md` §6).
 * **Policy details:**
   * names of public figures are names (POLICY §3);
   * a 3–4 digit number is a CVV only with contextual evidence (POLICY §4);

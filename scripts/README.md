@@ -18,6 +18,7 @@ Entry points, in pipeline order. Run from the repository root in the project env
 | Freeze and benchmark | `verify_checkpoint.py` | proves that a local checkpoint reproduces its archived predictions |
 | | `challenge_v2.py` | the independent benchmark: `validate`, `seal` and `contamination` (author); `freeze` and `verify-frozen` (developers); then a single ledgered `evaluate` |
 | | `contamination.py` | similarity of a text set to all training data (used by `challenge_v2.py contamination`) |
+| | `check_frozen_identity.py` | on any computer: whether the local checkpoint, policy, rules, windows and code content are the frozen detector, and whether the environment is byte-identical (`docs/INTEGRATION.md` §1.4–1.6) |
 
 ## Environment
 

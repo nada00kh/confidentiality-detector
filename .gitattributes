@@ -5,3 +5,5 @@
 # never convert line endings on checkout
 data/** -text
 configs/** -text
+# The independent benchmark's aggregate files exactly as scripts/challenge_v2.py wrote them (sha256 in reports/FINAL_REPORT.md §5.1)
+reports/challenge_v2/** -text

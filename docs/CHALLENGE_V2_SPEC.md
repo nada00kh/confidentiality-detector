@@ -1,5 +1,7 @@
 # challenge_v2: specification for the independent author
 
+> **Status (2026-10-25): written, sealed and evaluated once per mode.** The results are in `reports/FINAL_REPORT.md` §5; the four shared aggregate files are in `reports/challenge_v2/`. The author received this specification consolidated as `docs/CHALLENGE_V2_HANDOFF.md` (v1.0). The tooling was hardened after that handoff (strict case-file validation, per-look-alike-type reporting; `docs/CASE_FORMAT.md`).
+
 You are writing the final benchmark for a local confidentiality checker. The checker inspects text an employee is about to paste into an external AI assistant and answers **BLOCK** (the text contains protected information) or **ALLOW**.
 
 The developers will **not** see your cases. Please do not share them, discuss individual cases with them, or base cases on their development data.

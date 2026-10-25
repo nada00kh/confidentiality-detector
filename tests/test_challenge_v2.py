@@ -494,8 +494,14 @@ FROZEN_CHECKPOINT = ROOT / "checkpoints/r2_e3b_positive"
 @pytest.mark.skipif(not (FROZEN_CHECKPOINT / "model.safetensors").exists(), reason="frozen checkpoint not available locally")
 def test_evaluate_end_to_end_with_the_frozen_system_on_a_synthetic_file(challenge, monkeypatch):
     """The real path: identity check against configs/inference/frozen_system.json, then the frozen
-    checkpoint, rules and policy in both modes. Synthetic cases only; state in a temporary folder."""
+    checkpoint, rules and policy in both modes. Synthetic cases only; state in a temporary folder.
+    Runs only in the byte-identical frozen environment; on another computer the same detector usually
+    differs in code line endings or the Python patch level (scripts/check_frozen_identity.py)."""
     pytest.importorskip("torch")
+    try:
+        cv2.check_frozen(FROZEN_CHECKPOINT, ROOT / "configs/inference/policy.json")
+    except SystemExit as exc:
+        pytest.skip(f"not the byte-identical frozen environment: {exc}")
     run_cli(monkeypatch, "seal", challenge)
     for mode in ("strict", "maximum"):
         run_cli(monkeypatch, "evaluate", challenge, "--model-dir", FROZEN_CHECKPOINT, "--mode", mode)

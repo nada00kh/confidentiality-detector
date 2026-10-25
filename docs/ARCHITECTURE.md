@@ -61,10 +61,12 @@ Model predictions (`findings` with `source` and `score`) are kept distinct from 
 
 ```python
 from confidentiality_detector.pipeline import ConfidentialityDetector
-detector = ConfidentialityDetector.load("checkpoints/r2_e3b_positive", "configs/inference/policy.json")
-decision = detector.inspect(prompt_text)              # default mode: strict
+detector = ConfidentialityDetector.load("checkpoints/r2_e3b_positive", "configs/inference/policy.json", device="cpu")
+decision = detector.inspect(prompt_text, "strict")    # the product mode; pass it explicitly
 decision.to_dict()                                    # {"decision": "BLOCK", "categories": [...], "findings": [...], ...}
 ```
+
+For an application or API around this interface (load once, fail-closed duties of the caller, value-free responses and logs, consistency tests), see `docs/INTEGRATION.md`.
 
 ```bash
 confidentiality-detector --model-dir checkpoints/r2_e3b_positive --file prompt.txt   # or python -m confidentiality_detector; exit 0 = ALLOW, 10 = BLOCK, 2 = error

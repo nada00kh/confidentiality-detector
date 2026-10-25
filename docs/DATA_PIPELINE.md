@@ -19,6 +19,8 @@ Every count below comes from a file: the archived `training_summary.json` of eac
 * The original EDA notebook (`archive/02_2scoped_data_EDA.ipynb`) filters `language == "en"`: 43,501 records (20.8%).
 * `data/raw/english_pii_43k.jsonl` (sha256 `1a7aac12…`) has exactly that row count and the source's own nine columns, so it is that English subset with no further filtering. The file itself was downloaded from a Hub copy at revision `7c22e681…`.
 * **Open:** the name of that intermediate Hub repository is not recorded, and the dataset's licence must be checked on its card before anything derived from it is redistributed.
+  * Checked on 2026-10-25: the current card of `ai4privacy/pii-masking-200k` states **no licence**.
+  * Derived data therefore stays out of Git, and the fine-tuned weights are shared only privately within the project (`docs/INTEGRATION.md` §9).
 
 **Split.** The original splitting notebook (`archive/02_mbert_dataset_splitting.ipynb`) produced an 80/10/10 split with template-leakage handling: **34,802 / 4,350 / 4,349**.
 * The ids are frozen in `data/splits/original/`.
@@ -35,7 +37,7 @@ Every count below comes from a file: the archived `training_summary.json` of eac
 | | **Round 2 generated documents** (`synth.py`, generator `round2-v1`, seed 2026); labels are exact by construction (spans recorded at rendering, then validated for scope, CVV evidence and unannotated names):<br>• `A_train`: 3,173 hard negatives (look-alike IDs, versions, codes; 480 of them also contain targets);<br>• `B_train`: 2,687 difficult positives (lowercase names, passwords in JSON/SQL, CVV with context, …) | R2, R3, R4 |
 | Synthetic evaluation data | **format family B** (`test_format_shift`, 3,055 documents; a different renderer, never trained on); held-out generator families `synth_A_heldout` (960, all ALLOW) and `synth_B_heldout` (776, all BLOCK); `test_long` (73) and `validation_long` (79): concatenations of test and validation documents into 598+-token inputs; test slices `test_unseen_value`, `test_unseen_context`, `test_novel_template` and `test_familiar_template` (subsets of `test`) | testing, and the roles below |
 | Hand-authored evaluation data | `dev_v1` (135 cases) and `challenge_v1` (154 cases, with two policy overlays), written by the project engineer; fictional values | development and regression (roles below) |
-| Truly independent evaluation data | `challenge_v2`, written by a separate author and hidden from developers | the final benchmark, **not yet evaluated** |
+| Truly independent evaluation data | `challenge_v2`, written by a separate author and hidden from developers (400 cases; never in Git) | the final benchmark, evaluated once per mode on 2026-10-25 (`reports/FINAL_REPORT.md` §5) |
 
 **Training data per run** (documents; every run uses the same 34,802 training ids):
 

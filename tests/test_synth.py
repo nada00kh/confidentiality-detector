@@ -47,7 +47,8 @@ def test_every_family_template_renders():
     assert len(FAMILIES) >= 40 and sum(len(t) for t in FAMILIES.values()) >= 120
 
 
-@pytest.mark.skipif(not (SYNTH / "manifest.json").exists(), reason="round-2 data not built")
+# The manifest is in Git, the generated files are not (python scripts/build_synth_round2.py).
+@pytest.mark.skipif(not (SYNTH / "A_train.jsonl").exists(), reason="round-2 data not built")
 def test_built_files_match_manifest_and_never_mix_heldout_families():
     manifest = json.loads((SYNTH / "manifest.json").read_text(encoding="utf-8"))
     heldout = {f for f, part in manifest["family_split"].items() if part == "heldout"}

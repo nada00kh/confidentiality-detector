@@ -1,6 +1,8 @@
 # Artifacts outside Git
 
-Large or irreplaceable files are kept out of the repository. This page records where each one is and how to recognise it. sha256 values are given in full where they identify a file; Drive paths are relative to `MyDrive/confidentiality_detector/`.
+Large or irreplaceable files are kept out of the repository. This page records where each one is and how to recognise it. sha256 values are given in full where they identify a file; Drive paths are relative to `MyDrive/confidentiality_detector/` in the project owner's Google Drive (the Colab workspace).
+
+The selected checkpoint is shared with team members through a private Google Drive folder whose link is not recorded here. How to install and verify it on another computer: `docs/INTEGRATION.md` §1.2–1.4.
 
 ## Model checkpoints
 

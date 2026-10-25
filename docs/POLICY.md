@@ -98,8 +98,19 @@ Implemented in `src/confidentiality_detector/policy.py`:
 
 * On `dev_v1`, `maximum` adds 5 false blocks and shows no leakage benefit, because `strict` already has none there.
 * On report-only synthetic sets `maximum` does reduce leakage: format-shifted values 45 → 20 of 3,055; long documents 2 → 0 of 45.
-* It is therefore kept as an option for especially sensitive deployments, not as the default.
 * No point in the `dev_v1` operating-point table lowers false blocks without giving up leaks (`reports/evidence/operating_points_r2_e3b_positive__rules_v3_dev_v1.json`).
+* **The independent benchmark confirms it** (`challenge_v2`, `reports/FINAL_REPORT.md` §5–6):
+
+  | Mode | False ALLOW | False BLOCK | Entity recall |
+  |---|---|---|---|
+  | `strict` | 2/200 | 70/200 | 0.898 |
+  | `maximum` | 1/200 | 78/200 | 0.898 |
+
+  `maximum` gives no measurable leakage benefit for more friction.
+
+**Mode decision (final).**
+* **`strict` is the product mode.** The application and any API pass `"strict"` explicitly.
+* **`maximum` is retained** in the code and in `configs/inference/policy.json` for reproducibility and research. It is **not exposed as a user-facing option**, and a mode is never taken from user input (`docs/INTEGRATION.md` §2.2).
 
 No false-block "budget" has been invented: the table gives the evidence, and the product owner chooses.
 
@@ -112,7 +123,8 @@ No false-block "budget" has been invented: the table gives the evidence, and the
 * **Thresholds cannot remove these false blocks.** 68% of R3's false-positive spans on `dev_v1` score ≥ 0.9, and 83% on the held-out hard-negative families (`reports/evidence/calibration_r2_e3b_positive.json`).
 * The hard-negative data of Round 2 (experiments R2 and R4) does remove most of them. R4 has 12/75 False BLOCK on `dev_v1`. But R2 alone increased leakage, and the selection rule fixed in advance therefore did not allow R4 (`reports/history/ROUND2_REPORT.md` §7). Choosing usability over that rule is a product decision; it has not been made.
 * The public-figure policy (§3) adds intended blocks that users may experience as friction. They are reported separately and never counted as errors.
-* No real employee prompts have been evaluated. Every rate above comes from synthetic or hand-written data (see `docs/RISKS.md`).
+* **On the independent `challenge_v2`** (400 cases by a separate author), `strict` has False ALLOW 2/200 and False BLOCK 70/200 (35%). 64 of the 70 false blocks are on look-alike cases. The trade-off measured on `dev_v1` holds on independent text.
+* No real employee prompts have been evaluated. Every rate above comes from synthetic, hand-written or independently authored data (see `docs/RISKS.md`).
 
 ## 7. Privacy of the detector itself
 

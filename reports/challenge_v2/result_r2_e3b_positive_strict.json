@@ -1,0 +1,571 @@
+{
+  "ledger_entry": {
+    "time": "2026-10-25 17:48:19",
+    "challenge_sha256": "e3f7408185878e8a053eb8748f97c16c5da06b82859d9afda50a3320eb020f8c",
+    "model_dir": "r2_e3b_positive",
+    "model_sha256": {
+      "model.safetensors": "dc0fdca52f9e144b4017cb8eb37d8cef0d366b5b9619c519a782102ef32850c6"
+    },
+    "checkpoint_files_sha256": {
+      "config.json": "f5132da68b978b176383f7ee25d86215727701a9a05aeb534ea9746d6d29a13e",
+      "history.json": "c0d0760b591b7a32a883406c9c815c36dc6d009b3301aa9a5ff79baab7428f91",
+      "tokenizer.json": "bf1b59b7b11c95f194f51708d918eea378e09d05f84c0e1656dc5180e8117088",
+      "tokenizer_config.json": "9cd988573a9588a6085cd353eeefa09b803dba75b03f58d0c1d302aad3078193",
+      "training_summary.json": "072fd554519ad1041309027e29ba74781dcf7a94b188aad26f1d3e8e0036c704"
+    },
+    "policy_sha256": "332b5c65167370b91d987642922f58e2af7bbc204691f04671743e43d62b94c2",
+    "rules_version": "v3",
+    "code_sha256": {
+      "__init__.py": "f019395a3d61e7a21a29364f3cd093dd11b56af290f219c91ebd6d63407bfde5",
+      "__main__.py": "c4daab045b0506636d91088a9d7e26a3402e6f4a8efe32ec0bb51dc7f98fccd9",
+      "alignment.py": "67d8a75608d4bb6180902b9eb8362d52bc9d3cae79547c849936676fa36e5c26",
+      "decoding.py": "fc1eb85c8820e31eaf772f7b5b571aa6420fad3068366ef5828d064609464342",
+      "documents.py": "437d3c85fddfe16fc277bd0e55bd4a47c85140f8764612df69df0bdefd05cdfd",
+      "labels.py": "35efb4ebe0d67c614d729cb19551d54e95d592bbcbacd2168be2651c82f64f08",
+      "pipeline.py": "5d18a3cd47d6b81e79d2bc3e4941a688d9f4d57007082b8263d73cc411e50908",
+      "policy.py": "65675a3a34ad581f79c4188fa40926bccab5443ae2ae37d0ad3f6ec99716609b",
+      "detectors/__init__.py": "5b1bef12baa4488101a668276b46efd4a8281b4aec1a498c65bd0cf476d09a4f",
+      "detectors/hybrid.py": "68e6fbb8f59ab8262011c9670ed945aca79b98904e4684dd726c925eff5293f1",
+      "detectors/rules.py": "b96d35c4f148dc3d9407f931cf89f7d70d07d2f144d121254cda1abcb44c49b0",
+      "detectors/transformer.py": "0f8ab0ed54df44e161243c6cbaab67c50c1266bd869a970180870df62af331e0"
+    },
+    "max_length": 512,
+    "overlap": 64,
+    "stitching": "first",
+    "runtime": {
+      "python": "3.13.0",
+      "torch": "2.14.1",
+      "transformers": "5.19.0",
+      "tokenizers": "0.23.2",
+      "safetensors": "0.8.0",
+      "numpy": "2.4.6",
+      "phonenumbers": "9.0.40"
+    },
+    "git_commit": "490710769d91b51e0699ec554ac6cfcca9bf885e",
+    "frozen_at": "2026-10-24 20:43:20",
+    "mode": "strict",
+    "predictions_sha256": "bd8c12c3c497741366e1d465e119b35b7001a6ab31b425dae178e4220c3acce3",
+    "far": 0.01,
+    "fbr": 0.35,
+    "evaluator": {
+      "git": {
+        "commit": "c8300ec5b9015deedbe51462150f5dc166092448",
+        "uncommitted_changes": false
+      },
+      "code_sha256": {
+        "src/confidentiality_detector/challenge.py": "3eb0b3eaeed76ffe538034d921aec6704c8f4a977ac66ca8b62959a7f0ad8d44",
+        "src/confidentiality_detector/metrics.py": "86a1ec10c1a34709a6e2c27bf243c4f5dbafccc3c8e1e38d66d1e9747ee544e3",
+        "scripts/challenge_v2.py": "9cd9eb91626c40b03e564a995d8f3e026f7c2dde7cbd3a53e62f3f603c1f7520"
+      }
+    }
+  },
+  "document": {
+    "block_precision": 0.7388059701492538,
+    "block_recall": 0.99,
+    "block_f1": 0.8461538461538461,
+    "confusion": {
+      "TP_block": 198,
+      "FN_false_allow": 2,
+      "FP_false_block": 70,
+      "TN_allow": 130
+    },
+    "n_docs": 400,
+    "n_block_docs": 200,
+    "n_allow_docs": 200,
+    "n_ambiguous_excluded": 0,
+    "false_allow_rate": 0.01,
+    "false_allow_rate_ci95": [
+      0.0027466006037749346,
+      0.03572248519617954
+    ],
+    "false_block_rate": 0.35,
+    "false_block_rate_ci95": [
+      0.28728715939415395,
+      0.41836664238134236
+    ],
+    "accuracy": 0.82
+  },
+  "entity_micro": {
+    "precision": 0.5435897435897435,
+    "recall": 0.8983050847457628,
+    "f1": 0.6773162939297124,
+    "tp": 212,
+    "fp": 178,
+    "fn": 24,
+    "support": 236,
+    "overlap_recall": 0.9194915254237288,
+    "caught_any_type": 0.9830508474576272
+  },
+  "entity_per_class": {
+    "PASSWORD": {
+      "precision": 0.3488372093023256,
+      "recall": 0.9375,
+      "f1": 0.5084745762711865,
+      "tp": 15,
+      "fp": 28,
+      "fn": 1,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "USERNAME": {
+      "precision": 0.19047619047619047,
+      "recall": 0.5,
+      "f1": 0.27586206896551724,
+      "tp": 8,
+      "fp": 34,
+      "fn": 8,
+      "support": 16,
+      "overlap_recall": 0.5625,
+      "caught_any_type": 0.8125
+    },
+    "EMAIL": {
+      "precision": 0.9411764705882353,
+      "recall": 1.0,
+      "f1": 0.9696969696969697,
+      "tp": 16,
+      "fp": 1,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "PHONENUMBER": {
+      "precision": 0.7142857142857143,
+      "recall": 1.0,
+      "f1": 0.8333333333333333,
+      "tp": 15,
+      "fp": 6,
+      "fn": 0,
+      "support": 15,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "FIRSTNAME": {
+      "precision": 0.8709677419354839,
+      "recall": 0.8709677419354839,
+      "f1": 0.8709677419354839,
+      "tp": 27,
+      "fp": 4,
+      "fn": 4,
+      "support": 31,
+      "overlap_recall": 0.9032258064516129,
+      "caught_any_type": 1.0
+    },
+    "LASTNAME": {
+      "precision": 0.9285714285714286,
+      "recall": 0.8387096774193549,
+      "f1": 0.8813559322033899,
+      "tp": 26,
+      "fp": 2,
+      "fn": 5,
+      "support": 31,
+      "overlap_recall": 0.9032258064516129,
+      "caught_any_type": 1.0
+    },
+    "SSN": {
+      "precision": 0.38461538461538464,
+      "recall": 0.6666666666666666,
+      "f1": 0.4878048780487804,
+      "tp": 10,
+      "fp": 16,
+      "fn": 5,
+      "support": 15,
+      "overlap_recall": 0.6666666666666666,
+      "caught_any_type": 1.0
+    },
+    "CREDITCARDNUMBER": {
+      "precision": 0.7619047619047619,
+      "recall": 1.0,
+      "f1": 0.8648648648648648,
+      "tp": 16,
+      "fp": 5,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "CREDITCARDCVV": {
+      "precision": 0.7619047619047619,
+      "recall": 1.0,
+      "f1": 0.8648648648648648,
+      "tp": 16,
+      "fp": 5,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "IBAN": {
+      "precision": 0.5161290322580645,
+      "recall": 1.0,
+      "f1": 0.6808510638297872,
+      "tp": 16,
+      "fp": 15,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "ACCOUNTNUMBER": {
+      "precision": 0.25396825396825395,
+      "recall": 1.0,
+      "f1": 0.4050632911392405,
+      "tp": 16,
+      "fp": 47,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "STREET": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "support": 16,
+      "overlap_recall": 1.0,
+      "caught_any_type": 1.0
+    },
+    "IPV4": {
+      "precision": 0.5,
+      "recall": 0.9375,
+      "f1": 0.6521739130434783,
+      "tp": 15,
+      "fp": 15,
+      "fn": 1,
+      "support": 16,
+      "overlap_recall": 0.9375,
+      "caught_any_type": 0.9375
+    }
+  },
+  "fn_breakdown": {
+    "type_confusion": 15,
+    "missed": 4,
+    "boundary": 5
+  },
+  "fp_breakdown": {
+    "spurious": 32,
+    "hard_negative": 124,
+    "type_confusion": 17,
+    "boundary": 5
+  },
+  "lookalike_fp_by_type": {
+    "APIKEY": {
+      "annotated": 14,
+      "hit": 13,
+      "false_positives": 19,
+      "predicted_as": {
+        "PASSWORD": 19
+      },
+      "allow_cases": 5,
+      "false_block_cases": 4
+    },
+    "BIC": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "BUILD": {
+      "annotated": 6,
+      "hit": 1,
+      "false_positives": 1,
+      "predicted_as": {
+        "IPV4": 1
+      },
+      "allow_cases": 6,
+      "false_block_cases": 1
+    },
+    "CRYPTO": {
+      "annotated": 4,
+      "hit": 4,
+      "false_positives": 4,
+      "predicted_as": {
+        "PASSWORD": 4
+      },
+      "allow_cases": 4,
+      "false_block_cases": 4
+    },
+    "CUSTOMERREF": {
+      "annotated": 4,
+      "hit": 4,
+      "false_positives": 4,
+      "predicted_as": {
+        "SSN": 4
+      },
+      "allow_cases": 4,
+      "false_block_cases": 4
+    },
+    "DATE": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "ERRORCODE": {
+      "annotated": 6,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 6,
+      "false_block_cases": 0
+    },
+    "IMEI": {
+      "annotated": 5,
+      "hit": 5,
+      "false_positives": 5,
+      "predicted_as": {
+        "CREDITCARDNUMBER": 5
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    },
+    "INVOICE": {
+      "annotated": 6,
+      "hit": 6,
+      "false_positives": 6,
+      "predicted_as": {
+        "SSN": 6
+      },
+      "allow_cases": 6,
+      "false_block_cases": 6
+    },
+    "IPV6": {
+      "annotated": 4,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 4,
+      "false_block_cases": 0
+    },
+    "MAC": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "MEETINGID": {
+      "annotated": 5,
+      "hit": 5,
+      "false_positives": 5,
+      "predicted_as": {
+        "ACCOUNTNUMBER": 5
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    },
+    "NATIONALID": {
+      "annotated": 4,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 4,
+      "false_block_cases": 0
+    },
+    "ORDERID": {
+      "annotated": 6,
+      "hit": 6,
+      "false_positives": 7,
+      "predicted_as": {
+        "SSN": 6,
+        "PHONENUMBER": 1
+      },
+      "allow_cases": 6,
+      "false_block_cases": 6
+    },
+    "PARTIALCARD": {
+      "annotated": 4,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 4,
+      "false_block_cases": 0
+    },
+    "PIN": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "PORT": {
+      "annotated": 4,
+      "hit": 1,
+      "false_positives": 1,
+      "predicted_as": {
+        "CREDITCARDCVV": 1
+      },
+      "allow_cases": 4,
+      "false_block_cases": 1
+    },
+    "PRIVATEKEY": {
+      "annotated": 5,
+      "hit": 5,
+      "false_positives": 6,
+      "predicted_as": {
+        "ACCOUNTNUMBER": 5,
+        "PASSWORD": 1
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    },
+    "ROUTING": {
+      "annotated": 5,
+      "hit": 5,
+      "false_positives": 5,
+      "predicted_as": {
+        "ACCOUNTNUMBER": 5
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    },
+    "SERIAL": {
+      "annotated": 6,
+      "hit": 6,
+      "false_positives": 11,
+      "predicted_as": {
+        "ACCOUNTNUMBER": 6,
+        "PHONENUMBER": 5
+      },
+      "allow_cases": 6,
+      "false_block_cases": 6
+    },
+    "SKU": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "TICKET": {
+      "annotated": 5,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 5,
+      "false_block_cases": 0
+    },
+    "TOKEN": {
+      "annotated": 4,
+      "hit": 0,
+      "false_positives": 0,
+      "predicted_as": {},
+      "allow_cases": 4,
+      "false_block_cases": 0
+    },
+    "TRACKING": {
+      "annotated": 30,
+      "hit": 27,
+      "false_positives": 36,
+      "predicted_as": {
+        "ACCOUNTNUMBER": 21,
+        "IBAN": 15
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    },
+    "VERSION": {
+      "annotated": 14,
+      "hit": 14,
+      "false_positives": 14,
+      "predicted_as": {
+        "IPV4": 14
+      },
+      "allow_cases": 5,
+      "false_block_cases": 5
+    }
+  },
+  "block_docs_with_every_entity_caught": 0.98,
+  "by_tag": {
+    "allow": {
+      "n_docs": 200,
+      "block_docs": 0,
+      "allow_docs": 200,
+      "false_allow": 0,
+      "false_block": 70
+    },
+    "block": {
+      "n_docs": 200,
+      "block_docs": 200,
+      "allow_docs": 0,
+      "false_allow": 2,
+      "false_block": 0
+    },
+    "difficult-positive": {
+      "n_docs": 80,
+      "block_docs": 80,
+      "allow_docs": 0,
+      "false_allow": 1,
+      "false_block": 0
+    },
+    "enterprise": {
+      "n_docs": 400,
+      "block_docs": 200,
+      "allow_docs": 200,
+      "false_allow": 2,
+      "false_block": 70
+    },
+    "long": {
+      "n_docs": 72,
+      "block_docs": 27,
+      "allow_docs": 45,
+      "false_allow": 1,
+      "false_block": 10
+    },
+    "lookalike": {
+      "n_docs": 152,
+      "block_docs": 42,
+      "allow_docs": 110,
+      "false_allow": 0,
+      "false_block": 64
+    },
+    "oos-secret": {
+      "n_docs": 21,
+      "block_docs": 9,
+      "allow_docs": 12,
+      "false_allow": 0,
+      "false_block": 9
+    },
+    "structured": {
+      "n_docs": 171,
+      "block_docs": 113,
+      "allow_docs": 58,
+      "false_allow": 0,
+      "false_block": 19
+    },
+    "unfamiliar-format": {
+      "n_docs": 72,
+      "block_docs": 56,
+      "allow_docs": 16,
+      "false_allow": 1,
+      "false_block": 9
+    }
+  },
+  "by_length": {
+    "<=1000 chars": {
+      "n_docs": 328,
+      "block_docs": 173,
+      "allow_docs": 155,
+      "false_allow": 1,
+      "false_block": 60
+    },
+    ">3000 chars": {
+      "n_docs": 72,
+      "block_docs": 27,
+      "allow_docs": 45,
+      "false_allow": 1,
+      "false_block": 10
+    }
+  }
+}
