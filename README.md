@@ -50,10 +50,14 @@ print(decision.to_dict())                       # categories, positions, reason;
 | Topic | Document |
 |---|---|
 | **Final results**: system, development evidence, independent benchmark, strict vs maximum, history, model card | `reports/FINAL_REPORT.md` |
+| **Capstone report** (Word; draft for team review) | `reports/Confidentiality_Detector_Capstone_Report.docx` |
 | **Second computer and frontend/API integration**: setup, checkpoint, Python interface, fail-closed and privacy duties, frozen files | `docs/INTEGRATION.md` |
+| Manual integration and demo test plan (template, not executed) | `docs/INTEGRATION_TEST_PLAN.md` |
 | Product purpose, scope, person-name policy, ambiguous values, BLOCK/ALLOW logic, trade-offs | `docs/POLICY.md` |
 | Modules and the inference data flow | `docs/ARCHITECTURE.md` |
 | Data sources, label policies, BIO alignment, augmentation, splits, versioning | `docs/DATA_PIPELINE.md` |
+| Dataset inventory: every dataset and split, its role, counts and sharing limits | `docs/DATASETS.md` |
+| Baseline audit: which regex, rules, NER-only and hybrid results exist | `reports/BASELINE_AUDIT.md` |
 | Training, evaluation, selection rule, window and gate studies | `docs/METHODOLOGY.md` |
 | Per-label annotation rules | `docs/ANNOTATION_GUIDELINES.md` |
 | What is and is not proven; security risks | `docs/RISKS.md` |

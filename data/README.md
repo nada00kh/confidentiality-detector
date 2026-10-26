@@ -1,6 +1,6 @@
 # Data
 
-The full lineage (source, policies, splits, generated data, and which run used what) is in [`docs/DATA_PIPELINE.md`](../docs/DATA_PIPELINE.md) §0. No real user data and no real secrets are used anywhere: every value is synthetic, a public test value, or invented for the hand-written sets.
+The full lineage (source, policies, splits, generated data, and which run used what) is in [`docs/DATA_PIPELINE.md`](../docs/DATA_PIPELINE.md) §0. A reviewer-oriented inventory of every dataset and split, with its role (training, validation, selection, development test, final independent test), is in [`docs/DATASETS.md`](../docs/DATASETS.md). No real user data and no real secrets are used anywhere: every value is synthetic, a public test value, or invented for the hand-written sets.
 
 | Folder | Contents | In Git? | Produced by |
 |---|---|---|---|

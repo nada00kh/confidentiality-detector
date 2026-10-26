@@ -3,6 +3,8 @@
 | Question | Where |
 |---|---|
 | How good is the final system, and where did its data come from? | `FINAL_REPORT.md` (final, with the independent benchmark in §5) and `docs/DATA_PIPELINE.md` §0 |
+| The capstone report (Word, draft for team review) | `Confidentiality_Detector_Capstone_Report.docx` |
+| Which baseline implementations and baseline results exist (historical regex, rules, Presidio, NER-only, hybrid)? | `BASELINE_AUDIT.md` |
 | The independent benchmark's raw aggregates | `challenge_v2/`: `SEAL.json`, `LEDGER.jsonl`, `result_r2_e3b_positive_strict.json`, `result_r2_e3b_positive_maximum.json` (no case text, no per-case results) |
 | Where are the checkpoints, Colab archives and bundles that are not in Git? | `ARTIFACTS.md` |
 | Why was the original 0.9925 F1 misleading, and what did the first audit find? | `history/INVESTIGATION.md` |
