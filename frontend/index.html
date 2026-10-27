@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>WASHQ · Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/washq.css">
+</head>
+<body class="landing">
+  <main class="stage" id="stage">
+    <div class="bigw" aria-hidden="true">
+      <svg viewBox="-4 -12 108 116" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bwStroke" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F7F5F0" stop-opacity=".09"/>
+            <stop offset="1" stop-color="#F7F5F0" stop-opacity=".025"/>
+          </linearGradient>
+          <clipPath id="bwBand"><rect class="bw-band" x="-10" y="-30" width="120" height="16"/></clipPath>
+        </defs>
+        <g>
+          <path d="M6 6 L30 98 L50 34 L70 98 L94 6" fill="none" stroke="url(#bwStroke)" stroke-width="11" stroke-linejoin="miter"/>
+          <path d="M4 -1 L2 -7 M96 -1 L98 -7" stroke="#F7F5F0" stroke-opacity=".07" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+        <g clip-path="url(#bwBand)">
+          <path d="M6 6 L30 98 L50 34 L70 98 L94 6" fill="none" stroke="#F58A36" stroke-opacity=".5" stroke-width="11" stroke-linejoin="miter"/>
+          <path d="M4 -1 L2 -7 M96 -1 L98 -7" stroke="#F58A36" stroke-opacity=".5" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+        <rect class="bw-line" x="-10" y="-14" width="120" height=".35" fill="#F58A36" fill-opacity=".7"/>
+      </svg>
+    </div>
+    <div class="topline">
+      <span class="demo-badge" id="demoBadge" hidden>DEMO MODE</span>
+    </div>
+
+    <div class="hero">
+      <div class="logo" role="img" aria-label="WASHQ">
+        <svg width="76" height="82" viewBox="0 -8 100 108" style="margin-bottom:-4px;overflow:visible" aria-hidden="true">
+          <path fill="none" stroke="#F7F5F0" stroke-width="11" stroke-linejoin="miter" d="M6 6 L30 98 L50 34 L70 98 L94 6"/>
+          <path stroke="#F7F5F0" stroke-width="3.5" stroke-linecap="round" d="M4 -1 L2 -7 M96 -1 L98 -7"/>
+          <g class="eyes-idle"><g id="eyes"><rect x="25" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/><rect x="63" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/></g></g>
+          <g class="eyes-scan"><rect x="16" y="48" width="68" height="3" rx="1.5" fill="#F58A36"/></g>
+        </svg>
+        <span class="wm" aria-hidden="true">ASH</span>
+        <svg width="54" height="60" viewBox="0 0 100 110" style="margin-bottom:-15px;margin-left:4px" aria-hidden="true">
+          <circle cx="46" cy="46" r="36" fill="none" stroke="#F7F5F0" stroke-width="11"/>
+          <path stroke="#F7F5F0" stroke-width="12" stroke-linecap="round" d="M73 73 L94 100"/>
+        </svg>
+        <span class="scan" aria-hidden="true"></span>
+      </div>
+
+      <div class="eyebrow">Data confidentiality and security</div>
+      <h1>Share text without sharing secrets.</h1>
+      <p class="lead">Sensitive data is masked before you share.</p>
+
+      <nav class="roles" aria-label="Choose how to continue">
+        <a class="role" href="workspace.html" data-target="Workspace">
+          <span class="ic">
+            <svg width="34" height="37" viewBox="0 -8 100 108" style="overflow:visible" aria-hidden="true">
+              <path fill="none" stroke="#14243B" stroke-width="11" stroke-linejoin="miter" d="M6 6 L30 98 L50 34 L70 98 L94 6"/>
+              <path stroke="#14243B" stroke-width="3.5" stroke-linecap="round" d="M4 -1 L2 -7 M96 -1 L98 -7"/>
+              <g class="eyes-idle"><rect x="25" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/><rect x="63" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/></g>
+              <g class="eyes-scan"><rect x="16" y="48" width="68" height="3" rx="1.5" fill="#F58A36"/></g>
+            </svg>
+          </span>
+          <span>
+            <span class="role-title">Employee</span>
+            <span class="role-text">Mask sensitive data in your text.</span>
+            <span class="go">Continue as Employee <i aria-hidden="true">→</i></span>
+          </span>
+        </a>
+
+        <a class="role" href="admin.html" data-target="Admin Overview">
+          <span class="ic">
+            <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+              <g class="bars">
+                <rect x="4" y="14" width="5" height="12" rx="1.5" fill="#14243B"/>
+                <rect x="12.5" y="8" width="5" height="18" rx="1.5" fill="#9AA3B2"/>
+                <rect x="21" y="18" width="5" height="8" rx="1.5" fill="#B4500F"/>
+              </g>
+              <line x1="2" y1="27.5" x2="28" y2="27.5" stroke="#14243B" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>
+            <span class="role-title">Administrator</span>
+            <span class="role-text">Scans, data types and logs.</span>
+            <span class="go">Continue as Administrator <i aria-hidden="true">→</i></span>
+          </span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="foot">
+      <span>© WASHQ | وَشْق</span>
+    </footer>
+
+    <div class="wipe" aria-hidden="true">
+      <svg width="40" height="43" viewBox="0 -8 100 108" style="overflow:visible">
+        <path fill="none" stroke="#14243B" stroke-width="11" stroke-linejoin="miter" d="M6 6 L30 98 L50 34 L70 98 L94 6"/>
+        <path stroke="#14243B" stroke-width="3.5" stroke-linecap="round" d="M4 -1 L2 -7 M96 -1 L98 -7"/>
+        <rect x="25" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/><rect x="63" y="47" width="12" height="5" rx="2.5" fill="#F58A36"/>
+      </svg>
+      <b id="wipeTitle">Opening…</b>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/welcome.js"></script>
+</body>
+</html>

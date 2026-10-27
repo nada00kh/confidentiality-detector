@@ -40,6 +40,10 @@ notebooks = [
     "ipykernel>=7.4.0",
     "pandas>=3.0.6",
 ]
+web = [
+    "fastapi>=0.162.0",
+    "uvicorn>=0.54.0",
+]
 
 [tool.uv]
 package = true  # install the project itself (editable) so `python -m confidentiality_detector` and the console script work

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>WASHQ · Admin Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/washq.css">
+</head>
+<body>
+  <div class="adm">
+    <aside class="side">
+      <a class="brand" href="index.html" data-lockup="18" title="WASHQ home"></a>
+      <nav aria-label="Admin">
+        <a class="nav on" href="admin.html" aria-current="page">Overview</a>
+        <a class="nav" href="logs.html">Security Logs</a>
+      </nav>
+      <a class="side-foot" href="workspace.html">← Employee workspace</a>
+    </aside>
+
+    <main class="main">
+      <div class="mh">
+        <h1>Overview</h1>
+        <span class="demo-badge" id="demoBadge" hidden>DEMO DATA</span>
+        <label class="spacer"><span class="sr-only">Period</span>
+          <select class="sel" id="range">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+        </label>
+      </div>
+
+      <section class="kpis" id="kpis" aria-label="Summary"></section>
+
+      <section class="box chart" aria-labelledby="activityTitle">
+        <h2 id="activityTitle">Scan activity
+          <span class="legend"><span class="s-allow"><i></i>Allowed</span><span class="s-block"><i></i>Blocked</span></span>
+        </h2>
+        <div id="chart"><p class="panel-msg">Loading…</p></div>
+      </section>
+
+      <div class="duo">
+        <section class="box">
+          <h2>Most detected data types</h2>
+          <div id="types"><p class="panel-msg">Loading…</p></div>
+        </section>
+        <section class="box">
+          <h2>Latest security events <a class="more" href="logs.html">View all logs →</a></h2>
+          <div id="latest"><p class="panel-msg">Loading…</p></div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/mock.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/brand.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

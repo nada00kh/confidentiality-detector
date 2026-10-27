@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>WASHQ · Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/washq.css">
+</head>
+<body class="ws">
+  <header class="topbar">
+    <a class="brand" href="index.html" data-lockup="18" title="WASHQ home"></a>
+    <span class="crumb">Workspace</span>
+    <span class="demo-badge" id="demoBadge" hidden>DEMO MODE</span>
+    <a class="toplink" href="admin.html">Admin view</a>
+    <span class="avatar" title="Signed in as Sara A.">SA</span>
+  </header>
+
+  <main class="chat" id="chat">
+    <div class="thread" id="thread" aria-live="polite"></div>
+  </main>
+
+  <footer class="composer">
+    <form class="composer-inner" id="composer" autocomplete="off">
+      <div class="inbox">
+        <label for="msg" class="sr-only">Text to sanitize</label>
+        <textarea id="msg" rows="1" placeholder="Paste text…"></textarea>
+        <span class="scanline" aria-hidden="true"></span>
+        <button type="submit" class="send" id="sendBtn" aria-label="Scan text">
+          <svg width="18" height="18" aria-hidden="true"><use href="#w-send"/></svg>
+        </button>
+      </div>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+      <div class="guard" id="guard"></div>
+    </form>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/mock.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/brand.js"></script>
+  <script src="js/workspace.js"></script>
+</body>
+</html>
