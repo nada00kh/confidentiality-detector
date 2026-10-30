@@ -18,6 +18,7 @@ prompt ─► transformer (fine-tuned mBERT, BIO token classification, sliding w
 | **Independent benchmark** (`challenge_v2`: 400 unseen cases by a separate author, sealed, evaluated once per mode on 2026-10-25) | **`strict`:** False ALLOW **2/200 (1.0%)**, False BLOCK **70/200 (35%)**; BLOCK F1 0.846; entity F1 0.677 (precision 0.544, recall 0.898). `maximum`: False ALLOW 1/200, False BLOCK 78/200. Most false blocks are harmless look-alike identifiers (tracking, serial, order and invoice numbers, versions) and out-of-scope secrets (`reports/FINAL_REPORT.md` §5). |
 | **Development evidence** | Synthetic in-distribution test: entity F1 0.984, which says little about realistic text. Hand-written `dev_v1`: entity F1 0.685, False BLOCK 36%, consistent with the independent result. The original notebooks' 0.9925 F1 was a metric artefact (corrected: 0.643, `reports/history/ROUND1_REPORT.md`). |
 | **Readiness** | **Research prototype, not production-ready.** No real employee prompts have been evaluated; one harmless prompt in three is blocked (`docs/RISKS.md`). |
+| **Demo application (WASHQ)** | A local FastAPI backend and web frontend around the frozen detector (`strict`). For the bootcamp demo it adds a **Saudi regex extension**: Saudi mobile, national ID, iqama. It is **never evaluated, and not part of any result above**; its findings only add masked values. Setup and limits: `backend/README.md`. |
 
 ## Quick start
 
@@ -51,8 +52,9 @@ print(decision.to_dict())                       # categories, positions, reason;
 |---|---|
 | **Final results**: system, development evidence, independent benchmark, strict vs maximum, history, model card | `reports/FINAL_REPORT.md` |
 | **Capstone report** (Word; draft for team review) | `reports/Confidentiality_Detector_Capstone_Report.docx` |
+| **Local demo application (WASHQ)**: install, run the backend and frontend, evaluated core detector vs Saudi demo extension, what masking can guarantee, limits | `backend/README.md` |
 | **Second computer and frontend/API integration**: setup, checkpoint, Python interface, fail-closed and privacy duties, frozen files | `docs/INTEGRATION.md` |
-| Manual integration and demo test plan (template, not executed) | `docs/INTEGRATION_TEST_PLAN.md` |
+| Manual integration and demo test plan (manual pass not yet executed) | `docs/INTEGRATION_TEST_PLAN.md` |
 | Product purpose, scope, person-name policy, ambiguous values, BLOCK/ALLOW logic, trade-offs | `docs/POLICY.md` |
 | Modules and the inference data flow | `docs/ARCHITECTURE.md` |
 | Data sources, label policies, BIO alignment, augmentation, splits, versioning | `docs/DATA_PIPELINE.md` |
@@ -74,7 +76,9 @@ configs/                        experiments/*.json (training runs); inference/po
 data/                           hand-written sets, split ids and manifests; third-party and generated data stay local (data/README.md)
 notebooks/colab/                the reproducible GPU training rounds (Google Colab)
 reports/                        FINAL_REPORT.md, challenge_v2/ (the four aggregate benchmark files), history/, evidence/
-archive/                        the original exploration and baseline notebooks, unchanged (archive/README.md)
+backend/                        WASHQ demo API (FastAPI): frozen-detector adapter, Saudi demo extension, masking, audit log
+frontend/                       WASHQ demo pages (static HTML/CSS/JavaScript)
+archive/                        the original exploration and baseline notebooks (archive/README.md)
 tests/                          unit and integration tests
 checkpoints/                    model weights, local only (git-ignored)
 ```

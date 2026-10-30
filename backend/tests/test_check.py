@@ -11,10 +11,18 @@ from backend.tests.conftest import SECRET, FakeDetector, assert_error
 
 # ---------- unchanged endpoints ----------
 
-def test_health_still_works(client):
+def test_health_reports_not_ready_without_a_detector(client):
     response = client.get("/health")
+    assert response.status_code == 503
+    assert response.json() == {"status": "not_ready", "model_loaded": False}
+
+
+def test_health_reports_ready_without_running_the_detector(make_client):
+    detector = FakeDetector()
+    response = make_client(detector=detector).get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert response.json() == {"status": "ready", "model_loaded": True}
+    assert detector.calls == 0
 
 
 def test_educational_scan_endpoint_is_gone(client):
@@ -140,7 +148,8 @@ def test_name_and_id_return_block_with_masked_copy(make_client):
 
     assert response.status_code == 200
     body = response.json()
-    assert set(body) == {"operation_id", "decision", "reason", "detected", "safe_text", "spans"}
+    assert set(body) == {"operation_id", "decision", "reason", "detected", "safe_text", "spans", "pattern_hints"}
+    assert body["pattern_hints"] == []  # a Saudi-only finding keeps its own type and needs no hint
     assert body["operation_id"] == "WSQ-000001"
     assert body["decision"] == "BLOCK"
     assert body["reason"] == "Sensitive data found, masked copy returned"
@@ -231,7 +240,7 @@ def test_unmaskable_findings_return_block_without_a_copy(make_client, entities):
     body = response.json()
     assert body == {
         "operation_id": "WSQ-000001", "decision": "BLOCK", "reason": REASON_NOT_MASKED,
-        "detected": [], "safe_text": None, "spans": [],
+        "detected": [], "safe_text": None, "spans": [], "pattern_hints": [],
     }
     assert SECRET not in response.text
     item = client.get("/api/logs").json()["items"][0]

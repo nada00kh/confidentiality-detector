@@ -48,6 +48,16 @@ class SpanOut(BaseModel):
     type: str
 
 
+class PatternHint(BaseModel):
+    """Secondary, demo-only explanation; `type` stays the primary (core detector) type."""
+
+    type: str
+    label: str
+    pattern: str
+    note: str
+    count: int
+
+
 class CheckResponse(BaseModel):
     operation_id: str
     decision: Decision
@@ -55,6 +65,14 @@ class CheckResponse(BaseModel):
     detected: list[DetectedType]
     safe_text: str | None
     spans: list[SpanOut]
+    pattern_hints: list[PatternHint]
+
+
+# ---------- GET /health ----------
+
+class HealthResponse(BaseModel):
+    status: Literal["ready", "not_ready"]
+    model_loaded: bool
 
 
 # ---------- GET /api/logs and GET /api/stats ----------

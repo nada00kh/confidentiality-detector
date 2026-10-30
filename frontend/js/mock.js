@@ -164,7 +164,8 @@
       reason,
       detected,
       safe_text: mask(text, spans),
-      spans: spans.map((s) => ({ start: s.start, end: s.end, type: s.type }))
+      spans: spans.map((s) => ({ start: s.start, end: s.end, type: s.type })),
+      pattern_hints: []
     });
   }
 

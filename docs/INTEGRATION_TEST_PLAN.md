@@ -1,6 +1,9 @@
 # Manual integration and demo test plan (template)
 
-**Status: template, not executed.** No test below has been run, and no result is claimed. The "Actual" and "Pass/fail" columns are empty on purpose.
+**Status: template; the manual UI pass has not been executed.**
+* The "Actual" and "Pass/fail" columns are for that manual pass, and are empty on purpose.
+* The inputs of T01–T24 and §3.4 were also run automatically through the real server on 2026-10-30. That run checked integration consistency (§2) only, not the policy column.
+* Part of it is repeatable with `python -m pytest backend/tests` (`backend/README.md`).
 
 **What this is:** acceptance testing of the frontend + FastAPI integration around the frozen detector, plus a rehearsal list for the live demo.
 
@@ -17,6 +20,8 @@
 * **Never use** real personal data, real credentials, `challenge_v2` cases (developers have never seen them), or `dev_v1` / `challenge_v1` texts.
 * **The inputs below are drafts.** The team reviews and finalises them, then fills in the "Expected result" column **before** any execution (§4), and does not change it afterwards.
 * **Mode:** always `strict`, passed explicitly by the backend. Never a user option (`docs/INTEGRATION.md` §2.2).
+* **Types in the app:** the app shows type codes instead of detector labels (`backend/app/labels.py`). For example, FIRSTNAME and LASTNAME become PERSON_NAME, PHONENUMBER becomes PHONE, STREET becomes STREET_ADDRESS, and IPV4 becomes IP_ADDRESS.
+* **Saudi demo extension:** it can add findings to the evaluated detector's (§3.4). It is not part of the evaluated system.
 
 ## 2. How each test passes
 
@@ -24,8 +29,8 @@ A test can fail in three independent ways. Record each one.
 
 | Check | Pass when | Source |
 |---|---|---|
-| **Consistency (integration)** | the API response's `decision`, `reason`, `mode`, `categories` and every finding's `(start, end, label)` equal the direct call `detector.inspect(text, "strict").to_dict()` (or the CLI: `python -m confidentiality_detector --model-dir checkpoints/r2_e3b_positive --mode strict --file <input>`) | `docs/INTEGRATION.md` §7 |
-| **Fail-closed and privacy (integration)** | errors end in BLOCK in the UI, and the prompt is not sent on. No detected value appears in the response, the UI, the browser network log or the server logs | `docs/INTEGRATION.md` §3–4 |
+| **Consistency (integration)** | The app's decision and the categories it shows match the direct call `detector.inspect(text, "strict")` (or the CLI: `python -m confidentiality_detector --model-dir checkpoints/r2_e3b_positive --mode strict --file <input>`), translated into type codes. Where a Saudi rule also matched (§3.4), the app may show **additional** masked values, but never fewer and never a different type for a value the detector found | `docs/INTEGRATION.md` §7 |
+| **Fail-closed and privacy (integration)** | An error never shows a result: the UI says "WASHQ couldn't scan this text", and there is nothing to copy. No detected value appears in the masked copy, the logs or the audit database | `docs/INTEGRATION.md` §3–4 |
 | **Policy match (detector behaviour, informational)** | the decision equals the expected decision under `docs/POLICY.md` | `docs/POLICY.md` |
 
 A policy mismatch on a look-alike or an out-of-scope secret is a **known detector limitation** (false BLOCK). It is not an integration defect, and it must not be "fixed" in the API or frontend. Record it in Notes.
@@ -49,7 +54,7 @@ Legend:
 | T07 | Person name (public figure) | `Summarise Marie Curie's main discoveries in three bullet points.` | BLOCK: FIRSTNAME, LASTNAME | | | Intended by policy (`docs/POLICY.md` §3): a correct BLOCK, though users may see it as friction. Explain this in the demo if shown |
 | T08 | Credentials | `Log in as jdoe with password Zq81kLm!x and restart the job.` | BLOCK: USERNAME, PASSWORD | | | |
 | T09 | Card number with CVV and context | `Charge card 4111 1111 1111 1111, CVV 123, for the renewal.` | BLOCK: CREDITCARDNUMBER, CREDITCARDCVV | | | Public test card number |
-| T10 | IBAN (published specimen) | `Please wire the deposit to DE89 3704 0044 0532 0130 00.` | BLOCK: IBAN | | | The README example |
+| T10 | IBAN (published specimen) | `Please wire the deposit to DE89 3704 0044 0532 0130 00.` | BLOCK: IBAN | | | The README example. Before 2026-10-30 the app labelled it PHONE, because the Saudi phone rule matches inside it; that is fixed, with regression tests in `backend/tests/test_saudi_extension.py` |
 | T11 | Account number with cue | `My account number is 40018822 at the credit union.` | BLOCK: ACCOUNTNUMBER | | | |
 | T12 | SSN | `The new hire's SSN is 123-45-6789, please update the HR form.` | BLOCK: SSN | | | Common placeholder value |
 | T13 | Street | `Ship the samples to 42 Clover Lane by Tuesday.` | BLOCK: STREET | | | STREET excludes the house number (annotation convention) |
@@ -69,21 +74,34 @@ Legend:
 
 | ID | Scenario | How to run | Expected | Actual: API · UI | Pass/fail | Notes |
 |---|---|---|---|---|---|---|
-| T25 | Empty or whitespace-only text | submit `""` and `"   "` | ALLOW, `EMPTY_INPUT` (by policy) | | | The UI may also prevent empty submission; record which |
-| T26 | Text over 100,000 characters | submit 100,001 characters of harmless text | BLOCK, `INPUT_TOO_LARGE`. The explanation says the text is too large to inspect and names no category | | | If a web-server body limit rejects it first, the UI must still show BLOCK (`docs/INTEGRATION.md` §3.4) |
-| T27 | Invalid request body | send JSON without the text field, and with a number or `null` as text | request refused (no inspection of `str(...)`); the UI treats it as BLOCK | | | The error response must not echo the input. Replace FastAPI's default 422 body (`docs/INTEGRATION.md` §4) |
-| T28 | Backend unavailable or timeout | stop the API (or block its port) and submit T01; then simulate a slow response beyond the UI timeout | the UI shows BLOCK, and the prompt is not sent on | | | Network failure, timeout, non-success status and unparsable responses all count as BLOCK (`docs/INTEGRATION.md` §3.2) |
-| T29 | Detector cannot load at start-up | start the API with a wrong checkpoint path | the service refuses to start, or answers every request BLOCK; never ALLOW | | | `docs/INTEGRATION.md` §3.1 |
-| T30 | Exception during inspection | in a test only, make the detector raise (for example a monkeypatched `inspect` or detector method) | BLOCK, `INSPECTION_ERROR`; the explanation claims no detection; the log holds only the exception type | | | Do not modify the frozen detector files to do this (`docs/INTEGRATION.md` §8) |
+| T25 | Empty or whitespace-only text | submit `""` and `"   "` in the UI, then send them to the API | UI: not submitted ("Paste some text first."). API: 422 with a fixed message | | | The app never reaches the detector's own `EMPTY_INPUT` ALLOW |
+| T26 | Text over 10,000 characters | submit 10,001 characters of harmless text | API: 422, a fixed message that echoes nothing. UI: "WASHQ couldn't scan this text", no result | | | The API limit is 10,000 characters, so the detector's 100,000-character `INPUT_TOO_LARGE` is not reached |
+| T27 | Invalid request body | send JSON without the text field, with a number or `null` as text, and with an extra field such as `"mode"` | 422; nothing is inspected; the response does not echo the input | | | `backend/tests/test_check.py` covers this automatically |
+| T28 | Backend unavailable or hanging | stop the API and submit T01. To test the time limit, set `CHECK_TIMEOUT_MS` to 2000 in `js/config.js` and submit about 10,000 characters of Arabic text (the slowest kind, 6–11 s); restore 60000 afterwards | UI: "WASHQ couldn't scan this text. Couldn't reach the WASHQ server …" or "… No answer within 2 seconds …". The spinner stops; no result; nothing to copy; the text stays in the box | | | `frontend/tests/api_client.test.mjs` covers the timeout and a late answer automatically |
+| T29 | Detector cannot load at start-up | start the API with `WASHQ_MODEL_DIR` set to a wrong folder | the server starts and logs "Detector could not be loaded". `/health` answers 503 `{"status": "not_ready", "model_loaded": false}`; every scan answers 503 "Detection is not available right now …"; never ALLOW | | | With the checkpoint in place, `/health` answers 200 `ready` |
+| T30 | Exception during inspection | in a test only, make the detector raise | 503 "Detection failed …"; nothing recorded; the log holds only the exception type | | | `backend/tests/test_model_detector.py` and `test_real_model.py` cover this; do not modify the frozen detector files (`docs/INTEGRATION.md` §8) |
 
 ### 3.3 Frontend display and privacy
 
 | ID | Scenario | How to check | Expected | Actual | Pass/fail | Notes |
 |---|---|---|---|---|---|---|
-| T31 | BLOCK display | run T15 | BLOCK clearly shown, with categories (and counts) only; no detected value, no value shape, no excerpt of the text | | | Position highlighting in the user's own browser is a product decision; if used, nothing may leave the page |
-| T32 | ALLOW display | run T01 | ALLOW shown; the prompt may proceed | | | |
-| T33 | No values anywhere | after T08 and T15, inspect the browser network tab, server console and log files | the response holds no input text or value; logs hold decision, reason, categories and counts only | | | `docs/INTEGRATION.md` §4 |
-| T34 | Fail-closed message wording | after T26 and T28 | the explanation states the real reason (too large / could not inspect / service unavailable) and does not claim sensitive data was found | | | |
+| T31 | BLOCK display | run T15 | BLOCK card shows: the types and counts; the masked copy with placeholders; the note "Review the masked text before sharing. Automatic masking may miss sensitive information."; and Copy. No detected value remains on screen after the masking animation | | | The animation shows the user's own text in their browser before masking it; nothing leaves the page |
+| T32 | ALLOW display | run T01 | ALLOW card "Nothing sensitive", the text unchanged, and Copy | | | |
+| T33 | No values anywhere | after T08 and T15, inspect the server console, the audit database and the logs page | the response holds the masked copy (BLOCK) or the user's own text (ALLOW), never a detected value; logs and database hold decision, reason, types and counts only | | | `docs/INTEGRATION.md` §4 |
+| T34 | Fail-closed message wording | after T26, T28 and T29 | the message states the real reason (invalid request / server unreachable / detection not available) and does not claim sensitive data was found | | | |
+
+### 3.4 Saudi demo extension (demo only, not evaluated)
+
+**Expected app result** is the app's documented behaviour (`backend/README.md`), observed with the frozen checkpoint on 2026-10-30. These rows check the integration. They say nothing about the quality of the Saudi rules, which were never evaluated.
+
+| ID | Scenario | Synthetic input | Expected app result | Actual | Pass/fail | Notes |
+|---|---|---|---|---|---|---|
+| T35 | Saudi mobile that the core detector finds | `Please call Khalid on 0551234567 tomorrow morning.` | BLOCK: Person name, Account number; hint under Account number: "Also matches a Saudi mobile number pattern (demo rule)." | | | Core types are kept; the Saudi rule matches the same value |
+| T36 | Saudi mobile in Arabic-Indic digits | `رقم الهاتف: ٠٥٥١٢٣٤٥٦٧` | BLOCK: Phone number; no hint | | | The core detector alone answers ALLOW; the Saudi rule adds the BLOCK |
+| T37 | National ID | `The visitor's national ID is 1098765432.` | BLOCK: Account number; hint "Also matches a Saudi national ID pattern (demo rule)." | | | "National ID" as the type appears only for values the core detector misses |
+| T38 | Iqama | `Iqama number 2123456789 expires next month.` | BLOCK: Account number; hint "Also matches an Iqama-like pattern (demo rule)." | | | |
+| T39 | IBAN containing a Saudi-looking number | T10 | BLOCK: IBAN only; no hint | | | The former mislabelling (§3.1, T10); a Saudi match inside a longer value gives no hint |
+| T40 | Harmless 10-digit number | `Ticket 1000234567 was escalated to tier 2.` | BLOCK: Account number (policy: ALLOW) | | | A known false BLOCK by the core detector; present it honestly |
 
 ## 4. Recording procedure
 

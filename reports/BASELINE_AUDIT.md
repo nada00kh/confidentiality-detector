@@ -4,6 +4,11 @@
 
 **Method.** Inspection only. Git history (`git log`, `git show` of every commit), the archived notebooks, `reports/history/`, `reports/evidence/`, and the local git-ignored folders `reports/runs/`, `predictions/`, `predictions_v3/` and `dist/` were read. Stored metric files were *read*, never recomputed. **No detector was run, no prediction was made and no metric was computed for this audit.** Nothing in `results/`, `checkpoints/`, `configs/` or `src/` was modified.
 
+**Team decisions after this audit (2026-10-30):**
+* The historical Arabic regex prototype (`142f268`) is **not a baseline** of the final English project, and the final academic report does not compare it with the English model.
+* The relevant experimental evidence is the English rules-only, R3 model-only and hybrid comparisons on development sets.
+* The prototype's patterns are reused unchanged, and still unevaluated, as the demo-only Saudi extension of the WASHQ application (`backend/app/saudi_rules.py`, `backend/README.md`).
+
 Terms: **FA** = False ALLOW (protected document allowed), **FB** = False BLOCK (harmless document blocked). Entity scores are exact character-span micro P/R/F1 unless stated. "Not available" means no stored result exists; "Not evaluated" means the evaluation was never run.
 
 ---

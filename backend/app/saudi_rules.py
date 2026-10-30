@@ -1,6 +1,11 @@
 """Saudi formats that the English-trained model does not know: email, Saudi mobile numbers,
 national ID and Iqama numbers, also when written with Arabic-Indic or Persian digits.
 
+DEMO-ONLY EXTENSION. These rules are not part of the evaluated system (frozen R3 + rules v3,
+strict): they were never evaluated, and Challenge v2 did not include them. Their findings are
+supplemental: they can add masked values (and turn ALLOW into BLOCK), but where they overlap a
+finding of the core detector, the core finding's type is kept (labels.LABEL_PRIORITY).
+
 Origin: the team's regex baseline, src/detectors/regex_detector.py in commit 142f268
 (deleted from the repository in e93b2cd). DIGIT_MAP, PATTERNS and the overlap handling are
 copied unchanged so that detection behaves exactly as before; only the matched value is no

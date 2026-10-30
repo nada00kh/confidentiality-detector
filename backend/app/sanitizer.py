@@ -10,7 +10,9 @@ from collections import Counter
 from dataclasses import dataclass
 
 from backend.app.detection import DetectionFailedError, Entity, MaskingFailedError
-from backend.app.labels import LABEL_PRIORITY, LABEL_TO_CODE, TYPE_LABELS
+from backend.app.labels import LABEL_PRIORITY, LABEL_TO_CODE, MODEL_LABEL_TO_CODE, SAUDI_PATTERN_HINTS, TYPE_LABELS
+
+HINT_NOTES = dict(SAUDI_PATTERN_HINTS.values())  # hint code -> sentence shown to the user
 
 
 @dataclass(frozen=True)
@@ -18,6 +20,7 @@ class Span:
     start: int
     end: int
     type: str
+    hints: tuple[str, ...] = ()  # secondary Saudi-pattern hint codes; never change the type
 
 
 @dataclass(frozen=True)
@@ -51,7 +54,7 @@ def to_spans(text: str, entities: list[Entity]) -> list[Span]:
     if not all(isinstance(entity, Entity) for entity in entities):
         raise DetectionFailedError
 
-    candidates = []  # (start, end, code, priority, length as detected)
+    candidates = []  # (start, end, code, priority, length as detected, label)
     for entity in entities:
         if not (isinstance(entity.start, int) and isinstance(entity.end, int)):
             raise MaskingFailedError
@@ -61,12 +64,14 @@ def to_spans(text: str, entities: list[Entity]) -> list[Span]:
         if code is None:
             raise MaskingFailedError
         start, end = expand_to_word(text, entity.start, entity.end)
-        candidates.append((start, end, code, LABEL_PRIORITY.get(entity.label, 0), entity.end - entity.start))
+        candidates.append(
+            (start, end, code, LABEL_PRIORITY.get(entity.label, 0), entity.end - entity.start, entity.label))
 
     # Overlapping spans (including exact duplicates from different detectors) become one span
     # covering all of them, so every character any detector flagged ends up masked. Its type
-    # comes from the highest-priority label, then the longest span as detected (before word
-    # widening), then the type code, so the result never depends on detector order.
+    # comes from the highest-priority label (a core detector label before a Saudi rule label,
+    # see labels.LABEL_PRIORITY), then the longest span as detected (before word widening),
+    # then the type code, so the result never depends on detector order.
     groups: list[list[tuple]] = []
     group_end = -1
     for candidate in sorted(candidates):
@@ -80,8 +85,22 @@ def to_spans(text: str, entities: list[Entity]) -> list[Span]:
     merged = []
     for group in groups:
         best = min(group, key=lambda c: (-c[3], -c[4], c[2]))
-        merged.append(Span(group[0][0], max(c[1] for c in group), best[2]))
+        merged.append(Span(group[0][0], max(c[1] for c in group), best[2], _hints(group, best)))
     return merged
+
+
+def _hints(group: list[tuple], best: tuple) -> tuple[str, ...]:
+    """Saudi patterns that the core-typed value itself also matches (secondary explanation only).
+
+    A hint needs a core type and a Saudi match covering the whole core finding, so a Saudi match
+    inside a longer value (for example "0532 0130 00" inside a spaced IBAN) gives no hint.
+    """
+    if best[5] not in MODEL_LABEL_TO_CODE:
+        return ()
+    return tuple(sorted({
+        SAUDI_PATTERN_HINTS[c[5]][0] for c in group
+        if c[5] in SAUDI_PATTERN_HINTS and c[2] != best[2] and c[0] <= best[0] and best[1] <= c[1]
+    }))
 
 
 def sanitize(text: str, entities: list[Entity]) -> SanitizedText:
@@ -98,6 +117,13 @@ def sanitize(text: str, entities: list[Entity]) -> SanitizedText:
 
 def detected_summary(counts: dict[str, int]) -> list[dict]:
     return [{"type": code, "label": TYPE_LABELS[code], "count": count} for code, count in counts.items()]
+
+
+def pattern_hint_summary(spans: list[Span]) -> list[dict]:
+    """Secondary hints per (primary type, pattern), in order of first appearance. No values, no positions."""
+    counts = Counter((span.type, hint) for span in spans for hint in span.hints)
+    return [{"type": code, "label": TYPE_LABELS[code], "pattern": hint, "note": HINT_NOTES[hint], "count": count}
+            for (code, hint), count in counts.items()]
 
 
 def utf16_offset(text: str, index: int) -> int:

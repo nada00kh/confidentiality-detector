@@ -102,19 +102,20 @@ def test_rules_v3_catch_what_the_saudi_rules_miss(client, text, expected):
     assert check(client, text)["safe_text"] == expected
 
 
-# ---------- Saudi values: the Saudi rules decide, whatever the model predicts ----------
+# ---------- Saudi values: the Saudi rules add what the model misses; the model's types are kept ----------
 
-def test_contract_sample_names_masked_and_id_typed_by_the_saudi_rules(client, real_model):
+def test_contract_sample_keeps_the_model_type_for_the_id(client, real_model):
     model_labels = {CONTRACT_SAMPLE[f.start:f.end]: f.label for f in direct(real_model, CONTRACT_SAMPLE).findings}
     assert model_labels["1098765432"] == "ACCOUNTNUMBER"  # the English model's guess for a Saudi ID
 
+    # The Saudi national ID rule matches the same value; it is masked once, with the core type.
     body = check(client, CONTRACT_SAMPLE)
     assert body["decision"] == "BLOCK"
     assert body["safe_text"] == (
-        "Summarize the complaint from customer [PERSON_NAME] [PERSON_NAME], ID [NATIONAL_ID], about invoice #4471.")
+        "Summarize the complaint from customer [PERSON_NAME] [PERSON_NAME], ID [ACCOUNT_NUMBER], about invoice #4471.")
     assert body["detected"] == [
         {"type": "PERSON_NAME", "label": "Person name", "count": 2},
-        {"type": "NATIONAL_ID", "label": "National ID", "count": 1},
+        {"type": "ACCOUNT_NUMBER", "label": "Account number", "count": 1},
     ]
 
 
@@ -126,13 +127,14 @@ def test_arabic_indic_phone_missed_by_the_model_is_masked_by_the_saudi_rules(cli
     assert body["safe_text"] == "رقم الهاتف: [PHONE]"
 
 
-def test_arabic_text_saudi_values_get_saudi_types(client):
+def test_arabic_text_saudi_values_are_masked_with_the_model_types(client):
+    # The model flags the ID and the phone number as ACCOUNTNUMBER; the Saudi rules match the
+    # same values, so they are masked once and keep the model's type.
     text = "العميل أحمد العتيبي رقم الهوية 1098765432 وجواله 0551234567 وبريده test@example.com"
     body = check(client, text)
     types = {d["type"] for d in body["detected"]}
     assert body["decision"] == "BLOCK"
-    assert {"NATIONAL_ID", "PHONE", "EMAIL"} <= types
-    assert "ACCOUNT_NUMBER" not in types
+    assert types == {"PERSON_NAME", "ACCOUNT_NUMBER", "EMAIL"}
     for value in ("1098765432", "0551234567", "test@example.com"):
         assert value not in body["safe_text"]
     # Model findings that cut a word are widened, so no fragment like "ال[PERSON_NAME]" remains.
@@ -189,5 +191,8 @@ def test_nothing_sensitive_is_logged_or_stored(client, settings, caplog):
 def test_app_start_up_loads_the_real_detector(settings):
     with TestClient(create_app(settings, detector_factory=build_detector)) as client:
         assert isinstance(client.app.state.detector, CombinedDetector)
+        assert client.get("/health").json() == {"status": "ready", "model_loaded": True}
         body = check(client, CONTRACT_SAMPLE)
-        assert body["decision"] == "BLOCK" and "[NATIONAL_ID]" in body["safe_text"]
+        assert body["decision"] == "BLOCK" and "[ACCOUNT_NUMBER]" in body["safe_text"]
+        # The Saudi extension is part of the started detector: it masks a phone number the model misses.
+        assert check(client, "رقم الهاتف: ٠٥٥١٢٣٤٥٦٧")["safe_text"] == "رقم الهاتف: [PHONE]"

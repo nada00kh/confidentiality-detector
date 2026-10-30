@@ -3,7 +3,9 @@
 This page is for the developer who connects the existing HTML/CSS/JavaScript frontend and FastAPI backend to the detector, and for anyone who sets the project up on another computer.
 
 * **Existing** (verified against the code): §1 setting up a computer, §2 the Python interface, §8 the frozen components. The detector is the frozen system of `configs/inference/frozen_system.json` (code commit `4907107`, unchanged since).
-* **Planned** (nothing of it is in this repository yet): §3–§7, the integration. The frontend and the FastAPI backend are not part of this repository; they arrive through a separate feature branch. This page does not define their endpoints or request formats.
+* **Implemented** (commit `0426942`, 2026-10-27; verified 2026-10-30): the WASHQ application in `backend/` (FastAPI) and `frontend/`.
+  * **`backend/README.md`** covers setup and running it, which component was evaluated (the core detector) and which is a demo-only extension (the Saudi rules), what masking can and cannot guarantee, and the known limits.
+  * §3–§7 below were written before the integration, as requirements. Each now notes how the application meets them.
 
 ## 0. Ground rules
 
@@ -195,7 +197,7 @@ decisions = detector.inspect_batch([text1, text2], "strict")
 * **CLI:** `python -m confidentiality_detector --model-dir DIR [--mode strict] [--file F | stdin]`, or the `confidentiality-detector` console script. It prints `to_dict()` as JSON. Exit status: 0 = ALLOW, 10 = BLOCK, 2 = the detector could not be loaded.
 * **Logging:** the logger `confidentiality_detector` writes at INFO, per text: the decision, reason, mode, categories, number of findings, input length, batch latency and model name. On errors it writes at ERROR, with the exception type only. It never logs text or values.
 
-## 3. Fail-closed duties of the application (planned; required)
+## 3. Fail-closed duties of the application (required)
 
 The detector fails closed inside `inspect`. The application must keep that guarantee around it:
 
@@ -205,7 +207,23 @@ The detector fails closed inside `inspect`. The application must keep that guara
 4. **Size.** The detector blocks texts over 100,000 characters (`INPUT_TOO_LARGE`). A web-server body limit below that would turn large inputs into errors, which point 2 then treats as BLOCK.
 5. **Empty text** is ALLOW by policy (`EMPTY_INPUT`).
 
-## 4. Never expose detected values (planned; required)
+**In the application** (`backend/app/main.py`, `frontend/js/workspace.js`):
+1. **Detector unavailable.** If loading fails, the server still starts, but every scan answers 503, and `/health` answers 503 `not_ready`. When the detector is loaded, `/health` answers 200 `ready`.
+2. **Errors anywhere.** A network failure, a non-OK status, an incomplete answer, or no answer within 60 seconds (`CHECK_TIMEOUT_MS`) shows "WASHQ couldn't scan this text".
+   * No result is shown, and there is nothing to copy.
+   * The text is never presented as safe.
+   * A timed-out request is cancelled, and a late answer is ignored.
+3. **Invalid requests.** Rejected with 422 before inspection.
+4. **Size.** The API accepts at most 10,000 characters (422 above that). The detector's `INPUT_TOO_LARGE` path is therefore not reached through the API; the adapter would turn it into a 503.
+5. **Empty or blank text.** Rejected with 422, and the workspace does not submit it. This differs from the detector's own `EMPTY_INPUT` ALLOW.
+
+## 4. Never expose detected values (required)
+
+**In the application**, values are never logged or stored, and 422 messages never echo the input. One requirement below was changed by design:
+* The API **returns text**: the user's own text unchanged for ALLOW, or a masked copy for BLOCK, with every detected value replaced.
+* It also returns positions (UTF-16), which the browser uses for its masking animation.
+* The masked copy can still contain values the detectors missed, so the workspace asks the user to review it before sharing (`backend/README.md`).
+
 
 * **Return** `decision.to_dict()`, or a subset of it. Never return the input text or any substring of it, and never derive one from the offsets on the server.
 * **Offsets locate values.** Start/end plus the original text reveal the value. Never store or log them together with the text. Whether the frontend highlights the positions in the user's own browser is a product decision; if it does, nothing leaves the page.
@@ -215,7 +233,14 @@ The detector fails closed inside `inspect`. The application must keep that guara
   * FastAPI's default validation-error response (HTTP 422) echoes the offending input. Replace it with a handler that returns no input.
 * **No external calls.** Do not send the text anywhere: no telemetry or analytics that see it, and no LLM call before the decision is ALLOW.
 
-## 5. Running it in a web service (recommendations, not yet tested)
+## 5. Running it in a web service
+
+The application follows these recommendations:
+* It loads the detector once at start-up.
+* FastAPI runs the synchronous check handler in a worker thread.
+* `ModelDetector` serialises calls with one lock.
+* The paths are configurable (`backend/README.md`).
+
 
 * **Load once** at start-up (§2.1), and share one `ConfidentialityDetector`.
 * **The call is CPU-bound and blocking.** Run it in a worker thread, not directly in an `async` handler.
@@ -223,7 +248,15 @@ The detector fails closed inside `inspect`. The application must keep that guara
 * **Expected latency** (Round 1 measurement, laptop CPU): about 37 ms median per short prompt, 0.6–2.9 s for 600–1,000-token documents.
 * **Configurable paths.** Make the checkpoint and policy paths configurable, defaulting to the repository-relative paths above. Never hard-code a personal path.
 
-## 6. Planned workflow
+## 6. Integration workflow
+
+Steps 1–5 were completed with commit `0426942`, which was added to `main` directly rather than through a feature branch. On 2026-10-30:
+* the step 6 checks passed;
+* both test suites passed;
+* `check_frozen_identity.py` exited 0;
+* there was no diff under `src/confidentiality_detector` or `configs/inference`.
+
+The original plan:
 
 1. The project owner pushes `main` with the finalised detector.
 2. The integrating developer clones it and completes §1 on her computer. `check_frozen_identity.py` must exit 0.
@@ -240,9 +273,17 @@ The detector fails closed inside `inspect`. The application must keep that guara
    * no checkpoint, `challenge_v2` or personal file is staged.
 7. Both developers review and merge, then each runs the complete application locally on their own computer.
 
-## 7. API/CLI consistency check (planned)
+## 7. API/CLI consistency check
 
 The API must return exactly the decision that direct inference gives, on new synthetic fixtures. Never use the `challenge_v2` cases or real prompts.
+
+**Implemented** in `backend/tests/test_saudi_extension.py` and `test_real_model.py::test_api_matches_direct_inference`. Two things differ from the outline below:
+* **Response shape.** The API has its own response shape (type codes such as `PERSON_NAME`, not the detector's `to_dict()`). The comparison is therefore on `decision` and the `(start, end, type)` of every masked span.
+* **Two comparisons.** The application adds the Saudi demo extension, so the comparison is made twice:
+  * with the **core detector alone**, the API equals direct `strict` inference;
+  * with the **full application**, the result equals the core result plus the Saudi findings. Those can only add masked values, and they never change a core finding's type.
+  * Where a Saudi rule also matches a core-typed value, the separate `pattern_hints` field explains it as a demo-rule format match. Hints change nothing else, and they are not stored.
+  * The full application is therefore **not** identical to the evaluated detector, and must not be described as such.
 
 * **Fixtures:**
   * Put them in a new file, for example `tests/fixtures/integration_synthetic.jsonl`, with fictional values only.

@@ -1,7 +1,8 @@
 // Employee workspace: the employee enters text and WASHQ's backend checks it.
 //   ALLOW = nothing sensitive: the text can be used as it is.
-//   BLOCK = sensitive data was found: the original must not be shared, so WASHQ returns a masked copy to use instead.
-// WASHQ never sends the text to an AI model.
+//   BLOCK = sensitive data was found: the original must not be shared, so WASHQ returns a masked copy.
+//   Automatic masking can miss values, so the employee is asked to review the masked copy before sharing it.
+// The text is checked by the local WASHQ backend only; it is never sent to an external AI service.
 (function () {
   const api = window.WashqAPI;
   const B = window.WashqBrand;
@@ -18,8 +19,10 @@
 
   const MOTION = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sleep = (ms) => new Promise((r) => setTimeout(r, MOTION ? ms : 0));
-  const GUARD_DEFAULT = "Never sent to an AI model.";
+  const GUARD_DEFAULT = "Checked locally. Never sent to an external AI service.";
+  const REVIEW_NOTE = "Review the masked text before sharing. Automatic masking may miss sensitive information.";
   let busy = false;
+  let lastScan = 0; // only the newest scan may change the page
 
   if (api.isMock) $("#demoBadge").hidden = false;
 
@@ -72,6 +75,16 @@
   }
   const total = (detected) => detected.reduce((a, d) => a + d.count, 0);
 
+  // Secondary, demo-only explanations from the Saudi rules. The detected type stays the primary label;
+  // a hint is a format match, not proof that the value is a real ID.
+  function hintNotes(hints) {
+    return (hints || []).map((h) => {
+      const note = el("div", "sent-note");
+      note.append(el("b", null, h.count > 1 ? `${h.label} × ${h.count}` : h.label), el("br"), el("em", null, h.note));
+      return note;
+    });
+  }
+
   // Text with [LABELS] shown as tags.
   function labelled(text) {
     const frag = document.createDocumentFragment();
@@ -90,7 +103,7 @@
   function welcome() {
     const w = el("section", "welcome");
     w.innerHTML = B.mascot("idle", 60);
-    w.append(el("h1", null, "Paste text to make it safe"));
+    w.append(el("h1", null, "Paste text to check it before sharing"));
     const list = el("div", "suggest short");
     SAMPLES.forEach((s) => {
       const b = el("button", "sugg");
@@ -228,12 +241,14 @@
   function resultWithCopy(r) {
     const n = total(r.detected);
     const { card, body } = r.decision === "BLOCK"
-      ? resultCard("block", "BLOCK", `Sensitive data found · ${n} ${n === 1 ? "item" : "items"} masked`, "Don’t share the original. Use this masked copy.")
-      : resultCard("allow", "ALLOW", "Nothing sensitive", "Your text is safe to share as it is.");
+      ? resultCard("block", "BLOCK", `Sensitive data found · ${n} ${n === 1 ? "item" : "items"} masked`, "Don’t share the original.")
+      : resultCard("allow", "ALLOW", "Nothing sensitive", "WASHQ found no sensitive data in this text.");
     if (r.detected.length) body.append(chips(r.detected));
+    if (r.decision === "BLOCK") body.append(...hintNotes(r.pattern_hints));
     const safe = el("div", "safe-text");
     safe.append(labelled(r.safe_text));
     body.append(safe);
+    if (r.decision === "BLOCK") body.append(el("div", "sent-note", REVIEW_NOTE));
 
     let resetCopy;
     const copy = button("Copy", true, async () => {
@@ -272,6 +287,7 @@
   // Only a complete ALLOW or BLOCK answer is shown as a result; anything else is treated as a failed scan.
   function validCheck(r) {
     if (!r || typeof r.operation_id !== "string" || !Array.isArray(r.detected)) return false;
+    if (r.pattern_hints !== undefined && !Array.isArray(r.pattern_hints)) return false;
     if (r.decision === "ALLOW") return typeof r.safe_text === "string" && r.safe_text.trim() !== "";
     return r.decision === "BLOCK"; // with a masked copy (safe_text), or without one if it couldn't be masked
   }
@@ -294,14 +310,17 @@
     if (w) w.remove();
 
     setBusy(true);
+    const scan = ++lastScan;
     const stop = scanning();
     const started = Date.now();
     let r;
     try {
       r = await api.check(text);
+      if (scan !== lastScan) { await stop(); return; } // a newer scan owns the page
       if (!validCheck(r)) throw new Error("The server sent an incomplete answer, so no result is shown.");
     } catch (err) {
       await stop();
+      if (scan !== lastScan) return;
       setBusy(false);
       setGuard(GUARD_DEFAULT);
       showError(`WASHQ couldn’t scan this text. ${err.message}`);

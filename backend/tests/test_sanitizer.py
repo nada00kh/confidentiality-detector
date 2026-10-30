@@ -63,22 +63,36 @@ def test_contract_codes_keep_their_labels():
 
 # ---------- merging, priority and duplicates ----------
 
-@pytest.mark.parametrize("saudi_label, code", [("national_id", "NATIONAL_ID"), ("iqama", "IQAMA"),
-                                               ("private_phone", "PHONE")])
-def test_saudi_label_wins_over_model_accountnumber_on_the_same_value(saudi_label, code):
+@pytest.mark.parametrize("saudi_label", ["national_id", "iqama", "private_phone"])
+def test_core_label_is_kept_when_a_saudi_rule_matches_the_same_value(saudi_label):
+    # The frozen detector labels Saudi IDs and phone numbers ACCOUNTNUMBER; the Saudi rules are
+    # supplemental, so they never replace the type of a core finding.
     text = "ID 1098765432 end"
     for entities in itertools.permutations([Entity(3, 13, "ACCOUNTNUMBER"), Entity(3, 13, saudi_label)]):
         result = sanitize(text, list(entities))
-        assert result.safe_text == f"ID [{code}] end"
-        assert result.counts == {code: 1}
+        assert result.safe_text == "ID [ACCOUNT_NUMBER] end"
+        assert result.counts == {"ACCOUNT_NUMBER": 1}
 
 
-def test_saudi_label_wins_even_when_the_model_span_is_longer():
-    # The model's span runs past the value; everything stays masked, typed by the Saudi rule.
+def test_core_label_is_kept_when_the_saudi_span_is_longer():
+    # The Saudi span runs past the core span: every flagged character stays masked, typed by the core
+    # finding; the Saudi match covers the core value, so it adds a secondary hint.
+    text = "-" * 16
+    for entities in itertools.permutations([Entity(2, 6, "ACCOUNTNUMBER"), Entity(2, 12, "national_id")]):
+        assert sanitize(text, list(entities)).spans == [Span(2, 12, "ACCOUNT_NUMBER", ("SAUDI_NATIONAL_ID",))]
+
+
+def test_core_label_is_kept_when_the_model_span_is_longer():
     text = "ID 1098765432, end"
     result = sanitize(text, [Entity(3, 14, "ACCOUNTNUMBER"), Entity(3, 13, "national_id")])
-    assert result.safe_text == "ID [NATIONAL_ID] end"
-    assert result.spans == [Span(3, 14, "NATIONAL_ID")]
+    assert result.safe_text == "ID [ACCOUNT_NUMBER] end"
+    assert result.spans == [Span(3, 14, "ACCOUNT_NUMBER")]
+
+
+def test_saudi_label_is_used_when_no_core_finding_overlaps():
+    text = "ID 1098765432 and 2123456789 end"
+    result = sanitize(text, [Entity(3, 13, "national_id"), Entity(18, 28, "iqama")])
+    assert result.safe_text == "ID [NATIONAL_ID] and [IQAMA] end"
 
 
 def test_same_value_from_two_detectors_is_masked_once():
@@ -110,9 +124,9 @@ def test_chained_overlaps_become_one_span():
     assert result.safe_text == "[PERSON_NAME]----"
 
 
-def test_model_labels_have_no_priority():
-    assert all(LABEL_PRIORITY.get(label, 0) == 0 for label in MODEL_LABEL_TO_CODE)
-    assert all(LABEL_PRIORITY[label] > 0 for label in SAUDI_LABEL_TO_CODE)
+def test_core_labels_outrank_saudi_labels():
+    lowest_core = min(LABEL_PRIORITY[label] for label in MODEL_LABEL_TO_CODE)
+    assert all(LABEL_PRIORITY.get(label, 0) < lowest_core for label in SAUDI_LABEL_TO_CODE)
 
 
 # ---------- masking ----------

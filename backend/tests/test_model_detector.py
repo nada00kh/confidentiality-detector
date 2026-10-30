@@ -137,16 +137,16 @@ def test_if_the_model_fails_the_saudi_rules_alone_do_not_answer():
         combined.detect("call 0551234567")
 
 
-def test_saudi_label_wins_when_the_model_calls_an_id_accountnumber(make_client):
+def test_model_label_is_kept_when_a_saudi_rule_matches_the_same_id(make_client):
     text = "Customer Ahmed Alotaibi, ID 1098765432."
     model = ModelDetector(FakeInspector(blocked(
         Finding(9, 14, "FIRSTNAME", "model"), Finding(15, 23, "LASTNAME", "model"), Finding(28, 38, "ACCOUNTNUMBER", "model"))))
     body = make_client(detector=CombinedDetector(model, SaudiRuleDetector())).post("/api/check", json={"text": text}).json()
     assert body["decision"] == "BLOCK"
-    assert body["safe_text"] == "Customer [PERSON_NAME] [PERSON_NAME], ID [NATIONAL_ID]."
+    assert body["safe_text"] == "Customer [PERSON_NAME] [PERSON_NAME], ID [ACCOUNT_NUMBER]."
     assert body["detected"] == [
         {"type": "PERSON_NAME", "label": "Person name", "count": 2},
-        {"type": "NATIONAL_ID", "label": "National ID", "count": 1},
+        {"type": "ACCOUNT_NUMBER", "label": "Account number", "count": 1},
     ]
 
 
@@ -186,7 +186,9 @@ def test_failed_load_keeps_scans_unavailable(settings, caplog):
         raise FileNotFoundError("model.safetensors is missing")
 
     with caplog.at_level(logging.ERROR), TestClient(create_app(settings, detector_factory=broken_factory)) as client:
-        assert client.get("/health").status_code == 200
+        health = client.get("/health")
+        assert (health.status_code, health.json()) == (503, {"status": "not_ready", "model_loaded": False})
+        assert "safetensors" not in health.text  # no file names or error contents
         response = client.post("/api/check", json={"text": "Please summarise the notes."})
         assert assert_error(response, 503) == DETECTION_UNAVAILABLE
         assert client.get("/api/stats").json()["total"] == 0
@@ -196,6 +198,7 @@ def test_failed_load_keeps_scans_unavailable(settings, caplog):
 def test_successful_load_is_used(settings):
     detector = FakeDetector()
     with TestClient(create_app(settings, detector_factory=lambda s: detector)) as client:
+        assert client.get("/health").json() == {"status": "ready", "model_loaded": True}
         assert client.post("/api/check", json={"text": "hello"}).json()["decision"] == "ALLOW"
     assert detector.calls == 1
 

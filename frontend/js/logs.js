@@ -7,10 +7,13 @@
   const nf = new Intl.NumberFormat("en-US");
   const PAGE_SIZE = 10;
 
+  // Every type code the backend can record (backend/app/labels.py TYPE_LABELS).
   const TYPE_OPTIONS = [
-    ["PERSON_NAME", "Person name"], ["NATIONAL_ID", "National ID"], ["PHONE", "Phone number"],
-    ["EMAIL", "Email address"], ["IBAN", "IBAN"], ["CARD_NUMBER", "Card number"],
-    ["PASSWORD", "Password"], ["CONFIDENTIAL", "Confidential topic"]
+    ["PERSON_NAME", "Person name"], ["NATIONAL_ID", "National ID"], ["IQAMA", "Iqama number"],
+    ["PHONE", "Phone number"], ["EMAIL", "Email address"], ["IBAN", "IBAN"], ["CARD_NUMBER", "Card number"],
+    ["CARD_CVV", "Card security code"], ["ACCOUNT_NUMBER", "Account number"], ["SSN", "Social Security number"],
+    ["USERNAME", "Username"], ["PASSWORD", "Password"], ["STREET_ADDRESS", "Street address"],
+    ["IP_ADDRESS", "IP address"], ["CONFIDENTIAL", "Confidential topic"]
   ];
 
   const f = { decision: $("#fDecision"), type: $("#fType"), days: $("#fDays"), q: $("#fSearch") };

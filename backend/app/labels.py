@@ -54,6 +54,18 @@ MODEL_LABEL_TO_CODE = {
 LABEL_TO_CODE = {**SAUDI_LABEL_TO_CODE, **MODEL_LABEL_TO_CODE}
 
 # When spans overlap, the masked span covers all of them and takes the type of the label
-# with the highest priority. The Saudi rules match exact Saudi formats, so they win over the
-# English-trained model, which labels Saudi IDs and phone numbers as ACCOUNTNUMBER.
-LABEL_PRIORITY = {label: 1 for label in SAUDI_LABEL_TO_CODE}  # model labels: 0
+# with the highest priority. The frozen detector (model + rules v3) is the evaluated core
+# system, so its label is kept. The Saudi rules are a demo-only extension: they add values
+# the core detector missed, but never replace the type of a core finding (for example the
+# IBAN DE89 3704 0044 0532 0130 00 stays IBAN, although "0532 0130 00" matches the Saudi phone rule).
+LABEL_PRIORITY = {label: 1 for label in MODEL_LABEL_TO_CODE}  # Saudi labels: 0
+
+# Secondary explanations (demo only). When a Saudi rule matches a value that the core detector
+# typed differently (for example a national ID typed ACCOUNTNUMBER), the response keeps the core
+# type and adds one of these hints in a separate field. A hint is a format match only: it does not
+# show that the value is a real or verified ID, and it is never stored or counted.
+SAUDI_PATTERN_HINTS = {
+    "national_id": ("SAUDI_NATIONAL_ID", "Also matches a Saudi national ID pattern (demo rule)."),
+    "iqama": ("SAUDI_IQAMA", "Also matches an Iqama-like pattern (demo rule)."),
+    "private_phone": ("SAUDI_MOBILE", "Also matches a Saudi mobile number pattern (demo rule)."),
+}

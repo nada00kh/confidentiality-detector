@@ -6,6 +6,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import AfterValidator
 
 from backend.app.config import Settings
@@ -26,12 +27,13 @@ from backend.app.errors import (
 )
 from backend.app.model_detector import ModelDetector
 from backend.app.saudi_rules import SaudiRuleDetector
-from backend.app.sanitizer import detected_summary, sanitize, utf16_offset
+from backend.app.sanitizer import detected_summary, pattern_hint_summary, sanitize, utf16_offset
 from backend.app.schemas import (
     MAX_TEXT_LENGTH,
     CheckRequest,
     CheckResponse,
     Decision,
+    HealthResponse,
     LogsResponse,
     SpanOut,
     StatsResponse,
@@ -59,9 +61,16 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-@router.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+@router.get(
+    "/health",
+    response_model=HealthResponse,
+    responses={503: {"model": HealthResponse, "description": "The server runs, but the detector is not loaded."}},
+)
+def health(request: Request):
+    # Readiness from the in-memory state only: nothing is loaded or inspected here.
+    if isinstance(request.app.state.detector, UnavailableDetector):
+        return JSONResponse(status_code=503, content={"status": "not_ready", "model_loaded": False})
+    return {"status": "ready", "model_loaded": True}
 
 
 @router.post(
@@ -87,15 +96,17 @@ def check(body: CheckRequest, request: Request) -> CheckResponse:
         operation_id = state.audit_log.record("BLOCK", REASON_NOT_MASKED, MASKING_NOT_MASKED, {}, utc_now())
         return CheckResponse(
             operation_id=operation_id, decision="BLOCK", reason=REASON_NOT_MASKED,
-            detected=[], safe_text=None, spans=[],
+            detected=[], safe_text=None, spans=[], pattern_hints=[],
         )
     except Exception as exc:
         # Only the error type is logged: the message could contain parts of the text.
         logger.error("Detector failed: %s", type(exc).__name__)
         raise DetectionFailedError from None
 
-    # ALLOW = nothing sensitive, the original can be shared as it is.
+    # ALLOW = nothing sensitive was found; the original text is returned.
     # BLOCK = sensitive data found, the original must not be shared; the masked copy is returned instead.
+    # Decision, types, counts and the audit record use the primary types only; pattern hints are
+    # secondary explanations in the response and are never stored or counted.
     masked = sum(result.counts.values())
     if masked:
         decision, reason, safe_text = "BLOCK", REASON_MASKED, result.safe_text
@@ -113,6 +124,7 @@ def check(body: CheckRequest, request: Request) -> CheckResponse:
             SpanOut(start=utf16_offset(text, s.start), end=utf16_offset(text, s.end), type=s.type)
             for s in result.spans
         ],
+        pattern_hints=pattern_hint_summary(result.spans),
     )
 
 
@@ -144,7 +156,8 @@ def logs(
 
 
 def build_detector(settings: Settings) -> Detector:
-    """The real detector: the frozen model + rules v3, together with the Saudi rules."""
+    """The real detector: the frozen model + rules v3 (the evaluated core system), plus the
+    Saudi rules as a demo-only extension whose findings are supplemental (labels.LABEL_PRIORITY)."""
     model = ModelDetector.load(settings.model_dir, settings.policy_path, device=settings.device)
     return CombinedDetector(model, SaudiRuleDetector())
 

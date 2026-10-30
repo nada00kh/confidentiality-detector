@@ -3,14 +3,16 @@
 // otherwise they call the FastAPI endpoints described in API_CONTRACT.md.
 (function () {
   const cfg = window.WASHQ_CONFIG;
+  const CHECK_TIMEOUT_MS = cfg.CHECK_TIMEOUT_MS > 0 ? cfg.CHECK_TIMEOUT_MS : 60000;
 
-  async function request(method, path, body) {
+  async function request(method, path, body, signal) {
     let res;
     try {
       res = await fetch(cfg.API_BASE + path, {
         method,
         headers: body ? { "Content-Type": "application/json" } : undefined,
-        body: body ? JSON.stringify(body) : undefined
+        body: body ? JSON.stringify(body) : undefined,
+        signal
       });
     } catch (e) {
       throw new Error(`Couldn’t reach the WASHQ server at ${cfg.API_BASE}.`);
@@ -35,8 +37,22 @@
     return s ? `?${s}` : "";
   }
 
+  // Fails with a clear error after `ms`. The request is cancelled, and the race is settled by then,
+  // so an answer that arrives later can never become a result.
+  function withTimeout(run, ms) {
+    const controller = new AbortController();
+    let timer;
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        controller.abort();
+        reject(new Error(`No answer within ${Math.round(ms / 1000)} seconds, so the scan was stopped. Please try again.`));
+      }, ms);
+    });
+    return Promise.race([run(controller.signal), timeout]).finally(() => clearTimeout(timer));
+  }
+
   const live = {
-    check: (text) => request("POST", "/api/check", { text }),
+    check: (text) => withTimeout((signal) => request("POST", "/api/check", { text }, signal), CHECK_TIMEOUT_MS),
     stats: (days) => request("GET", "/api/stats" + query({ days })),
     logs: (params) => request("GET", "/api/logs" + query(params))
   };
