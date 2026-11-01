@@ -339,7 +339,7 @@ tests/                          tests of the detector package (backend tests: ba
 
 ## Licence and data terms
 
-* **No licence file.** The repository has none yet; adding one is the owners' decision.
+* **No licence file.** The repository has none yet.
 * **Base model:** `google-bert/bert-base-multilingual-cased`, Apache-2.0.
 * **Training data:** `ai4privacy/pii-masking-200k`, whose dataset card states no licence.
   * Third-party data and data derived from it are therefore kept out of Git.
