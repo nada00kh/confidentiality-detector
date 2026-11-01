@@ -114,7 +114,7 @@ uv sync --frozen --inexact --group web                       # adds the web serv
 
 The repository does **not** contain the model weights: they are 709 MB and git-ignored. They are provided separately in Google Drive, and access to this folder is required:
 
-**Google Drive folder (WASHQ - Content & R3 Model):** https://drive.google.com/drive/folders/1JHfXdEwwmMoH1x_jVjDDzegdZQwl7xE_?usp=sharing
+**Google Drive folder (WASHQ - Content & R3 Model):** (https://drive.google.com/drive/folders/1JHfXdEwwmMoH1x_jVjDDzegdZQwl7xE_?usp=sharing)
 
 1. **Open the link.**
 2. **Download only the file `r2_e3b_positive.zip`** (659 MB): right-click it, then **Download**.
