@@ -197,12 +197,8 @@ data/raw/
 data/processed/
 *.parquet
 
-# Vector DB / ChromaDB (قاعدة البيانات المتجهة المحلية)
-chroma_db/
-.chroma/
 
-# Streamlit Secrets (المفاتيح الخاصة بالواجهة)
-.streamlit/secrets.toml
+
 
 # OS Files (ملفات النظام المقلقة)
 .DS_Store
@@ -241,3 +237,22 @@ data/synth/**/*.jsonl
 
 # Visual Studio workspace state
 .vs/
+
+# ==========================================
+# WASHQ - Submission and local-only files
+# ==========================================
+
+# Reports submitted separately
+/reports/**/*.docx
+/reports/**/*.pdf
+
+# Presentations 
+/presentations/
+
+
+# Local application database and audit logs
+/backend/data/*.sqlite3*
+
+# Local environment secrets
+.env.*
+!.env.example

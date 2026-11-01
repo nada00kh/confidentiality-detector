@@ -26,12 +26,12 @@ git clone <repository URL>
 cd confidentiality-detector
 ```
 
-### 1.2 Get the checkpoint from the private Google Drive folder
+### 1.2 Get the checkpoint from the Google Drive folder
 
-The project owner shares the folder `r2_e3b_positive` privately. Its link is deliberately not recorded in the repository.
+The checkpoint is the file `r2_e3b_positive.zip` (659,035,610 bytes) in the team's Google Drive folder. The link and step-by-step instructions are in the main `README.md` (Quick Start, Step 4). The ZIP contains the folder `r2_e3b_positive`.
 
-1. Download the whole folder. Google Drive delivers it as a zip file, for example `r2_e3b_positive-<date>-001.zip`, of about 660 MB.
-2. Extract it so that the six files sit **directly** in `checkpoints/r2_e3b_positive/`:
+1. Download only that file, not the whole Drive folder.
+2. Extract it into `checkpoints/` (`Expand-Archive -Path <zip> -DestinationPath checkpoints`), so that the six files sit **directly** in `checkpoints/r2_e3b_positive/`:
 
    ```
    confidentiality-detector/
